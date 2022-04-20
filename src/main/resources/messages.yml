@@ -1,0 +1,37 @@
+# Welcome to the messages.yml file
+# In this file you can edit most of the messages that are used in this plugin.
+
+de:
+  Overall:
+    JoinMessage: "&7Der Spieler&b %PLAYER%&7 hat den Server betreten."
+    QuitMessage: "&7Der Spieler&b %PLAYER%&7 hat den Server verlassen."
+    KickMessage:
+      1: "&4Neustart!"
+      2: "&7Der Server wird neugestartet!"
+  Command:
+    Overall:
+      NoPermission: "&7Du hast keine Rechte für diesen Befehl."
+      UknownPlayer: "&b%TARGET%&7 ist unserem System nicht bekannt."
+    Build:
+      Add: "&b%PLAYER%&7 wurde in den Baumodu gesetzt."
+      Remove: "&b%PLAYER%&7 wurde vom Baumodus entfernt."
+      Usage:
+        Single: "Setzt dich in den Baumodus"
+        Multi: "Setzt jemanden in den Baumodus"
+en:
+  Overall:
+    JoinMessage: "&7The Player&b %PLAYER%&7 joined the server."
+    QuitMessage: "&7The player&b %PLAYER%&7 left the server."
+    KickMessage:
+      1: "&4Restart"
+      2: "&7The server is restarting!"
+  Command:
+    Overall:
+      NoPermission: "&7You do not have the permission to use this command."
+      UknownPlayer: "&b%TARGET%&7 is not know to our system."
+    Build:
+      Add: "&b%PLAYER%&7 was set into build mode."
+      Remove: "&b%PLAYER%&7 was removed from build mode."
+      Usage:
+        Single: "Put you into build mode"
+        Multi: "Put someone else inot build mode"

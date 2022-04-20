@@ -1,0 +1,9 @@
+name: Lobby-System
+main: me.chaotisch3r.lobby.Lobby
+version: 1.0
+author: Chaotisch3r
+api-version: 1.13
+commands:
+  build:
+    description: This command contains to the Lobby-System
+    permissions: [lobby.*, lobby.build]

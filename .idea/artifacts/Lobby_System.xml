@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Lobby-System">
+    <output-path>$PROJECT_DIR$/../../Server/Server [1.18.2]/plugins</output-path>
+    <root id="archive" name="Lobby-System.jar">
+      <element id="module-output" name="Lobby-System" />
+    </root>
+  </artifact>
+</component>

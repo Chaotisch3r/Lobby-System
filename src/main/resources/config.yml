@@ -1,0 +1,70 @@
+# This is the Config of the 'Lobby-System', please restart your server after changing any of these settings!
+# This Plugin is programmed by Chaotisch3r [http://linktr.ee/Chaotisch3r]
+
+Prefix: "&8[&6Lobby&8]&7 » "
+
+# If 'useSideBar' is 'true' thats means that this Plugin uses its own SideBar System
+# The 'useSideBarAnimation' is only active, if 'useSideBar' is on true
+
+useSideBar: true
+useSideBarAnimation: true
+use24HourFormat: true
+
+# ---------------------------------------- MySQL ----------------------------------------
+# You can change the port to whatever you want but if you are using the option 'useDefaultPort' it means, that your changed port will not be used. It uses the default port of '3306'
+MySQL:
+  useDefaultPort: true
+  host: "localhost"
+  port: 3306
+  database: "minecraft"
+  user: "root"
+  password: "password"
+# ---------------------------------------- MySQL ----------------------------------------
+
+# ---------------------------------------- IMPORTANT ----------------------------------------
+# World means the world name thats running the lobby system
+# 'RemovedEntity' means which entites will not be removed on the start of the server. Please write this in uppercase
+# You can disable the Broadcast message if you want (not recommended)
+# If you want to use the secound line in the MOTD, use '\n' to do it
+MOTD: "&7This Server is the best you have ever seen!\n&cPlugin by Chaotisch3r"
+World: "world"
+RemovedEntity:
+  - "PLAYER"
+  - "ARMOR_STAND"
+Broadcast:
+  createworld: true
+# ---------------------------------------- IMPORTANT ----------------------------------------
+
+# This setup will change the join/quit settings
+# The messages are in the 'messages.yml' file
+# the 'useYearXP' is overriting the 'Level' Method. So set 'useYearXP' to false if you want to set your own level
+JoinMessage: true
+QuitMessage: true
+XP:
+  useYearXP: true
+  Level: 0
+
+# Change the Inventory of the start menu here
+# Use size if you want the normal inventory
+# Use Type if you want to use an other inventory, here is a link to website that contains all Type with the right name: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryType.html, you have to scroll down to 'Enum Constant Summary'
+# The type is overwriting the size method, so just delete 'Size' if you want to use 'Type' and the other way
+# You can change the items on the items.yml file
+Inventory:
+  Telporter:
+    Size: 45
+  Hider:
+    Type: "BREWING"
+  Gadgets:
+    Size: 36
+    Boots:
+      Size: 45
+  Profile:
+    Size: 45
+  Command:
+    Size: 36
+  Settings:
+    Size: 36
+    Color:
+      Size: 45
+    Language:
+      Size: 45
