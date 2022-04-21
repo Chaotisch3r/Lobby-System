@@ -1,5 +1,6 @@
 package me.chaotisch3r.lobby.database;
 
+import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -7,7 +8,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -39,6 +39,7 @@ public class MySQL {
             return;
         String url = "jdbc:mysql://";
         String end_url = "?autoReconnect=true&useSSL=false";
+        readInput();
         if (useDafaultPort) {
             url = url + host + ":3306/" + database + end_url;
         } else url = url + host + ":" + port + "/" + database + end_url;
@@ -47,7 +48,6 @@ public class MySQL {
         }catch(SQLException ex) {
             ex.printStackTrace();
         }
-        System.out.println(prefix + "§aSuccessfully connected to database§7.");
     }
 
     public void disconnect() {
@@ -55,7 +55,6 @@ public class MySQL {
             return;
         try {
             connection.close();
-            System.out.println(prefix + "§aSuccessfully closed connection from Database");
         }catch(SQLException ex) {
             System.out.println(prefix + "§cCouldn't close connection from Database: Reason='" + ex.getMessage() + "'");
         }

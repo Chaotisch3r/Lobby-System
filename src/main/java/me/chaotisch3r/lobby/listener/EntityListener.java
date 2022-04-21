@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
  * Created for Lobby-System, 22:07 20.04.2022
  **/
 
-public class EntityEvent implements Listener {
+public class EntityListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {

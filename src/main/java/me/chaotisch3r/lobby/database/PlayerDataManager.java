@@ -47,10 +47,11 @@ public class PlayerDataManager {
         try {
             preparedStatement.setString(1, uuid.toString());
             resultSet = preparedStatement.executeQuery();
-            PlayerData playerData;;
+            PlayerData playerData;
             if (resultSet.next()) {
                 playerCache.put(uuid, (playerData = new PlayerData(uuid, name, address,
                         resultSet.getString("rank"), Locale.forLanguageTag(resultSet.getString("locale")))));
+                System.out.println(playerCache.get(uuid));
             } else {
                 playerCache.put(uuid, (playerData = new PlayerData(uuid, name, address, "Player", Locale.ENGLISH)));
                 updateAsync(playerData);
@@ -75,7 +76,6 @@ public class PlayerDataManager {
     }
 
     public void update(PlayerData playerData) {
-        System.out.println("update");
         if (!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement preparedStatement = mySQL.getStatement("INSERT INTO player_data(`uuid`, `name`, `ipAddress`, `rank`, `locale`) " +
                 "VALUES(?,?,?,?,?) ON DUPLICATE KEY UPDATE `name`=?, `ipAddress`=?, `rank`=?, `locale`=?")) {

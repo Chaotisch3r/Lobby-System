@@ -1,16 +1,13 @@
 package me.chaotisch3r.lobby.filemanagement;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.util.Langauge;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -21,7 +18,6 @@ import java.util.*;
  **/
 
 @Getter
-@RequiredArgsConstructor
 public class MessageConfig {
 
     private final File file;

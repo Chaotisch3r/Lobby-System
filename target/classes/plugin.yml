@@ -7,3 +7,6 @@ commands:
   build:
     description: This command contains to the Lobby-System
     permissions: [lobby.*, lobby.build]
+  language:
+    description: This command contains to the Lobby-System
+    aliases: [lang]

@@ -3,7 +3,6 @@ package me.chaotisch3r.lobby.database;
 import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.LobbyData;
-import me.chaotisch3r.lobby.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 
@@ -29,8 +28,7 @@ public class LobbyDataManager {
 
     public void registerLobby() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
-            if(!mySQL.isConnected())
-                return;
+            if (!mySQL.isConnected()) mySQL.connect();
             try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS lobby_data(`id` int NOT NULL AUTO_INCREMENT," +
                     " `uuid` varchar(64) NOT NULL, `lastConnected` varchar(32) DEFAULT NULL, `color` varchar(16) NOT NULL DEFAULT 'LIME'," +
                     " `respawnType` enum('SPAWN','LOGOUT') NOT NULL DEFAULT 'SPAWN', `playtime` int NOT NULL DEFAULT '0',PRIMARY KEY (`id`)," +
@@ -83,7 +81,7 @@ public class LobbyDataManager {
     private void update(LobbyData lobbyData) {
         if (!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement preparedStatement = mySQL.getStatement("INSERT INTO lobby_data(`uuid`, `lastConnected`, `color`, `respawnType`, `playtime`) " +
-                "VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE `lastConnected` = ?, `color` = ?, `respawnType` = ?, `playtime` = ?")) {
+                "VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE `lastConnected`=?, `color`=?, `respawnType`=?, `playtime`=?")) {
             preparedStatement.setString(1, lobbyData.getUuid().toString());
             preparedStatement.setString(2, lobbyData.getLastConnectedServer());
             preparedStatement.setString(3, lobbyData.getColor().toString());

@@ -2,10 +2,14 @@ package me.chaotisch3r.lobby;
 
 import lombok.Getter;
 import me.chaotisch3r.lobby.command.BuildCommand;
+import me.chaotisch3r.lobby.command.LanguageCommand;
+import me.chaotisch3r.lobby.command.util.TabComplete;
 import me.chaotisch3r.lobby.database.LobbyDataManager;
 import me.chaotisch3r.lobby.database.MySQL;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
+import me.chaotisch3r.lobby.listener.BlockListener;
+import me.chaotisch3r.lobby.listener.EntityListener;
 import me.chaotisch3r.lobby.listener.PlayerListener;
 import me.chaotisch3r.lobby.listener.ServerListener;
 import me.chaotisch3r.lobby.util.CommandUtil;
@@ -15,9 +19,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.C;
-
-import java.util.UUID;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -29,8 +30,6 @@ import java.util.UUID;
 
 @Getter
 public class Lobby extends JavaPlugin {
-
-    private final String testUUID = "12a061c5-cdc5-4bbf-baa4-30606209567f";
 
     private static Lobby instance;
     private String prefix;
@@ -53,9 +52,10 @@ public class Lobby extends JavaPlugin {
         saveDefaultConfig();
         prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Prefix"));
         registerClasses();
-        registerListeners(this);
         registerDatabase();
         registerCommands();
+        registerTabComplete();
+        registerListeners(this);
     }
 
     @Override
@@ -70,11 +70,19 @@ public class Lobby extends JavaPlugin {
 
     private void registerListeners(Plugin plugin) {
         this.pluginManager.registerEvents(new PlayerListener(playerDataManager, lobbyDataManager, langauge, commandUtil), plugin);
-        this.pluginManager.registerEvents(new ServerListener(), this);
+        this.pluginManager.registerEvents(new ServerListener(), plugin);
+        this.pluginManager.registerEvents(new BlockListener(), plugin);
+        this.pluginManager.registerEvents(new EntityListener(), plugin);
     }
 
     private void registerCommands() {
         getCommand("build").setExecutor(new BuildCommand(langauge, commandUtil));
+        getCommand("language").setExecutor(new LanguageCommand(langauge, playerDataManager));
+    }
+
+    private void registerTabComplete() {
+        getCommand("build").setTabCompleter(new TabComplete());
+        getCommand("language").setTabCompleter(new TabComplete());
     }
 
     private void registerClasses() {
@@ -82,13 +90,12 @@ public class Lobby extends JavaPlugin {
         this.playerDataManager = new PlayerDataManager();
         this.lobbyDataManager = new LobbyDataManager();
         this.pluginManager = Bukkit.getPluginManager();
-        this.langauge = new Langauge();
         this.messageConfig = new MessageConfig();
+        this.langauge = new Langauge();
         this.commandUtil = new CommandUtil();
     }
 
     private void registerDatabase() {
-        this.mySQL.readInput();
         this.mySQL.connect();
         this.playerDataManager.registerPlayer();
         this.lobbyDataManager.registerLobby();

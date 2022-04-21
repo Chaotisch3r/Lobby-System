@@ -18,6 +18,17 @@ de:
       Usage:
         Single: "Setzt dich in den Baumodus"
         Multi: "Setzt jemanden in den Baumodus"
+    Language:
+      Use: "&7Die Sprache von&b %PLAYER%&7 ist&6 %LANGUAGE%&7."
+      List: "&7Diese Sprachen sind unserem System bekannt: "
+      Change: "&7Du hast deine Sprache zu&6 %LANGUAGE%&7 gewechselt."
+      Usage:
+        Use: "Zeigt dir deine aktuelle Sprache"
+        List: "Listet alle Sprachen auf"
+        Change: "Wechselt zu einer anderen Sprache"
+      Error:
+        UknownLanguage: "&7Diese Sprache ist unserem System nicht bekannt."
+        SameLanguage: "&7Dies ist deine aktuelle Sprache"
 en:
   Overall:
     JoinMessage: "&7The Player&b %PLAYER%&7 joined the server."
@@ -35,3 +46,14 @@ en:
       Usage:
         Single: "Put you into build mode"
         Multi: "Put someone else inot build mode"
+    Language:
+      Use: "&7The language of&b %PLAYER%&7 is&6 %LANGUAGE%&7."
+      List: "&7These languages are known to our system: "
+      Change: "&7You have changed you language to&6 %LANGUAGE%&7."
+      Usage:
+        Use: "Shows your language"
+        List: "Lists every language"
+        Change: "Change the langauge"
+      Error:
+        UknownLanguage: "&7This language is not know to our system."
+        SameLanguage: "&7This is your current language."
