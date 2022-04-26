@@ -1,7 +1,5 @@
 package me.chaotisch3r.lobby.util;
 
-import lombok.RequiredArgsConstructor;
-import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.PlayerData;
 import me.chaotisch3r.lobby.database.MySQL;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
@@ -23,7 +21,7 @@ import java.util.*;
  * Created for Lobby-System, 17:18 20.04.2022
  **/
 
-public class Langauge {
+public class Language {
 
     private final MySQL mySQL = new MySQL();
     private final MessageConfig messageConfig = new MessageConfig();
@@ -31,8 +29,8 @@ public class Langauge {
     private final Map<UUID, Locale> localeMap = new HashMap<>();
     private final List<Locale> locales;
 
-    public Langauge() {
-        locales = getLangauges();
+    public Language() {
+        locales = getlanguages();
     }
 
     public void loadLocale(UUID uuid) {
@@ -89,7 +87,7 @@ public class Langauge {
                 ChatColor.translateAlternateColorCodes('&', s)).toList();
     }
 
-    private List<Locale> getLangauges() {
+    private List<Locale> getlanguages() {
         List<Locale> locales = new ArrayList<>();
         if(!mySQL.isConnected()) {
             mySQL.connect();

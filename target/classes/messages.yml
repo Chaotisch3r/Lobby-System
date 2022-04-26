@@ -19,6 +19,7 @@ de:
         Single: "Setzt dich in den Baumodus"
         Multi: "Setzt jemanden in den Baumodus"
     Language:
+      Reload: "&7Du hast alle Nachrichten neu geladen."
       Use: "&7Die Sprache von&b %PLAYER%&7 ist&6 %LANGUAGE%&7."
       List: "&7Diese Sprachen sind unserem System bekannt: "
       Change: "&7Du hast deine Sprache zu&6 %LANGUAGE%&7 gewechselt."
@@ -29,6 +30,26 @@ de:
       Error:
         UknownLanguage: "&7Diese Sprache ist unserem System nicht bekannt."
         SameLanguage: "&7Dies ist deine aktuelle Sprache"
+    World:
+      Join: "&7Du hast die Welt&6 %WORLD%&7 betreten."
+      Create:
+        1: "&7Du hast die Welt&6 %WORLD%&7 erstellt."
+        2: "&7[Zum beitreten hier klicken]"
+      Delete: "&7Du hast die Welt&6 %WORLD%&7 entfernt."
+      Information:
+        World: "&6Welt&7: "
+        Spawn: "&aSpawn&7: "
+        Players: "&bSpieler&7: "
+        Seed: "&fSeed: "
+      Hover: "&7Klicke hier um dich zu teleportieren"
+      Usage:
+        Information: "Informationen über diese Welt"
+        Join: "Betritt eine andere Welt"
+        Create: "Erstellt eine neue Welt"
+        Delete: "Löschte eine Welt"
+      Error:
+        WorldNotExisting: "&7Diese Welt wurde in unserem System nicht gefunden."
+        WorldAlreadJoined: "&7Du bist bereits in dieser Welt."
 en:
   Overall:
     JoinMessage: "&7The Player&b %PLAYER%&7 joined the server."
@@ -47,13 +68,32 @@ en:
         Single: "Put you into build mode"
         Multi: "Put someone else inot build mode"
     Language:
+      Reload: "&7You have reloaded all messages."
       Use: "&7The language of&b %PLAYER%&7 is&6 %LANGUAGE%&7."
       List: "&7These languages are known to our system: "
       Change: "&7You have changed you language to&6 %LANGUAGE%&7."
       Usage:
         Use: "Shows your language"
         List: "Lists every language"
-        Change: "Change the langauge"
+        Change: "Change the language"
       Error:
         UknownLanguage: "&7This language is not know to our system."
         SameLanguage: "&7This is your current language."
+    World:
+      Join: "&7You joined the world&6 %WORLD%&7."
+      Create:
+        1: "&7You have created the world&6 %WORLD%&7."
+        2: "&7[Click to join]"
+      Delete: "&7Yu have deleted the world&6 %WORLD%&7."
+      Information:
+        World: "&6World&7: "
+        Spawn: "&aSpawn&7: "
+        Players: "&bPlayers&7: "
+        Seed: "&fSeed: "
+      Hover: "&7Click here to teleport"
+      Usage:
+        Information: "Information about this world"
+        Join: "Join another world"
+        Create: "Create a new world"
+        Delete: "Delete a world"
+      Error:

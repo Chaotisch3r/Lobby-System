@@ -51,7 +51,6 @@ public class PlayerDataManager {
             if (resultSet.next()) {
                 playerCache.put(uuid, (playerData = new PlayerData(uuid, name, address,
                         resultSet.getString("rank"), Locale.forLanguageTag(resultSet.getString("locale")))));
-                System.out.println(playerCache.get(uuid));
             } else {
                 playerCache.put(uuid, (playerData = new PlayerData(uuid, name, address, "Player", Locale.ENGLISH)));
                 updateAsync(playerData);

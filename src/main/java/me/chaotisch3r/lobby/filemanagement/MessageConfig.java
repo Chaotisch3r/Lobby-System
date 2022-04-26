@@ -2,7 +2,7 @@ package me.chaotisch3r.lobby.filemanagement;
 
 import lombok.Getter;
 import me.chaotisch3r.lobby.Lobby;
-import me.chaotisch3r.lobby.util.Langauge;
+import me.chaotisch3r.lobby.util.Language;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -22,8 +22,6 @@ public class MessageConfig {
 
     private final File file;
     private YamlConfiguration config;
-
-    private final Langauge langauge = Lobby.getInstance().getLangauge();
 
     public MessageConfig() {
         this.file = new File("plugins", "messages.yml");

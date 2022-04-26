@@ -10,3 +10,5 @@ commands:
   language:
     description: This command contains to the Lobby-System
     aliases: [lang]
+  world:
+    description: This command contains to the Lobby-System
