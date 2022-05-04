@@ -2,8 +2,8 @@ package me.chaotisch3r.lobby.listener;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
-import me.chaotisch3r.lobby.LobbyData;
-import me.chaotisch3r.lobby.PlayerData;
+import me.chaotisch3r.lobby.data.LobbyData;
+import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.LobbyDataManager;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.util.CommandUtil;

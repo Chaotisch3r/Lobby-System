@@ -3,11 +3,10 @@ package me.chaotisch3r.lobby;
 import lombok.Getter;
 import me.chaotisch3r.lobby.command.BuildCommand;
 import me.chaotisch3r.lobby.command.LanguageCommand;
+import me.chaotisch3r.lobby.command.WarpCommand;
 import me.chaotisch3r.lobby.command.WorldCommand;
 import me.chaotisch3r.lobby.command.util.TabComplete;
-import me.chaotisch3r.lobby.database.LobbyDataManager;
-import me.chaotisch3r.lobby.database.MySQL;
-import me.chaotisch3r.lobby.database.PlayerDataManager;
+import me.chaotisch3r.lobby.database.*;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
 import me.chaotisch3r.lobby.listener.BlockListener;
 import me.chaotisch3r.lobby.listener.EntityListener;
@@ -16,7 +15,6 @@ import me.chaotisch3r.lobby.listener.ServerListener;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
 import me.chaotisch3r.lobby.util.Language;
-import me.chaotisch3r.lobby.database.WorldDataManager;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -45,6 +43,7 @@ public class Lobby extends JavaPlugin {
     private CommandUtil commandUtil;
     private ItemManager itemManager;
     private WorldDataManager worldDataManager;
+    private WarpDataManager warpDataManager;
     private PluginManager pluginManager;
 
     public static Lobby getInstance() {
@@ -86,6 +85,7 @@ public class Lobby extends JavaPlugin {
         getCommand("build").setExecutor(new BuildCommand(language, commandUtil));
         getCommand("language").setExecutor(new LanguageCommand(language, messageConfig));
         getCommand("world").setExecutor(new WorldCommand(language, worldDataManager));
+        getCommand("warp").setExecutor(new WarpCommand(language, warpDataManager));
     }
 
     private void registerTabComplete() {
@@ -104,6 +104,7 @@ public class Lobby extends JavaPlugin {
         this.commandUtil = new CommandUtil();
         this.itemManager = new ItemManager();
         this.worldDataManager = new WorldDataManager();
+        this.warpDataManager = new WarpDataManager();
     }
 
     private void registerDatabase() {
@@ -111,6 +112,7 @@ public class Lobby extends JavaPlugin {
         this.playerDataManager.registerPlayer();
         this.lobbyDataManager.registerLobby();
         this.worldDataManager.registerWorld();
+        this.warpDataManager.registerWarp();
     }
 
     private void setupWorld(Plugin plugin) {

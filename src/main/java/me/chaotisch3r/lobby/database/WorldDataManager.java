@@ -2,7 +2,7 @@ package me.chaotisch3r.lobby.database;
 
 import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
-import me.chaotisch3r.lobby.WorldData;
+import me.chaotisch3r.lobby.data.WorldData;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -73,9 +73,7 @@ public class WorldDataManager {
                         world.getSpawnLocation().getYaw(), world.getSpawnLocation().getPitch())));
                 updateAsync(worldData);
             }
-            if(!worldData.getUid().equals(world.getUID())) {
-                updateAsync(worldData);
-            }
+            if(!worldData.getUid().equals(world.getUID())) updateAsync(worldData);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
@@ -93,7 +91,7 @@ public class WorldDataManager {
     }
 
     public void removeWorld(World world) {
-        unloadWorld(world);
+        if(worldCache.containsKey(world.getUID())) unloadWorld(world);
         try (PreparedStatement ps = mySQL.getStatement("DELETE FROM world_data WHERE uid=?")) {
             ps.setString(1, world.getUID().toString());
             ps.executeUpdate();

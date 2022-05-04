@@ -49,7 +49,17 @@ de:
         Delete: "Löschte eine Welt"
       Error:
         WorldNotExisting: "&7Diese Welt wurde in unserem System nicht gefunden."
+        WorldAlreadyExisting: "&7Diese Welt ist unserem System schon bekannt."
         WorldAlreadJoined: "&7Du bist bereits in dieser Welt."
+    Warp:
+      Use: "&7Du hast dich zu&6 %WARP%&7 gewarp."
+      Set: "&7Du hast den Warp&6 %WARP%&7 gesetzt."
+      Remove: "&7Du hast den Warp&6 %WARP%&7 entfernt."
+      Update: "&7Du hast den Warp&6 %WARP%&7 geupdatetd."
+      Rename: "&7Der Warp&6 %OLD_WARP%&7 wurde zu&b %NEW_WARP%&7 umbenannt."
+      Error:
+        WarpNotExisting: "&7Dieser Warp wurde in unserem System nicht gefunden."
+        WarpAlreadyExisting: "&7Dieser Warp ist unserem System schon bekannt."
 en:
   Overall:
     JoinMessage: "&7The Player&b %PLAYER%&7 joined the server."
@@ -97,3 +107,15 @@ en:
         Create: "Create a new world"
         Delete: "Delete a world"
       Error:
+        WorldNotExisting: "&7This world is not know to our system."
+        WorldAlreadyExisting: "&7This world is already known to our system"
+        WorldAlreadJoined: "&7You are already on this world."
+    Warp:
+      Use: "&7You warp yourself to&6 %WARP%&7."
+      Set: "&7You have set the warp&6 %WARP%&7."
+      Remove: "&7You have removed the warp&6 %WAR%&7."
+      Update: "&7You have updated the warp&6 %WARP%."
+      Rename: "&7You have renamed the warp&6 %OLD_WARP%&7 to&b %NEW_WARP%&7."
+      Error:
+        WarpNotExisting: "&7This warp is not know to our system."
+        WarpAlreadyExisting: "&7This warp is already know to our system."

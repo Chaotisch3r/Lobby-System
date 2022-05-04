@@ -1,4 +1,4 @@
-package me.chaotisch3r.lobby;
+package me.chaotisch3r.lobby.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
