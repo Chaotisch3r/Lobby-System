@@ -25,16 +25,16 @@ import java.util.UUID;
 public class PlayerDataManager {
 
     private final MySQL mySQL = Lobby.getInstance().getMySQL();
-    private Map<UUID, PlayerData> playerCache = new HashMap<>();
+    private final Map<UUID, PlayerData> playerCache = new HashMap<>();
 
     public void registerPlayer() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
-            if(!mySQL.isConnected()) mySQL.connect();
+            if (!mySQL.isConnected()) mySQL.connect();
             try (PreparedStatement preparedStatement = mySQL.getStatement("CREATE TABLE IF NOT EXISTS player_data(" +
                     "`id` int NOT NULL AUTO_INCREMENT, `uuid` varchar(64) NOT NULL, `name` varchar(16) NOT NULL, `ipAddress` varchar(45) DEFAULT NULL," +
                     " `rank` varchar(32) NOT NULL DEFAULT 'Player', `locale` varchar(4) NOT NULL DEFAULT 'en', PRIMARY KEY (`id`), UNIQUE KEY `uuid_UNIQUE` (`uuid`))")) {
                 preparedStatement.executeUpdate();
-            }catch(SQLException ex) {
+            } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
         });

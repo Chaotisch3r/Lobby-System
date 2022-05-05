@@ -2,15 +2,13 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
-import me.chaotisch3r.lobby.util.Language;
 import me.chaotisch3r.lobby.database.WorldDataManager;
-import net.md_5.bungee.api.chat.BaseComponent;
+import me.chaotisch3r.lobby.util.Language;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
@@ -38,34 +36,32 @@ public class WorldCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!(sender instanceof Player player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "§7Du kannst diesen Befehl nur als Spieler ausführen.");
             return true;
         }
         uuid = player.getUniqueId();
-        if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.world"))) {
+        if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.world"))) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
             return true;
         }
-        if(args.length == 0) {
+        if (args.length == 0) {
             sendWorldInformation(player);
-        }
-        else if(args.length == 1) {
-            if(args[0].equalsIgnoreCase("information") || args[0].equalsIgnoreCase("info")) {
+        } else if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("information") || args[0].equalsIgnoreCase("info")) {
                 sendWorldInformation(player);
                 return true;
             }
             sendHelp(player);
-        }
-        else if(args.length == 2) {
+        } else if (args.length == 2) {
             String worldName = args[1];
-            if(args[0].equalsIgnoreCase("join")) {
-                if(Bukkit.getWorld(worldName) == null) {
+            if (args[0].equalsIgnoreCase("join")) {
+                if (Bukkit.getWorld(worldName) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldNotExisting"));
                     return true;
                 }
                 World world = Bukkit.getWorld(worldName);
-                if(player.getWorld() == world) {
+                if (player.getWorld() == world) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldAlreadyJoined"));
                     return true;
                 }
@@ -74,8 +70,8 @@ public class WorldCommand implements CommandExecutor {
                         .replace("%WORLD%", world.getName()));
                 return true;
             }
-            if(args[0].equalsIgnoreCase("create")) {
-                if(Bukkit.getWorld(worldName) != null) {
+            if (args[0].equalsIgnoreCase("create")) {
+                if (Bukkit.getWorld(worldName) != null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldAlreadyExisting"));
                     return true;
                 }
@@ -89,8 +85,8 @@ public class WorldCommand implements CommandExecutor {
                 player.spigot().sendMessage(component);
                 return true;
             }
-            if(args[0].equalsIgnoreCase("delete")) {
-                if(Bukkit.getWorld(worldName) == null) {
+            if (args[0].equalsIgnoreCase("delete")) {
+                if (Bukkit.getWorld(worldName) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldNotExisting"));
                     return true;
                 }
@@ -105,7 +101,7 @@ public class WorldCommand implements CommandExecutor {
                 return true;
             }
             sendHelp(player);
-        }else sendHelp(player);
+        } else sendHelp(player);
         return false;
     }
 
@@ -119,7 +115,7 @@ public class WorldCommand implements CommandExecutor {
                 + world.getSpawnLocation().getYaw() + " §6Pitch§7= " + world.getSpawnLocation().getPitch());
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(language.getColoredString(player.getUniqueId(), "Command.World.Hover"))));
         component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + player.getName() + " " + world.getSpawnLocation().getX()
-                + " " + world.getSpawnLocation().getY() + " "  + world.getSpawnLocation().getZ() + " " + world.getSpawnLocation().getYaw() + " "  + world.getSpawnLocation().getPitch() + " " ));
+                + " " + world.getSpawnLocation().getY() + " " + world.getSpawnLocation().getZ() + " " + world.getSpawnLocation().getYaw() + " " + world.getSpawnLocation().getPitch() + " "));
         player.spigot().sendMessage(component);
         player.sendMessage(language.getColoredString(player.getUniqueId(), "Command.World.Information.Players") + world.getPlayers().size());
         player.sendMessage(language.getColoredString(player.getUniqueId(), "Command.World.Information.Seed") + world.getSeed());

@@ -1,6 +1,5 @@
 package me.chaotisch3r.lobby.mysql;
 
-import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -19,6 +18,8 @@ import java.sql.SQLException;
 
 public class MySQL {
 
+    private final FileConfiguration configuration = Lobby.getInstance().getConfig();
+    private final String prefix = Lobby.getInstance().getPrefix();
     private Connection connection;
     private String host;
     private int port;
@@ -27,15 +28,12 @@ public class MySQL {
     private String password;
     private boolean useDafaultPort;
 
-    private final FileConfiguration configuration = Lobby.getInstance().getConfig();
-    private final String prefix = Lobby.getInstance().getPrefix();
-
     public boolean isConnected() {
         return connection != null;
     }
 
     public void connect() {
-        if(isConnected())
+        if (isConnected())
             return;
         String url = "jdbc:mysql://";
         String end_url = "?autoReconnect=true&useSSL=false";
@@ -45,7 +43,7 @@ public class MySQL {
         } else url = url + host + ":" + port + "/" + database + end_url;
         try {
             connection = DriverManager.getConnection(url, user, password);
-        }catch(SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
@@ -55,13 +53,13 @@ public class MySQL {
             return;
         try {
             connection.close();
-        }catch(SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println(prefix + "§cCouldn't close connection from Database: Reason='" + ex.getMessage() + "'");
         }
     }
 
     public PreparedStatement getStatement(String sql) {
-        if(!isConnected())
+        if (!isConnected())
             return null;
         PreparedStatement ps = null;
         try {

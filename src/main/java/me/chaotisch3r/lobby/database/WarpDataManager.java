@@ -11,7 +11,10 @@ import org.bukkit.World;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -24,10 +27,10 @@ import java.util.*;
 public class WarpDataManager {
 
     private final MySQL mySQL = Lobby.getInstance().getMySQL();
-    private Map<String, WarpData> warpCache = new HashMap<>();
+    private final Map<String, WarpData> warpCache = new HashMap<>();
 
     public void registerWarp() {
-        if(mySQL.isConnected())
+        if (mySQL.isConnected())
             mySQL.connect();
         try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS warp_data(" +
                 "`id` INT NOT NULL AUTO_INCREMENT, `warpName` VARCHAR(32) NOT NULL, `worldUID` VARCHAR(32) NOT NULL, " +
@@ -41,7 +44,7 @@ public class WarpDataManager {
 
     @SneakyThrows
     public void loadWarp(String warpName, World world, double x, double y, double z, float yaw, float pitch) {
-        if(!mySQL.isConnected()) mySQL.connect();
+        if (!mySQL.isConnected()) mySQL.connect();
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM warp_data WHERE warpName=?");
         ResultSet rs = null;
         try {
@@ -49,20 +52,19 @@ public class WarpDataManager {
             rs = ps.executeQuery();
 
             WarpData warpData;
-            if(rs.next()) {
+            if (rs.next()) {
                 warpCache.put(warpName, (warpData = new WarpData(warpName, UUID.fromString(rs.getString("worldName")),
                         rs.getDouble("x"), rs.getDouble("y"), rs.getDouble("z"),
                         rs.getFloat("yaw"), rs.getFloat("pitch"))));
-            }
-            else {
+            } else {
                 warpCache.put(warpName, (warpData = new WarpData(warpName, world.getUID(), x, y, z, yaw, pitch)));
                 updateAsync(warpData);
             }
-            if(!warpData.getWarpName().equals(warpName)) updateAsync(warpData);
+            if (!warpData.getWarpName().equals(warpName)) updateAsync(warpData);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
-            if(rs != null) rs.close();
+        } finally {
+            if (rs != null) rs.close();
             ps.close();
         }
     }
@@ -72,7 +74,7 @@ public class WarpDataManager {
     }
 
     public void removeWarp(String warpName) {
-        if(warpCache.containsKey(warpName)) unloadWarp(warpName);
+        if (warpCache.containsKey(warpName)) unloadWarp(warpName);
         try (PreparedStatement ps = mySQL.getStatement("DELETE FROM warp_Data WHERE warpName=?")) {
             ps.setString(1, warpName);
             ps.executeUpdate();
@@ -114,7 +116,7 @@ public class WarpDataManager {
     }
 
     public void renameWarp(String oldWarpName, String newWarpName) {
-        if(!warpCache.containsKey(oldWarpName)) return;
+        if (!warpCache.containsKey(oldWarpName)) return;
         WarpData oldWarpData = warpCache.get(oldWarpName);
         Location location = new Location(Bukkit.getWorld(oldWarpData.getWorldUID()), oldWarpData.getX(), oldWarpData.getY(),
                 oldWarpData.getZ(), oldWarpData.getYaw(), oldWarpData.getPitch());

@@ -30,7 +30,7 @@ public class ItemManager {
         file = new File(Lobby.getInstance().getDataFolder(), "items.yml");
         config = YamlConfiguration.loadConfiguration(file);
         config.options().copyDefaults(true);
-        if(!file.exists()) {
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -52,7 +52,7 @@ public class ItemManager {
 
     public ItemStack getItem(String path) {
         gson = new GsonBuilder().setPrettyPrinting().create();
-        if(config.get(path) == null) return null;
+        if (config.get(path) == null) return null;
         return null;
     }
 

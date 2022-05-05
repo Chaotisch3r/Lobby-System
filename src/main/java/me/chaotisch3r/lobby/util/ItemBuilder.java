@@ -26,10 +26,10 @@ import java.util.List;
 public class ItemBuilder {
 
     private final ItemStack itemStack;
+    private final ArrayList<String> itemLore = new ArrayList<>();
     private ItemMeta itemMeta;
     private SkullMeta skullMeta;
     private Inventory inventory;
-    private final ArrayList<String> itemLore = new ArrayList<>();
 
     public ItemBuilder(Material material) {
         this.itemStack = new ItemStack(material);

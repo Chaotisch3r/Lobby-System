@@ -6,7 +6,10 @@ import me.chaotisch3r.lobby.command.LanguageCommand;
 import me.chaotisch3r.lobby.command.WarpCommand;
 import me.chaotisch3r.lobby.command.WorldCommand;
 import me.chaotisch3r.lobby.command.util.TabComplete;
-import me.chaotisch3r.lobby.database.*;
+import me.chaotisch3r.lobby.database.LobbyDataManager;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
+import me.chaotisch3r.lobby.database.WarpDataManager;
+import me.chaotisch3r.lobby.database.WorldDataManager;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
 import me.chaotisch3r.lobby.listener.BlockListener;
 import me.chaotisch3r.lobby.listener.EntityListener;
@@ -68,10 +71,8 @@ public class Lobby extends JavaPlugin {
     @Override
     public void onDisable() {
         instance = null;
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            player.kickPlayer(language.getColoredString(player.getUniqueId(), "Overall.KickMessage.1")
-                    + "\n" + language.getColoredString(player.getUniqueId(), "Overall.KickMessage.2"));
-        });
+        Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer(language.getColoredString(player.getUniqueId(), "Overall.KickMessage.1")
+                + "\n" + language.getColoredString(player.getUniqueId(), "Overall.KickMessage.2")));
         this.mySQL.disconnect();
     }
 
@@ -119,7 +120,7 @@ public class Lobby extends JavaPlugin {
 
     private void setupWorld(Plugin plugin) {
         World world = Bukkit.getWorld(this.getConfig().getString("World"));
-        if(world == null)
+        if (world == null)
             return;
         for (Entity e : world.getEntities()) {
             for (String str : this.getConfig().getStringList("RemovedEntity")) {
@@ -134,7 +135,7 @@ public class Lobby extends JavaPlugin {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             this.worldDataManager.loadWorld(Bukkit.getWorlds());
             this.worldDataManager.getWorlds().forEach(worldData -> {
-                if(Bukkit.getWorld(worldData.getUid()) == null) {
+                if (Bukkit.getWorld(worldData.getUid()) == null) {
                     new WorldCreator(worldData.getWorldName());
                 }
             });

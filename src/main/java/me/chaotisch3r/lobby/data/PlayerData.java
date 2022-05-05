@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
-
+ * <p>
  * If there are any problems with the class, please contact Chaotisch3r.
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential

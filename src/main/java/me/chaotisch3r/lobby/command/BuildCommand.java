@@ -28,15 +28,15 @@ public class BuildCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if(!(sender instanceof Player player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "Dieses Feature ist nur als Spieler möglich.");
             return true;
         }
-        if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.build"))) {
+        if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.build"))) {
             player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
             return true;
         }
-        if(args.length == 0) {
+        if (args.length == 0) {
             player.setGameMode(commandUtil.build.contains(player) ? GameMode.SURVIVAL : GameMode.CREATIVE);
             if (player.getGameMode() == GameMode.CREATIVE) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Add").replace("%PLAYER%", player.getName()));
@@ -46,9 +46,8 @@ public class BuildCommand implements CommandExecutor {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Remove").replace("%PLAYER%", player.getName()));
                 commandUtil.build.remove(player);
             }
-        }
-        else if(args.length == 1) {
-            if(args[0].equalsIgnoreCase("help")) {
+        } else if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("help")) {
                 sendHelp(player);
                 return true;
             }
@@ -69,7 +68,7 @@ public class BuildCommand implements CommandExecutor {
                 target.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Remove").replace("%PLAYER%", target.getName()));
                 commandUtil.build.remove(target);
             }
-        }else {
+        } else {
             sendHelp(player);
         }
         return false;

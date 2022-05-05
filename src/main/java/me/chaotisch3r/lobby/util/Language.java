@@ -1,9 +1,9 @@
 package me.chaotisch3r.lobby.util;
 
 import me.chaotisch3r.lobby.data.PlayerData;
-import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
+import me.chaotisch3r.lobby.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -49,7 +49,7 @@ public class Language {
     }
 
     public Locale getLanguage(UUID uuid) {
-        if(!mySQL.isConnected()) {
+        if (!mySQL.isConnected()) {
             mySQL.connect();
         }
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM player_data WHERE uuid=?");
@@ -57,11 +57,11 @@ public class Language {
         try {
             ps.setString(1, uuid.toString());
             rs = ps.executeQuery();
-            if(!rs.next()) {
+            if (!rs.next()) {
                 return Locale.ENGLISH;
             }
             return Locale.forLanguageTag(rs.getString("locale"));
-        }catch(SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return null;
         }
@@ -89,13 +89,13 @@ public class Language {
 
     private List<Locale> getlanguages() {
         List<Locale> locales = new ArrayList<>();
-        if(!mySQL.isConnected()) {
+        if (!mySQL.isConnected()) {
             mySQL.connect();
         }
         try (PreparedStatement ps = mySQL.getStatement("SELECT locale FROM player_data"); ResultSet rs = ps.executeQuery()) {
-            while(rs.next())
+            while (rs.next())
                 locales.add(Locale.forLanguageTag(rs.getString("locale")));
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return locales;
@@ -104,7 +104,6 @@ public class Language {
     public List<Locale> getLocales() {
         return locales;
     }
-
 
 
 }

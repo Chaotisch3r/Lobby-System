@@ -2,7 +2,6 @@ package me.chaotisch3r.lobby.filemanagement;
 
 import lombok.Getter;
 import me.chaotisch3r.lobby.Lobby;
-import me.chaotisch3r.lobby.util.Language;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

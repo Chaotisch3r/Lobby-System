@@ -25,7 +25,7 @@ import java.util.UUID;
 public class LobbyDataManager {
 
     private final MySQL mySQL = Lobby.getInstance().getMySQL();
-    private Map<UUID, LobbyData> lobbyCache = new HashMap<>();
+    private final Map<UUID, LobbyData> lobbyCache = new HashMap<>();
 
     public void registerLobby() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
@@ -35,7 +35,7 @@ public class LobbyDataManager {
                     " `respawnType` enum('SPAWN','LOGOUT') NOT NULL DEFAULT 'SPAWN', `playtime` int NOT NULL DEFAULT '0',PRIMARY KEY (`id`)," +
                     " UNIQUE KEY `uuid_UNIQUE` (`uuid`))")) {
                 ps.executeUpdate();
-            }catch (SQLException ex) {
+            } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
         });
@@ -43,7 +43,7 @@ public class LobbyDataManager {
 
     @SneakyThrows
     public void loadLobby(UUID uuid) {
-        if(!mySQL.isConnected())
+        if (!mySQL.isConnected())
             mySQL.connect();
         PreparedStatement preparedStatement = mySQL.getStatement("SELECT * FROM lobby_data WHERE uuid=?");
         ResultSet resultSet = null;
@@ -52,20 +52,20 @@ public class LobbyDataManager {
             resultSet = preparedStatement.executeQuery();
 
             LobbyData lobbyData;
-            if(resultSet.next()) {
+            if (resultSet.next()) {
                 lobbyCache.put(uuid, (lobbyData = new LobbyData(uuid, resultSet.getString("lastConnected"), DyeColor.valueOf(resultSet.getString("color")),
                         resultSet.getString("respawnType").equals("SPAWN"), resultSet.getLong("playtime"), System.currentTimeMillis())));
-            }else {
+            } else {
                 lobbyCache.put(uuid, (lobbyData = new LobbyData(uuid, "LOBBY", DyeColor.LIME,
                         true, 0, System.currentTimeMillis())));
                 updateAsync(lobbyData);
             }
             if (lobbyData.getPlaytime() != 0)
                 updateAsync(lobbyData);
-        }catch(SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
-        }finally {
-            if(resultSet != null)
+        } finally {
+            if (resultSet != null)
                 resultSet.close();
             preparedStatement.close();
         }

@@ -36,13 +36,13 @@ public class PlayerListener implements Listener {
     private final String prefix = Lobby.getInstance().getPrefix();
     private final CommandUtil commandUtil;
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void handle(AsyncPlayerPreLoginEvent event) {
         playerDataManager.loadPlayer(event.getUniqueId(), event.getName(), event.getAddress().getHostAddress());
         language.loadLocale(event.getUniqueId());
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void handle(PlayerQuitEvent event) {
         PlayerData playerData = playerDataManager.getPlayer(event.getPlayer().getUniqueId());
         playerDataManager.unloadPlayer(playerData.getUuid());
@@ -53,7 +53,7 @@ public class PlayerListener implements Listener {
         language.unloadLocale(event.getPlayer().getUniqueId());
     }
 
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         lobbyDataManager.loadLobby(player.getUniqueId());
@@ -63,7 +63,7 @@ public class PlayerListener implements Listener {
         player.setFoodLevel(20);
     }
 
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         event.setQuitMessage(config.getBoolean("JoinMessage") ? prefix + language.getColoredString(player.getUniqueId(), "Overall.QuitMessage")

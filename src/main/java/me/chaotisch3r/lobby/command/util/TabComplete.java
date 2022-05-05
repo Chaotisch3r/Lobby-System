@@ -29,56 +29,53 @@ public class TabComplete implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> tabComplete = new ArrayList<>();
-        if(!(sender instanceof Player player)) return tabComplete;
+        if (!(sender instanceof Player player)) return tabComplete;
         Bukkit.getOnlinePlayers().forEach(players -> tabComplete.remove(player.getName()));
-        if(command.getName().equalsIgnoreCase("build")) {
-            if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.build")))
+        if (command.getName().equalsIgnoreCase("build")) {
+            if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.build")))
                 return tabComplete;
-            if(args.length == 1) {
+            if (args.length == 1) {
                 tabComplete.add("help");
                 Bukkit.getOnlinePlayers().forEach(players -> tabComplete.add(players.getName()));
             }
         }
-        if(command.getName().equalsIgnoreCase("language") || command.getName().equalsIgnoreCase("lang")) {
-            if(args.length == 1) {
-                if(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.language"))
+        if (command.getName().equalsIgnoreCase("language") || command.getName().equalsIgnoreCase("lang")) {
+            if (args.length == 1) {
+                if (player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.language"))
                     tabComplete.add("reload");
                 tabComplete.add("help");
                 tabComplete.add("change");
                 tabComplete.add("list");
                 Bukkit.getOnlinePlayers().forEach(players -> tabComplete.add(players.getName()));
-            }
-            else if (args.length == 2) {
-                if(!args[0].equalsIgnoreCase("change")) return tabComplete;
+            } else if (args.length == 2) {
+                if (!args[0].equalsIgnoreCase("change")) return tabComplete;
                 tabComplete.add("de");
                 tabComplete.add("en");
             }
         }
-        if(command.getName().equalsIgnoreCase("world")) {
-            if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.world")))
+        if (command.getName().equalsIgnoreCase("world")) {
+            if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.world")))
                 return tabComplete;
-            if(args.length == 1) {
+            if (args.length == 1) {
                 tabComplete.add("information");
                 tabComplete.add("join");
                 tabComplete.add("create");
                 tabComplete.add("delete");
-            }
-            else if(args.length == 2) {
-                if(args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("delete")) {
+            } else if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("delete")) {
                     worldDataManager.getWorlds().forEach(worldData -> tabComplete.add(worldData.getWorldName()));
                 }
             }
         }
-        if(command.getName().equalsIgnoreCase("warp")) {
-            if(args.length == 1) {
+        if (command.getName().equalsIgnoreCase("warp")) {
+            if (args.length == 1) {
                 tabComplete.add("list");
                 warpDataManager.getWarps().forEach(warpData -> tabComplete.add(warpData.getWarpName()));
-            }
-            else if(args.length == 2) {
-                if(args[0].equalsIgnoreCase("remove")) {
+            } else if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("remove")) {
                     warpDataManager.getWarps().forEach(warpData -> tabComplete.add(warpData.getWarpName()));
                 }
-                if(args[0].equalsIgnoreCase("rename")) {
+                if (args[0].equalsIgnoreCase("rename")) {
                     warpDataManager.getWarps().forEach(warpData -> tabComplete.add(warpData.getWarpName()));
                 }
             }
