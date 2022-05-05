@@ -12,6 +12,7 @@ import me.chaotisch3r.lobby.listener.BlockListener;
 import me.chaotisch3r.lobby.listener.EntityListener;
 import me.chaotisch3r.lobby.listener.PlayerListener;
 import me.chaotisch3r.lobby.listener.ServerListener;
+import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
 import me.chaotisch3r.lobby.util.Language;
@@ -89,9 +90,10 @@ public class Lobby extends JavaPlugin {
     }
 
     private void registerTabComplete() {
-        getCommand("build").setTabCompleter(new TabComplete(worldDataManager));
-        getCommand("language").setTabCompleter(new TabComplete(worldDataManager));
-        getCommand("world").setTabCompleter(new TabComplete(worldDataManager));
+        getCommand("build").setTabCompleter(new TabComplete(worldDataManager, warpDataManager));
+        getCommand("language").setTabCompleter(new TabComplete(worldDataManager, warpDataManager));
+        getCommand("world").setTabCompleter(new TabComplete(worldDataManager, warpDataManager));
+        getCommand("warp").setTabCompleter(new TabComplete(worldDataManager, warpDataManager));
     }
 
     private void registerClasses() {

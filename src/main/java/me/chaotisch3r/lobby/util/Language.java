@@ -1,7 +1,7 @@
 package me.chaotisch3r.lobby.util;
 
 import me.chaotisch3r.lobby.data.PlayerData;
-import me.chaotisch3r.lobby.database.MySQL;
+import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
 import org.bukkit.Bukkit;

@@ -1,6 +1,7 @@
 package me.chaotisch3r.lobby.command.util;
 
 import lombok.RequiredArgsConstructor;
+import me.chaotisch3r.lobby.database.WarpDataManager;
 import me.chaotisch3r.lobby.database.WorldDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -23,6 +24,7 @@ import java.util.List;
 public class TabComplete implements TabCompleter {
 
     private final WorldDataManager worldDataManager;
+    private final WarpDataManager warpDataManager;
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
@@ -64,6 +66,20 @@ public class TabComplete implements TabCompleter {
             else if(args.length == 2) {
                 if(args[0].equalsIgnoreCase("join") || args[0].equalsIgnoreCase("delete")) {
                     worldDataManager.getWorlds().forEach(worldData -> tabComplete.add(worldData.getWorldName()));
+                }
+            }
+        }
+        if(command.getName().equalsIgnoreCase("warp")) {
+            if(args.length == 1) {
+                tabComplete.add("list");
+                warpDataManager.getWarps().forEach(warpData -> tabComplete.add(warpData.getWarpName()));
+            }
+            else if(args.length == 2) {
+                if(args[0].equalsIgnoreCase("remove")) {
+                    warpDataManager.getWarps().forEach(warpData -> tabComplete.add(warpData.getWarpName()));
+                }
+                if(args[0].equalsIgnoreCase("rename")) {
+                    warpDataManager.getWarps().forEach(warpData -> tabComplete.add(warpData.getWarpName()));
                 }
             }
         }

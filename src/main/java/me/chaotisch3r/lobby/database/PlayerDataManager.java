@@ -3,6 +3,7 @@ package me.chaotisch3r.lobby.database;
 import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.PlayerData;
+import me.chaotisch3r.lobby.mysql.MySQL;
 import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;

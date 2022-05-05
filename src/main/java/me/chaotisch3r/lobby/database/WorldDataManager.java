@@ -3,6 +3,7 @@ package me.chaotisch3r.lobby.database;
 import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.WorldData;
+import me.chaotisch3r.lobby.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -54,7 +55,7 @@ public class WorldDataManager {
     }
 
     @SneakyThrows
-    private void ldWorld(World world) {
+    private void worldLoading(World world) {
         if(!mySQL.isConnected()) mySQL.connect();
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM world_data WHERE uid=?");
         ResultSet rs = null;
@@ -83,7 +84,7 @@ public class WorldDataManager {
     }
 
     public void loadWorld(World world) {
-        ldWorld(world);
+        worldLoading(world);
     }
 
     public void loadWorld(List<World> worlds) {

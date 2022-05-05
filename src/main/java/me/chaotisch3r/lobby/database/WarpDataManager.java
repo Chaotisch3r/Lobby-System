@@ -3,18 +3,15 @@ package me.chaotisch3r.lobby.database;
 import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.WarpData;
-import me.chaotisch3r.lobby.data.WorldData;
+import me.chaotisch3r.lobby.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import javax.naming.ldap.LdapName;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -70,6 +67,10 @@ public class WarpDataManager {
         }
     }
 
+    public void loadWarp(String warpName, Location location) {
+        loadWarp(warpName, location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+    }
+
     public void removeWarp(String warpName) {
         if(warpCache.containsKey(warpName)) unloadWarp(warpName);
         try (PreparedStatement ps = mySQL.getStatement("DELETE FROM warp_Data WHERE warpName=?")) {
@@ -123,6 +124,10 @@ public class WarpDataManager {
 
     public WarpData getWarp(String warpName) {
         return warpCache.get(warpName);
+    }
+
+    public List<WarpData> getWarps() {
+        return warpCache.values().stream().toList();
     }
 
 }

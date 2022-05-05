@@ -30,7 +30,6 @@ public class ItemManager {
         file = new File(Lobby.getInstance().getDataFolder(), "items.yml");
         config = YamlConfiguration.loadConfiguration(file);
         config.options().copyDefaults(true);
-        gson = new GsonBuilder().setPrettyPrinting().create();
         if(!file.exists()) {
             try {
                 file.createNewFile();
@@ -38,11 +37,12 @@ public class ItemManager {
                 throw new RuntimeException(e);
             }
         }
-        // addItems();
+        addItems();
         saveConfig();
     }
 
     public void addItems() {
+        gson = new GsonBuilder().setPrettyPrinting().create();
         ItemStack is1 = new ItemBuilder(Material.COMPASS)
                 .setDisplayName("§7Compass")
                 .get();
@@ -51,6 +51,7 @@ public class ItemManager {
     }
 
     public ItemStack getItem(String path) {
+        gson = new GsonBuilder().setPrettyPrinting().create();
         if(config.get(path) == null) return null;
         return null;
     }

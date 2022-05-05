@@ -1,4 +1,4 @@
-package me.chaotisch3r.lobby.database;
+package me.chaotisch3r.lobby.mysql;
 
 import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
