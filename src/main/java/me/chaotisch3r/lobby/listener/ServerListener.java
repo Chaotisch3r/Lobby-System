@@ -18,7 +18,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class ServerListener implements Listener {
 
-    FileConfiguration config = Lobby.getInstance().getConfig();
+    final FileConfiguration config = Lobby.getInstance().getConfig();
 
     @EventHandler
     public void onServerListPingEvent(ServerListPingEvent event) {

@@ -22,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CommandUtil {
 
-    public List<Player> build = new ArrayList<>();
+    public final List<Player> build = new ArrayList<>();
     private final String prefix = Lobby.getInstance().getPrefix();
     private final Language language;
     private UUID uuid;
