@@ -5,10 +5,20 @@ author: Chaotisch3r
 api-version: 1.13
 commands:
   build:
-    description: This command contains to the Lobby-System
-    permissions: [lobby.*, lobby.build]
+    description: This command contains to the Lobby-System.
+    permissions: [ lobby.*, lobby.build ]
   language:
-    description: This command contains to the Lobby-System
-    aliases: [lang]
+    description: This command contains to the Lobby-System.
+    aliases: [ lang ]
   world:
-    description: This command contains to the Lobby-System
+    description: This command contains to the Lobby-System.
+    permissions: [ lobby.*, lobby.world ]
+  warp:
+    description: This command contains to the Lobby-System.
+    permissions: [ lobby.*, lobby.warp ]
+  lobby:
+    description: This command contains to the Lobby-System.
+    permissions: [ lobby.*, lobby.setup ]
+  ping:
+    description: This command contains to the Lobby-System.
+    permissions: [ lobby.*, lobby.ping ]

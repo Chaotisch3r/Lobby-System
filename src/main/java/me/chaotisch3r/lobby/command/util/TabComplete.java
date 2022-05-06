@@ -80,6 +80,23 @@ public class TabComplete implements TabCompleter {
                 }
             }
         }
+        if (command.getName().equalsIgnoreCase("lobby")) {
+            if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.setup")))
+                return tabComplete;
+            if(args.length == 1) {
+                tabComplete.add("setup");
+            }
+            else if(args.length == 2) {
+                tabComplete.add("setlobby");
+            }
+        }
+        if (command.getName().equalsIgnoreCase("ping")) {
+            if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.setup")))
+                return tabComplete;
+            if(args.length == 1) {
+                Bukkit.getOnlinePlayers().forEach(players -> tabComplete.add(players.getName()));
+            }
+        }
         return tabComplete;
     }
 }

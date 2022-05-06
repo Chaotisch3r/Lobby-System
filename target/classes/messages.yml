@@ -12,6 +12,11 @@ de:
     Overall:
       NoPermission: "&7Du hast keine Rechte für diesen Befehl."
       UknownPlayer: "&b%TARGET%&7 ist unserem System nicht bekannt."
+    Ping:
+      Use: "&b%PLAYER%&7's Ping lautet&6 %PING%ms&7."
+      Usage:
+        Own: "Zeige deinen Ping"
+        Another: "Zeige den von von jemand anderen"
     Build:
       Add: "&b%PLAYER%&7 wurde in den Baumodu gesetzt."
       Remove: "&b%PLAYER%&7 wurde vom Baumodus entfernt."
@@ -57,6 +62,13 @@ de:
       Remove: "&7Du hast den Warp&6 %WARP%&7 entfernt."
       Update: "&7Du hast den Warp&6 %WARP%&7 geupdatetd."
       Rename: "&7Der Warp&6 %OLD_WARP%&7 wurde zu&b %NEW_WARP%&7 umbenannt."
+      Usage:
+        List: "&7Listet alle Warps"
+        Warp: "&7Teleportier dich zum Warp"
+        Set: "&7Setzt ein Warp"
+        Remove: "&7Entferent ein Warp"
+        Update: "&7Updated die Location von einem Warp zu deine Location"
+        Rename: "&7Nenne ein Warp um"
       Error:
         WarpNotExisting: "&7Dieser Warp wurde in unserem System nicht gefunden."
         WarpAlreadyExisting: "&7Dieser Warp ist unserem System schon bekannt."
@@ -71,6 +83,11 @@ en:
     Overall:
       NoPermission: "&7You do not have the permission to use this command."
       UknownPlayer: "&b%TARGET%&7 is not know to our system."
+    Ping:
+      Use: "&b%PLAYER%&7's ping is&6 %PING%ms&7."
+      Usage:
+        Own: "&7Show your ping"
+        Another: "&7Show anothers ping"
     Build:
       Add: "&b%PLAYER%&7 was set into build mode."
       Remove: "&b%PLAYER%&7 was removed from build mode."
@@ -116,6 +133,13 @@ en:
       Remove: "&7You have removed the warp&6 %WAR%&7."
       Update: "&7You have updated the warp&6 %WARP%."
       Rename: "&7You have renamed the warp&6 %OLD_WARP%&7 to&b %NEW_WARP%&7."
+      Usage:
+        List: "&7Lists you all warps"
+        Warp: "&7Teleports you to a warp"
+        Set: "&7Set a warp"
+        Remove: "&7Remove a warp"
+        Update: "&7Sets a warps location to your current location"
+        Rename: "&7Rename a warp"
       Error:
         WarpNotExisting: "&7This warp is not know to our system."
         WarpAlreadyExisting: "&7This warp is already know to our system."

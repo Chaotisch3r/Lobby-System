@@ -32,7 +32,6 @@ public class WorldCommand implements CommandExecutor {
     private final String prefix = Lobby.getInstance().getPrefix();
     private final Language language;
     private final WorldDataManager worldDataManager;
-    private UUID uuid;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -40,7 +39,7 @@ public class WorldCommand implements CommandExecutor {
             sender.sendMessage(prefix + "§7Du kannst diesen Befehl nur als Spieler ausführen.");
             return true;
         }
-        uuid = player.getUniqueId();
+        UUID uuid = player.getUniqueId();
         if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.world"))) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
             return true;
@@ -122,13 +121,7 @@ public class WorldCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player) {
-        player.sendMessage(prefix + "§7----------[§6 World§7-§6Help§7]----------");
-        player.sendMessage("§6/world§7 - " + language.getColoredString(uuid, "Command.World.Usage.Information"));
-        player.sendMessage("§6/world information§7 - " + language.getColoredString(uuid, "Command.World.Usage.Information"));
-        player.sendMessage("§6/world join§7 <§bworldname§7> - " + language.getColoredString(uuid, "Command.World.Usage.Join"));
-        player.sendMessage("§6/world create§7 <§bname§7> - " + language.getColoredString(uuid, "Command.World.Usage.Create"));
-        player.sendMessage("§6/world delete§7 <§bworldname§7> - " + language.getColoredString(uuid, "Command.World.Usage.Delete"));
-        player.sendMessage(prefix + "§7----------[§6 World§7-§6Help§7]----------");
+        Lobby.getInstance().getCommandUtil().sendWorldHelp(player);
     }
 
 }

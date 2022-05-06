@@ -128,6 +128,13 @@ public class WarpDataManager {
         return warpCache.get(warpName);
     }
 
+    public Location getWarpLocation(String warpName) {
+        if(!warpCache.containsKey(warpName)) return null;
+        WarpData warpData = warpCache.get(warpName);
+        return new Location(Bukkit.getWorld(warpData.getWorldUID()), warpData.getX(), warpData.getY(), warpData.getZ(),
+                warpData.getYaw(), warpData.getPitch());
+    }
+
     public List<WarpData> getWarps() {
         return warpCache.values().stream().toList();
     }

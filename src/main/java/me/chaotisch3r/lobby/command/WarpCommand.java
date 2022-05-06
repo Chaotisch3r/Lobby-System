@@ -26,7 +26,6 @@ public class WarpCommand implements CommandExecutor {
     private final String prefix = Lobby.getInstance().getPrefix();
     private final Language language;
     private final WarpDataManager warpDataManager;
-    private UUID uuid;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -34,7 +33,7 @@ public class WarpCommand implements CommandExecutor {
             sender.sendMessage(prefix + "§7This won't work, until you are a Player.");
             return true;
         }
-        uuid = player.getUniqueId();
+        UUID uuid = player.getUniqueId();
         Location location = player.getLocation();
         if (args.length == 0) {
             sendHelp(player);
@@ -110,21 +109,7 @@ public class WarpCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player) {
-        if (!(player.isOp() || player.hasPermission("lobbyq.*") || player.hasPermission("lobby.warp"))) {
-            player.sendMessage(prefix + "§7----------[§6 Warp§7-§6Help§7]----------");
-            player.sendMessage("-§6 /warp list§7 - " + language.getColoredString(uuid, "Command.Warp.Usage.List"));
-            player.sendMessage("-§6 /warp§7 <§bwarpname§7> - " + language.getColoredString(uuid, "Command.Warp.Usage.Warp"));
-            player.sendMessage(prefix + "§7----------[§6 Warp§7-§6Help§7]----------");
-            return;
-        }
-        player.sendMessage(prefix + "§7----------[§6 Warp§7-§6Help§7]----------");
-        player.sendMessage("-§6 /warp list§7 - " + language.getColoredString(uuid, "Command.Warp.Usage.List"));
-        player.sendMessage("-§6 /warp§7 <§bwarpname§7> - " + language.getColoredString(uuid, "Command.Warp.Usage.Warp"));
-        player.sendMessage("-§6 /warp set§7 <§bwarpname§7> - " + language.getColoredString(uuid, "Command.Warp.Usage.Set"));
-        player.sendMessage("-§6 /warp remove§7 <§bwarpname§7> - " + language.getColoredString(uuid, "Command.Warp.Usage.Remove"));
-        player.sendMessage("-§6 /warp update§7 <§bwarpname§7> - " + language.getColoredString(uuid, "Command.Warp.Usage.Update"));
-        player.sendMessage("-§6 /warp rename§7 <§5oldwarpname§7> <§bnewwarpname§7> - " + language.getColoredString(uuid, "Command.Warp.Usage.Rename"));
-        player.sendMessage(prefix + "§7----------[§6 Warp§7-§6Help§7]----------");
+        Lobby.getInstance().getCommandUtil().sendWarpHelp(player);
     }
 
 }

@@ -12,6 +12,11 @@ de:
     Overall:
       NoPermission: "&7Du hast keine Rechte für diesen Befehl."
       UknownPlayer: "&b%TARGET%&7 ist unserem System nicht bekannt."
+    Ping:
+      Use: "&b%PLAYER%&7's Ping lautet&6 %PING%ms&7."
+      Usage:
+        Own: "Zeige deinen Ping"
+        Another: "Zeige den von von jemand anderen"
     Build:
       Add: "&b%PLAYER%&7 wurde in den Baumodu gesetzt."
       Remove: "&b%PLAYER%&7 wurde vom Baumodus entfernt."
@@ -78,6 +83,11 @@ en:
     Overall:
       NoPermission: "&7You do not have the permission to use this command."
       UknownPlayer: "&b%TARGET%&7 is not know to our system."
+    Ping:
+      Use: "&b%PLAYER%&7's ping is&6 %PING%ms&7."
+      Usage:
+        Own: "&7Show your ping"
+        Another: "&7Show anothers ping"
     Build:
       Add: "&b%PLAYER%&7 was set into build mode."
       Remove: "&b%PLAYER%&7 was removed from build mode."

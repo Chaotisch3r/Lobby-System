@@ -1,10 +1,7 @@
 package me.chaotisch3r.lobby;
 
 import lombok.Getter;
-import me.chaotisch3r.lobby.command.BuildCommand;
-import me.chaotisch3r.lobby.command.LanguageCommand;
-import me.chaotisch3r.lobby.command.WarpCommand;
-import me.chaotisch3r.lobby.command.WorldCommand;
+import me.chaotisch3r.lobby.command.*;
 import me.chaotisch3r.lobby.command.util.TabComplete;
 import me.chaotisch3r.lobby.database.LobbyDataManager;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
@@ -26,6 +23,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
  * If there are any problems with the class, please contact Chaotisch3r.
@@ -33,6 +33,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Proprietary and confidential
  * Created for Lobby-System, 11:13 - 20.04.2022
  **/
+
+/*
+    TODO:
+     - Warp List Inv
+     - World List chnagen zum Inv -> Overwold: Grass; Nether: Netherrack; End: End Stone
+ */
 
 @Getter
 public class Lobby extends JavaPlugin {
@@ -88,13 +94,19 @@ public class Lobby extends JavaPlugin {
         getCommand("language").setExecutor(new LanguageCommand(language, messageConfig));
         getCommand("world").setExecutor(new WorldCommand(language, worldDataManager));
         getCommand("warp").setExecutor(new WarpCommand(language, warpDataManager));
+        getCommand("lobby").setExecutor(new LobbyCommand(language, warpDataManager));
+        getCommand("ping").setExecutor(new PingCommand(language));
     }
 
     private void registerTabComplete() {
-        getCommand("build").setTabCompleter(new TabComplete(worldDataManager, warpDataManager));
-        getCommand("language").setTabCompleter(new TabComplete(worldDataManager, warpDataManager));
-        getCommand("world").setTabCompleter(new TabComplete(worldDataManager, warpDataManager));
-        getCommand("warp").setTabCompleter(new TabComplete(worldDataManager, warpDataManager));
+        List<String> commands = new ArrayList<>();
+        commands.add("build");
+        commands.add("language");
+        commands.add("lobby");
+        commands.add("ping");
+        commands.add("warp");
+        commands.add("world");
+        commands.forEach(cmd -> getCommand(cmd).setTabCompleter(new TabComplete(worldDataManager, warpDataManager)));
     }
 
     private void registerClasses() {
@@ -104,7 +116,7 @@ public class Lobby extends JavaPlugin {
         this.pluginManager = Bukkit.getPluginManager();
         this.messageConfig = new MessageConfig();
         this.language = new Language();
-        this.commandUtil = new CommandUtil();
+        this.commandUtil = new CommandUtil(language);
         this.itemManager = new ItemManager();
         this.worldDataManager = new WorldDataManager();
         this.warpDataManager = new WarpDataManager();

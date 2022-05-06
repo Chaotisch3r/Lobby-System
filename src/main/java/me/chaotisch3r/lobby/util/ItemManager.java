@@ -37,7 +37,7 @@ public class ItemManager {
                 throw new RuntimeException(e);
             }
         }
-        addItems();
+        //addItems();
         saveConfig();
     }
 
