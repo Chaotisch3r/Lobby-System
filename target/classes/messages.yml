@@ -17,6 +17,15 @@ de:
       Usage:
         Own: "Zeige deinen Ping"
         Another: "Zeige den von von jemand anderen"
+    Lobby:
+      Teleport: "&7Du hast dich zum Spawn teleportiert."
+      Setup:
+        SetLobby: "&Du hast den Spawn gesetzt."
+      Usage:
+        Teleport: "Teleportiert dich zum spawn"
+        SetLobby: "Setzt den Spawn"
+      Error:
+        LobbyWarpNotSet: "&7Der Spawn wurde noch nicht gesetzt."
     Build:
       Add: "&b%PLAYER%&7 wurde in den Baumodu gesetzt."
       Remove: "&b%PLAYER%&7 wurde vom Baumodus entfernt."
@@ -88,6 +97,15 @@ en:
       Usage:
         Own: "&7Show your ping"
         Another: "&7Show anothers ping"
+    Lobby:
+      Teleport: "&7You were teleported to the spawn."
+      Setup:
+        SetLobby: "&7You have set the spawn."
+      Usage:
+        Teleport: "Teleport you to the spawn"
+        SetLobby: "Sets the spawn"
+      Error:
+        LobbyWarpNotSet: "&7The spawn isn't set yet."
     Build:
       Add: "&b%PLAYER%&7 was set into build mode."
       Remove: "&b%PLAYER%&7 was removed from build mode."

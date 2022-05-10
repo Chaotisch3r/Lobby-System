@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.LobbyData;
 import me.chaotisch3r.lobby.data.PlayerData;
+import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.LobbyDataManager;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.util.CommandUtil;
-import me.chaotisch3r.lobby.util.Language;
+import me.chaotisch3r.lobby.util.ItemManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,10 +32,12 @@ public class PlayerListener implements Listener {
 
     private final PlayerDataManager playerDataManager;
     private final LobbyDataManager lobbyDataManager;
+
     private final Language language;
     private final FileConfiguration config = Lobby.getInstance().getConfig();
     private final String prefix = Lobby.getInstance().getPrefix();
     private final CommandUtil commandUtil;
+    private final ItemManager itemManager;
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void handle(AsyncPlayerPreLoginEvent event) {
@@ -61,12 +64,13 @@ public class PlayerListener implements Listener {
                 .replace("%PLAYER%", player.getName()) : null);
         player.setHealth(20);
         player.setFoodLevel(20);
+        itemManager.setStartEquip(player);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        event.setQuitMessage(config.getBoolean("JoinMessage") ? prefix + language.getColoredString(player.getUniqueId(), "Overall.QuitMessage")
+        event.setQuitMessage(config.getBoolean("QuitMessage") ? prefix + language.getColoredString(player.getUniqueId(), "Overall.QuitMessage")
                 .replace("%PLAYER%", player.getName()) : null);
         commandUtil.build.remove(player);
     }

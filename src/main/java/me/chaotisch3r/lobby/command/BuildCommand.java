@@ -2,8 +2,8 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.util.CommandUtil;
-import me.chaotisch3r.lobby.util.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;

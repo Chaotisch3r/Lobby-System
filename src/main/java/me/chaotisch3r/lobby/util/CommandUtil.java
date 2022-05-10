@@ -3,7 +3,7 @@ package me.chaotisch3r.lobby.util;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
-import me.chaotisch3r.lobby.database.WarpDataManager;
+import me.chaotisch3r.lobby.database.Language;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -58,6 +58,17 @@ public class CommandUtil {
     }
 
     public void sendLobbyHelp(Player player) {
+        uuid = player.getUniqueId();
+        if (!(player.isOp() || player.hasPermission("lobbyq.*") || player.hasPermission("lobby.warp"))) {
+            player.sendMessage(prefix + "§7----------[§6 Ping§7-§6Help§7]----------");
+            player.sendMessage("-§6 /lobby§7 - " + language.getColoredString(uuid, "Command.Lobby.Usage.Teleport"));
+            player.sendMessage(prefix + "§7----------[§6 Ping§7-§6Help§7]----------");
+            return;
+        }
+        player.sendMessage(prefix + "§7----------[§6 Ping§7-§6Help§7]----------");
+        player.sendMessage("-§6 /lobby§7 - " + language.getColoredString(uuid, "Command.Lobby.Usage.Teleport"));
+        player.sendMessage("-§6 /lobby setup setlobby§7 - " + language.getColoredString(uuid, "Command.Lobby.Usage.SetLobby"));
+        player.sendMessage(prefix + "§7----------[§6 Ping§7-§6Help§7]----------");
     }
 
     public void sendPingHelp(Player player) {

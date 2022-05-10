@@ -1,7 +1,7 @@
-package me.chaotisch3r.lobby.util;
+package me.chaotisch3r.lobby.database;
 
+import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.data.PlayerData;
-import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
 import me.chaotisch3r.lobby.mysql.MySQL;
 import org.bukkit.Bukkit;
@@ -21,15 +21,18 @@ import java.util.*;
  * Created for Lobby-System, 17:18 20.04.2022
  **/
 
+@RequiredArgsConstructor
 public class Language {
 
     private final MySQL mySQL = new MySQL();
-    private final MessageConfig messageConfig = new MessageConfig();
-    private final PlayerDataManager playerDataManager = new PlayerDataManager();
+    private final MessageConfig messageConfig;
+    private final PlayerDataManager playerDataManager;
     private final Map<UUID, Locale> localeMap = new HashMap<>();
     private final List<Locale> locales;
 
-    public Language() {
+    public Language(MessageConfig messageConfig, PlayerDataManager playerDataManager) {
+        this.messageConfig = messageConfig;
+        this.playerDataManager = playerDataManager;
         locales = getlanguages();
     }
 
@@ -44,8 +47,8 @@ public class Language {
     public void setLocale(UUID uuid, Locale locale) {
         localeMap.replace(uuid, locale);
         Player player = Bukkit.getPlayer(uuid);
-        playerDataManager.updateAsync(new PlayerData(playerDataManager.getPlayer(player.getUniqueId()).getUuid(), playerDataManager.getPlayer(player.getUniqueId()).getName(),
-                playerDataManager.getPlayer(player.getUniqueId()).getIpAddress(), playerDataManager.getPlayer(player.getUniqueId()).getRank(), locale));
+        playerDataManager.updateAsync(new PlayerData(player.getUniqueId(), player.getName(), player.getAddress().getAddress().getHostAddress(),
+                playerDataManager.getPlayer(uuid).getRank(), locale));
     }
 
     public Locale getLanguage(UUID uuid) {
@@ -79,6 +82,7 @@ public class Language {
     }
 
     public String getString(UUID uuid, String path) {
+        if(!messageConfig.getConfig().contains(getLocale(uuid).toLanguageTag() + "." + path)) return "NULL";
         return messageConfig.getConfig().getString(getLocale(uuid).toLanguageTag() + "." + path);
     }
 

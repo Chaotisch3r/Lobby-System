@@ -33,7 +33,7 @@ public class WarpDataManager {
         if (mySQL.isConnected())
             mySQL.connect();
         try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS warp_data(" +
-                "`id` INT NOT NULL AUTO_INCREMENT, `warpName` VARCHAR(32) NOT NULL, `worldUID` VARCHAR(32) NOT NULL, " +
+                "`id` INT NOT NULL AUTO_INCREMENT, `warpName` VARCHAR(32) NOT NULL, `worldUID` VARCHAR(64) NOT NULL, " +
                 "`x` DOUBLE NOT NULL, `y` DOUBLE NOT NULL, `z` DOUBLE NOT NULL, `yaw` FLOAT NOT NULL, " +
                 "`pitch` FLOAT NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `warpName_UNIQUE` (`warpName`))")) {
             ps.executeUpdate();
@@ -53,7 +53,7 @@ public class WarpDataManager {
 
             WarpData warpData;
             if (rs.next()) {
-                warpCache.put(warpName, (warpData = new WarpData(warpName, UUID.fromString(rs.getString("worldName")),
+                warpCache.put(warpName, (warpData = new WarpData(warpName, UUID.fromString(rs.getString("worldUID")),
                         rs.getDouble("x"), rs.getDouble("y"), rs.getDouble("z"),
                         rs.getFloat("yaw"), rs.getFloat("pitch"))));
             } else {

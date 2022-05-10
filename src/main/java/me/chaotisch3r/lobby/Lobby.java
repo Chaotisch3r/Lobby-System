@@ -3,10 +3,8 @@ package me.chaotisch3r.lobby;
 import lombok.Getter;
 import me.chaotisch3r.lobby.command.*;
 import me.chaotisch3r.lobby.command.util.TabComplete;
-import me.chaotisch3r.lobby.database.LobbyDataManager;
-import me.chaotisch3r.lobby.database.PlayerDataManager;
-import me.chaotisch3r.lobby.database.WarpDataManager;
-import me.chaotisch3r.lobby.database.WorldDataManager;
+import me.chaotisch3r.lobby.database.*;
+import me.chaotisch3r.lobby.filemanagement.ItemConfig;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
 import me.chaotisch3r.lobby.listener.BlockListener;
 import me.chaotisch3r.lobby.listener.EntityListener;
@@ -15,7 +13,6 @@ import me.chaotisch3r.lobby.listener.ServerListener;
 import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
-import me.chaotisch3r.lobby.util.Language;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -51,6 +48,7 @@ public class Lobby extends JavaPlugin {
     private Language language;
     private MessageConfig messageConfig;
     private CommandUtil commandUtil;
+    private ItemConfig itemConfig;
     private ItemManager itemManager;
     private WorldDataManager worldDataManager;
     private WarpDataManager warpDataManager;
@@ -83,7 +81,8 @@ public class Lobby extends JavaPlugin {
     }
 
     private void registerListeners(Plugin plugin) {
-        this.pluginManager.registerEvents(new PlayerListener(playerDataManager, lobbyDataManager, language, commandUtil), plugin);
+        this.pluginManager.registerEvents(new PlayerListener(playerDataManager, lobbyDataManager,
+                language, commandUtil, itemManager), plugin);
         this.pluginManager.registerEvents(new ServerListener(), plugin);
         this.pluginManager.registerEvents(new BlockListener(), plugin);
         this.pluginManager.registerEvents(new EntityListener(), plugin);
@@ -115,9 +114,10 @@ public class Lobby extends JavaPlugin {
         this.lobbyDataManager = new LobbyDataManager();
         this.pluginManager = Bukkit.getPluginManager();
         this.messageConfig = new MessageConfig();
-        this.language = new Language();
+        this.language = new Language(messageConfig, playerDataManager);
         this.commandUtil = new CommandUtil(language);
-        this.itemManager = new ItemManager();
+        this.itemConfig = new ItemConfig();
+        this.itemManager = new ItemManager(itemConfig, playerDataManager);
         this.worldDataManager = new WorldDataManager();
         this.warpDataManager = new WarpDataManager();
     }

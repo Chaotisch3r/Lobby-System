@@ -70,7 +70,6 @@ public class TabComplete implements TabCompleter {
         if (command.getName().equalsIgnoreCase("warp")) {
             if (args.length == 1) {
                 tabComplete.add("list");
-                warpDataManager.getWarps().forEach(warpData -> tabComplete.add(warpData.getWarpName()));
             } else if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("remove")) {
                     warpDataManager.getWarps().forEach(warpData -> tabComplete.add(warpData.getWarpName()));
@@ -81,9 +80,10 @@ public class TabComplete implements TabCompleter {
             }
         }
         if (command.getName().equalsIgnoreCase("lobby")) {
-            if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.setup")))
-                return tabComplete;
             if(args.length == 1) {
+                tabComplete.add("help");
+                if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.setup")))
+                    return tabComplete;
                 tabComplete.add("setup");
             }
             else if(args.length == 2) {

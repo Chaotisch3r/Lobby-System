@@ -2,8 +2,8 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.WarpDataManager;
-import me.chaotisch3r.lobby.util.Language;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,6 +50,10 @@ public class LobbyCommand implements CommandExecutor {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Lobby.Teleport"));
         }
         else if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("help")) {
+                sendHelp(player);
+                return true;
+            }
             sendHelp(player);
         }
         else if (args.length == 2) {

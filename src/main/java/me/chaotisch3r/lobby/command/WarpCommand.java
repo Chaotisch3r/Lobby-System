@@ -2,8 +2,8 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.WarpDataManager;
-import me.chaotisch3r.lobby.util.Language;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -48,9 +48,10 @@ public class WarpCommand implements CommandExecutor {
                 //Öffne ein Inv, dass alle Warp in sich hat!
             }
             String warpName = args[0];
-            if (warpDataManager.getWarp(warpName) == null)
+            if (warpDataManager.getWarp(warpName) == null) {
                 player.sendMessage(prefix, language.getColoredString(uuid, "Command.Warp.Error.WarpNotExisting")
                         .replace("%WARP", warpName));
+            }
             player.teleport(warpDataManager.getWarp(warpName).toLocation());
             player.sendMessage(prefix, language.getColoredString(uuid, "Command.Warp.Use"));
         } else if (args.length == 2) {

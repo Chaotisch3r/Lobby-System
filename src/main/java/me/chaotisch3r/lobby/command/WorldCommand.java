@@ -2,8 +2,8 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.WorldDataManager;
-import me.chaotisch3r.lobby.util.Language;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
