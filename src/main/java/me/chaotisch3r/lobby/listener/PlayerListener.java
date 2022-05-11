@@ -9,13 +9,17 @@ import me.chaotisch3r.lobby.database.LobbyDataManager;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
+import me.chaotisch3r.lobby.util.UIManager;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -60,8 +64,11 @@ public class PlayerListener implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         lobbyDataManager.loadLobby(player.getUniqueId());
-        event.setJoinMessage(config.getBoolean("JoinMessage") ? prefix + language.getColoredString(player.getUniqueId(), "Overall.JoinMessage")
-                .replace("%PLAYER%", player.getName()) : null);
+        new UIManager(player);
+        event.setJoinMessage(null);
+        Bukkit.getOnlinePlayers().forEach(players ->
+                players.sendMessage(prefix + language.getColoredString(players.getUniqueId(), "Overall.JoinMessage")
+                        .replace("%PLAYER%", player.getName())));
         player.setHealth(20);
         player.setFoodLevel(20);
         itemManager.setStartEquip(player);
@@ -70,12 +77,25 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        event.setQuitMessage(config.getBoolean("QuitMessage") ? prefix + language.getColoredString(player.getUniqueId(), "Overall.QuitMessage")
-                .replace("%PLAYER%", player.getName()) : null);
+        event.setQuitMessage(null);
+        Bukkit.getOnlinePlayers().forEach(players ->
+                players.sendMessage(prefix + language.getColoredString(players.getUniqueId(), "Overall.QuitMessage")
+                        .replace("%PLAYER%", player.getName())));
         commandUtil.build.remove(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerInteractEvent(PlayerInteractEvent event) {
+        if(event.getAction() == Action.LEFT_CLICK_AIR ||event.getAction() == Action.LEFT_CLICK_BLOCK) return;
+        if(event.getItem() == null) return;
+        if(!event.getItem().hasItemMeta()) return;
+        if(event.getItem().getItemMeta().getDisplayName().equals(itemManager.getItemConfig().
+                getItem(language.getLocale(event.getPlayer().getUniqueId()), "StartItem.Hider").getItemMeta().getDisplayName())) {
+            itemManager.openHiderInventory(event.getPlayer());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onFoodLevelChangeEvent(FoodLevelChangeEvent event) {
         event.setFoodLevel(20);
         event.setCancelled(true);

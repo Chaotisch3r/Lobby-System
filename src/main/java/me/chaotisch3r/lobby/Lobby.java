@@ -13,6 +13,7 @@ import me.chaotisch3r.lobby.listener.ServerListener;
 import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
+import me.chaotisch3r.lobby.util.UIManager;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -120,6 +121,7 @@ public class Lobby extends JavaPlugin {
         this.itemManager = new ItemManager(itemConfig, playerDataManager);
         this.worldDataManager = new WorldDataManager();
         this.warpDataManager = new WarpDataManager();
+        new UIManager(language);
     }
 
     private void registerDatabase() {

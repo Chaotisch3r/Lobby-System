@@ -2,9 +2,6 @@ package me.chaotisch3r.lobby.filemanagement;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.stream.JsonReader;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
@@ -54,49 +51,101 @@ public class ItemConfig {
     }
 
     public void addEnglishItems() {
-        ItemStack compass = new ItemBuilder(Material.COMPASS)
+        String prefix = "en.";
+        //Hotbar
+        ItemStack startItemCompass = new ItemBuilder(Material.COMPASS)
                 .setDisplayName("§7Teleporter")
                 .get();
-        ItemStack hider = new ItemBuilder(Material.BLAZE_ROD)
+        ItemStack startItemHider = new ItemBuilder(Material.BLAZE_ROD)
                 .setDisplayName("§6Hider")
                 .get();
-        ItemStack noGadget = new ItemBuilder(Material.BARRIER)
+        ItemStack startItemNoGadget = new ItemBuilder(Material.BARRIER)
                 .setDisplayName("§4No active Gadget")
                 .get();
-        ItemStack gadget = new ItemBuilder(Material.CHEST)
+        ItemStack startItemGadget = new ItemBuilder(Material.CHEST)
                 .setDisplayName("§eGadget")
                 .get();
-        ItemStack profile = new ItemBuilder(Material.PLAYER_HEAD)
+        ItemStack startItemprofile = new ItemBuilder(Material.PLAYER_HEAD)
                 .setDisplayName("§bProfile")
                 .get();
-        config.addDefault("en.StartItem.Compass",  compass);
-        config.addDefault("en.StartItem.Hider", hider);
-        config.addDefault("en.StartItem.NoGadget",  noGadget);
-        config.addDefault("en.StartItem.Gadget",  gadget);
-        config.addDefault("en.StartItem.Profile", profile);
+        //Inventory: Hider
+        ItemStack hiderAll = new ItemBuilder(Material.LIME_CONCRETE)
+                .setDisplayName("§aShow all players")
+                .addLore("§7Shows you all players")
+                .get();
+        ItemStack hiderVip = new ItemBuilder(Material.PURPLE_CONCRETE)
+                .setDisplayName("§5Show only VIPs")
+                .addLore("§7Shows only VIPs")
+                .get();
+        ItemStack hiderNone = new ItemBuilder(Material.RED_CONCRETE)
+                .setDisplayName("§cHide everyone")
+                .addLore("§7Hides every player")
+                .get();
+        ItemStack hiderSetting = new ItemBuilder(Material.REPEATER)
+                .setDisplayName("§4Setting")
+                .addLore("§7Currently: ")
+                .addLore("%HIDER_STATUS%")
+                .get();
+        //Hotbar-set
+        config.addDefault(prefix + "StartItem.Compass",  startItemCompass);
+        config.addDefault(prefix + "StartItem.Hider", startItemHider);
+        config.addDefault(prefix + "StartItem.NoGadget",  startItemNoGadget);
+        config.addDefault(prefix + "StartItem.Gadget",  startItemGadget);
+        config.addDefault(prefix + "StartItem.Profile", startItemprofile);
+        //Inventory: Hider-set
+        config.addDefault(prefix + "Hider.All", hiderAll);
+        config.addDefault(prefix + "Hider.VIP", hiderVip);
+        config.addDefault(prefix + "Hider.None", hiderNone);
+        config.addDefault(prefix + "Hider.Setting", hiderSetting);
     }
 
     public void addGermanItems() {
-        ItemStack compass = new ItemBuilder(Material.COMPASS)
+        String prefix = "de.";
+        //Hotbar
+        ItemStack startItemCompass = new ItemBuilder(Material.COMPASS)
                 .setDisplayName("§7Teleporter")
                 .get();
-        ItemStack hider = new ItemBuilder(Material.BLAZE_ROD)
+        ItemStack startItemHider = new ItemBuilder(Material.BLAZE_ROD)
                 .setDisplayName("§6Verstecker")
                 .get();
-        ItemStack noGadget = new ItemBuilder(Material.BARRIER)
+        ItemStack startItemNoGadget = new ItemBuilder(Material.BARRIER)
                 .setDisplayName("§4Kein aktives Gadget")
                 .get();
-        ItemStack gadget = new ItemBuilder(Material.CHEST)
+        ItemStack startItemGadget = new ItemBuilder(Material.CHEST)
                 .setDisplayName("§eGadget")
                 .get();
-        ItemStack profile = new ItemBuilder(Material.PLAYER_HEAD)
+        ItemStack startItemprofile = new ItemBuilder(Material.PLAYER_HEAD)
                 .setDisplayName("§bProfil")
                 .get();
-        config.addDefault("de.StartItem.Compass",  compass);
-        config.addDefault("de.StartItem.Hider", hider);
-        config.addDefault("de.StartItem.NoGadget",  noGadget);
-        config.addDefault("de.StartItem.Gadget",  gadget);
-        config.addDefault("de.StartItem.Profile", profile);
+        //Inventory: Hider
+        ItemStack hiderAll = new ItemBuilder(Material.LIME_CONCRETE)
+                .setDisplayName("§aZeige alle Spieler")
+                .addLore("§7Zeigt dir alle Spieler")
+                .get();
+        ItemStack hiderVip = new ItemBuilder(Material.PURPLE_CONCRETE)
+                .setDisplayName("§5Zeige nur VIPs")
+                .addLore("§7Zeigt dir nur noch VIPs")
+                .get();
+        ItemStack hiderNone = new ItemBuilder(Material.RED_CONCRETE)
+                .setDisplayName("§cZeige niemanden")
+                .addLore("§7Zeigt dir keine Spieler mehr")
+                .get();
+        ItemStack hiderSetting = new ItemBuilder(Material.REPEATER)
+                .setDisplayName("§4Einstellung")
+                .addLore("§7Aktuell: ")
+                .addLore("%HIDER_STATUS%")
+                .get();
+        //Hotbar-set
+        config.addDefault(prefix + "StartItem.Compass",  startItemCompass);
+        config.addDefault(prefix + "StartItem.Hider", startItemHider);
+        config.addDefault(prefix + "StartItem.NoGadget",  startItemNoGadget);
+        config.addDefault(prefix + "StartItem.Gadget",  startItemGadget);
+        config.addDefault(prefix + "StartItem.Profile", startItemprofile);
+        //Inventory: Hider-set
+        config.addDefault(prefix + "Hider.All", hiderAll);
+        config.addDefault(prefix + "Hider.VIP", hiderVip);
+        config.addDefault(prefix + "Hider.None", hiderNone);
+        config.addDefault(prefix + "Hider.Setting", hiderSetting);
     }
 
     public ItemStack getItem(Locale locale, String path) {
