@@ -65,6 +65,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         lobbyDataManager.loadLobby(player.getUniqueId());
         new UIManager(player);
+        new CommandUtil(player.getUniqueId());
         event.setJoinMessage(null);
         Bukkit.getOnlinePlayers().forEach(players ->
                 players.sendMessage(prefix + language.getColoredString(players.getUniqueId(), "Overall.JoinMessage")

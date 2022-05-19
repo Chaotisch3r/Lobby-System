@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.WorldDataManager;
+import me.chaotisch3r.lobby.util.ItemManager;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -32,6 +33,7 @@ public class WorldCommand implements CommandExecutor {
     private final String prefix = Lobby.getInstance().getPrefix();
     private final Language language;
     private final WorldDataManager worldDataManager;
+    private final ItemManager itemManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -47,6 +49,9 @@ public class WorldCommand implements CommandExecutor {
         if (args.length == 0) {
             sendWorldInformation(player);
         } else if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("list")) {
+                itemManager.openWorldListInventory(player);
+            }
             if (args[0].equalsIgnoreCase("information") || args[0].equalsIgnoreCase("info")) {
                 sendWorldInformation(player);
                 return true;
@@ -91,7 +96,6 @@ public class WorldCommand implements CommandExecutor {
                 }
                 World world = Bukkit.getWorld(worldName);
                 worldDataManager.addWorldToDeletedList(world);
-                worldDataManager.unloadWorld(world);
                 worldDataManager.removeWorld(world);
                 Bukkit.unloadWorld(world, false);
                 Bukkit.getWorlds().remove(world);
@@ -112,7 +116,7 @@ public class WorldCommand implements CommandExecutor {
         TextComponent component = new TextComponent(language.getColoredString(player.getUniqueId(), "Command.World.Information.Spawn")
                 + " §6X§7= " + world.getSpawnLocation().getX() + " §6Y§7= " + world.getSpawnLocation().getY() + " §6Z§7= " + world.getSpawnLocation().getZ() + " §6Yaw§7= "
                 + world.getSpawnLocation().getYaw() + " §6Pitch§7= " + world.getSpawnLocation().getPitch());
-        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(language.getColoredString(player.getUniqueId(), "Command.World.Hover"))));
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(language.getColoredString(player.getUniqueId(), "Command.World.Hover.TP"))));
         component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + player.getName() + " " + world.getSpawnLocation().getX()
                 + " " + world.getSpawnLocation().getY() + " " + world.getSpawnLocation().getZ() + " " + world.getSpawnLocation().getYaw() + " " + world.getSpawnLocation().getPitch() + " "));
         player.spigot().sendMessage(component);

@@ -13,7 +13,6 @@ import me.chaotisch3r.lobby.listener.ServerListener;
 import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
-import me.chaotisch3r.lobby.util.UIManager;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -36,6 +35,8 @@ import java.util.List;
     TODO:
      - Warp List Inv
      - World List chnagen zum Inv -> Overwold: Grass; Nether: Netherrack; End: End Stone
+     - Alle Help Messages Hoverbar machen mit einer genaueren Beschreibung
+     - Alle Help Messages Klickbar machen, der den geklickten Befehl Suggested
  */
 
 @Getter
@@ -43,6 +44,7 @@ public class Lobby extends JavaPlugin {
 
     private static Lobby instance;
     private String prefix;
+
     private MySQL mySQL;
     private PlayerDataManager playerDataManager;
     private LobbyDataManager lobbyDataManager;
@@ -53,6 +55,8 @@ public class Lobby extends JavaPlugin {
     private ItemManager itemManager;
     private WorldDataManager worldDataManager;
     private WarpDataManager warpDataManager;
+    private RankDataManager rankDataManager;
+
     private PluginManager pluginManager;
 
     public static Lobby getInstance() {
@@ -71,6 +75,7 @@ public class Lobby extends JavaPlugin {
         registerTabComplete();
         registerListeners(this);
         setupWorld(this);
+        setupRanks();
     }
 
     @Override
@@ -90,9 +95,9 @@ public class Lobby extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("build").setExecutor(new BuildCommand(language, commandUtil));
+        getCommand("build").setExecutor(new BuildCommand(language, commandUtil, playerDataManager));
         getCommand("language").setExecutor(new LanguageCommand(language, messageConfig));
-        getCommand("world").setExecutor(new WorldCommand(language, worldDataManager));
+        getCommand("world").setExecutor(new WorldCommand(language, worldDataManager, itemManager));
         getCommand("warp").setExecutor(new WarpCommand(language, warpDataManager));
         getCommand("lobby").setExecutor(new LobbyCommand(language, warpDataManager));
         getCommand("ping").setExecutor(new PingCommand(language));
@@ -112,24 +117,25 @@ public class Lobby extends JavaPlugin {
     private void registerClasses() {
         this.mySQL = new MySQL();
         this.playerDataManager = new PlayerDataManager();
+        this.playerDataManager.registerPlayer();
         this.lobbyDataManager = new LobbyDataManager();
         this.pluginManager = Bukkit.getPluginManager();
         this.messageConfig = new MessageConfig();
         this.language = new Language(messageConfig, playerDataManager);
         this.commandUtil = new CommandUtil(language);
         this.itemConfig = new ItemConfig();
-        this.itemManager = new ItemManager(itemConfig, playerDataManager);
+        this.itemManager = new ItemManager(itemConfig, language, playerDataManager, worldDataManager);
         this.worldDataManager = new WorldDataManager();
         this.warpDataManager = new WarpDataManager();
-        new UIManager(language);
+        this.rankDataManager = new RankDataManager();
     }
 
     private void registerDatabase() {
         this.mySQL.connect();
-        this.playerDataManager.registerPlayer();
         this.lobbyDataManager.registerLobby();
         this.worldDataManager.registerWorld();
         this.warpDataManager.registerWarp();
+        this.rankDataManager.registerRank();
     }
 
     private void setupWorld(Plugin plugin) {
@@ -154,6 +160,13 @@ public class Lobby extends JavaPlugin {
                 }
             });
         });
+    }
+
+    private void setupRanks() {
+        if(this.rankDataManager.getRank("owner") == null)
+            this.rankDataManager.loadRank("owner", 1, "&4Owner&7 |&4 ", "&4Owner&7 » ", new String[]{ "lobby.*" });
+        if(this.rankDataManager.getRank("player") == null)
+            this.rankDataManager.loadRank("player", 30, "&7Player | ", "&7Player » ", new String[]{ "" });
     }
 
 }

@@ -74,7 +74,8 @@ public class WarpDataManager {
     }
 
     public void removeWarp(String warpName) {
-        if (warpCache.containsKey(warpName)) unloadWarp(warpName);
+        if (!warpCache.containsKey(warpName)) return;
+        unloadWarp(warpName);
         try (PreparedStatement ps = mySQL.getStatement("DELETE FROM warp_Data WHERE warpName=?")) {
             ps.setString(1, warpName);
             ps.executeUpdate();
@@ -121,7 +122,7 @@ public class WarpDataManager {
         Location location = new Location(Bukkit.getWorld(oldWarpData.getWorldUID()), oldWarpData.getX(), oldWarpData.getY(),
                 oldWarpData.getZ(), oldWarpData.getYaw(), oldWarpData.getPitch());
         removeWarp(oldWarpName);
-        loadWarp(newWarpName, location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        loadWarp(newWarpName, location);
     }
 
     public WarpData getWarp(String warpName) {

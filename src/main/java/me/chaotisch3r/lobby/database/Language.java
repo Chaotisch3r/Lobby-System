@@ -4,9 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
 import me.chaotisch3r.lobby.mysql.MySQL;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,9 +44,9 @@ public class Language {
 
     public void setLocale(UUID uuid, Locale locale) {
         localeMap.replace(uuid, locale);
-        Player player = Bukkit.getPlayer(uuid);
-        playerDataManager.updateAsync(new PlayerData(player.getUniqueId(), player.getName(), player.getAddress().getAddress().getHostAddress(),
-                playerDataManager.getPlayer(uuid).getRank(), locale));
+        PlayerData playerData = playerDataManager.getPlayer(uuid);
+        playerDataManager.updateAsync(new PlayerData(playerData.getUuid(), playerData.getName(), playerData.getIpAddress(),
+                playerData.getRank(), locale, playerData.getCoins()));
     }
 
     public Locale getLanguage(UUID uuid) {

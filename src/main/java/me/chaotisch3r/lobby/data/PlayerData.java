@@ -22,7 +22,7 @@ public class PlayerData {
     private UUID uuid;
     private String name;
     private String ipAddress;
-    private String rank;
+    private RankData rank;
     private Locale locale;
-
+    private int coins;
 }

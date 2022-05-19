@@ -3,16 +3,23 @@ package me.chaotisch3r.lobby.util;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.RankData;
+import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
+import me.chaotisch3r.lobby.database.WorldDataManager;
 import me.chaotisch3r.lobby.filemanagement.ItemConfig;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -27,11 +34,17 @@ import java.util.Locale;
 public class ItemManager {
 
     private final ItemConfig itemConfig;
-    private final PlayerDataManager playerDataManager;
+    private final Language language;
     private Locale locale;
+    private final PlayerDataManager playerDataManager;
+    private final WorldDataManager worldDataManager;
+
     private final FileConfiguration config = Lobby.getInstance().getConfig();
 
     private Inventory hiderInventory;
+
+    private Inventory rankPermissionsInventory;
+    private Inventory worldListInventory;
 
     public void setStartEquip(Player player) {
         locale = playerDataManager.getPlayer(player.getUniqueId()).getLocale();
@@ -69,7 +82,34 @@ public class ItemManager {
             hiderInventory.setItem(2, none);
             hiderInventory.setItem(3, setting);
         }
+        player.openInventory(hiderInventory);
+    }
 
+    // Command Inventories
+
+    public void openRankPermissionInventory(Player player, RankData rankData) {
+        UUID uuid = player.getUniqueId();
+        rankPermissionsInventory = Bukkit.createInventory(player, 5*9, language.getColoredString(uuid, "Inventory.RankPermissions.Name")
+                .replace("%RANK_NAME%", rankData.getRankName())
+                .replace("%PERMISSIONS%", String.valueOf(rankData.getRankPermissions().length)));
+        Arrays.stream(rankData.getRankPermissions()).forEach(permission -> {
+            rankPermissionsInventory.addItem(new ItemBuilder(Material.PAPER, permission).get());
+        });
+        player.openInventory(rankPermissionsInventory);
+    }
+
+    public void openWorldListInventory(Player player) {
+        UUID uuid = player.getUniqueId();
+        worldListInventory = Bukkit.createInventory(player, 5*9, language.getColoredString(uuid, "Inventory.WorldList.Name")
+                .replace("%WORLD_COUNT%", String.valueOf(worldDataManager.getWorlds().size())));
+        worldDataManager.getWorlds().forEach(worldData -> {
+            if (worldData.getEnvironment() == World.Environment.NORMAL)
+                worldListInventory.addItem(new ItemBuilder(Material.GRASS, "§a" + worldData.getWorldName()).get());
+            else if (worldData.getEnvironment() == World.Environment.NETHER)
+                worldListInventory.addItem(new ItemBuilder(Material.NETHERRACK, "§c" + worldData.getWorldName()).get());
+            else if (worldData.getEnvironment() == World.Environment.THE_END)
+                worldListInventory.addItem(new ItemBuilder(Material.END_STONE, "&6" + worldData.getWorldName()).get());
+        });
     }
 
 }

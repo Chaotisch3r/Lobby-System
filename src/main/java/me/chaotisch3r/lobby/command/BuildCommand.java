@@ -2,7 +2,9 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.RankData;
 import me.chaotisch3r.lobby.database.Language;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -10,6 +12,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -25,6 +29,7 @@ public class BuildCommand implements CommandExecutor {
     private final String prefix = Lobby.getInstance().getPrefix();
     private final Language language;
     private final CommandUtil commandUtil;
+    private final PlayerDataManager playerDataManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -32,7 +37,9 @@ public class BuildCommand implements CommandExecutor {
             sender.sendMessage(prefix + "Dieses Feature ist nur als Spieler möglich.");
             return true;
         }
-        if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.build"))) {
+        UUID uuid = player.getUniqueId();
+        RankData rankData = playerDataManager.getPlayer(uuid).getRank();
+        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.build"))) {
             player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
             return true;
         }

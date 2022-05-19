@@ -1,6 +1,7 @@
 package me.chaotisch3r.lobby.util;
 
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,8 +10,8 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.Calendar;
-import java.util.Locale;
+import java.text.NumberFormat;
+import java.util.*;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -23,7 +24,7 @@ import java.util.Locale;
 public class UIManager {
 
     private Calendar calendar;
-    private Language language;
+    private final Language language = Lobby.getInstance().getLanguage();
 
     public UIManager(Player player) {
         calendar = Calendar.getInstance(Locale.GERMAN);
@@ -32,10 +33,6 @@ public class UIManager {
                 config.getInt("XP.Level"));
         sendTimeActionBar(player);
         setSideBar(player);
-    }
-
-    public UIManager(Language language) {
-        this.language = language;
     }
 
     private void sendTimeActionBar(Player player) {
@@ -67,21 +64,33 @@ public class UIManager {
     }
 
     private void setSideBar(Player player) {
+        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        PlayerData playerData = Lobby.getInstance().getPlayerDataManager().getPlayer(player.getUniqueId());
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective("stats", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName("§6Lobby");
-        objective.getScore("§b§l ").setScore(0);
-        objective.getScore("§6Coins§7: ").setScore(1);
-        objective.getScore("§7» §4Not avaiable").setScore(2);
-        objective.getScore("§a§l ").setScore(3);
-        objective.getScore("§bRank§7: ").setScore(4);
-        objective.getScore("§7» §4Not avaiable").setScore(5);
-        objective.getScore("§1§l ").setScore(6);
-        objective.getScore("§aServer§7: ").setScore(7);
-        objective.getScore("§7» §a" + player.getWorld().getName()).setScore(8);
-        objective.getScore("§1§l ").setScore(9);
+        for (Map.Entry<String, Integer> s : getScores(player.getUniqueId()).entrySet()) {
+            if (objective.getScore(s.getKey()).isScoreSet()) continue;
+            if (s.getValue() == 15) continue;
+            objective.getScore(s.getKey().replace('&', '§')
+                            .replace("%COINS%", NumberFormat.getInstance(Locale.GERMAN).format(playerData.getCoins()))
+                            .replace("%RANK%", playerData.getRank().getRankName())
+                            .replace("%SERVER%", player.getWorld().getName()))
+                    .setScore(s.getValue());
+        }
         player.setScoreboard(scoreboard);
+    }
+
+    private Map<String, Integer> getScores(UUID uuid) {
+        Map<String, Integer> scoreMap = new HashMap<>();
+        for (int i = 15; i > 0; i--) {
+            String score = language.getColoredString(uuid, "UI.SideBar." + i);
+            if (score == null) continue;
+            if (scoreMap.containsKey(score)) continue;
+            scoreMap.put(score, i);
+        }
+        return scoreMap;
     }
 
 }

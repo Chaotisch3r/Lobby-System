@@ -2,6 +2,7 @@ package me.chaotisch3r.lobby.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bukkit.World;
 
 import java.util.UUID;
 
@@ -19,6 +20,7 @@ public class WorldData {
 
     private UUID uid;
     private String worldName;
+    private World.Environment environment;
     private double x;
     private double y;
     private double z;

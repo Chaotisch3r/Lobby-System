@@ -8,15 +8,30 @@ de:
     KickMessage:
       1: "&4Neustart!"
       2: "&7Der Server wird neugestartet!"
+  UI:
+    SideBar:
+      9: "&6Coins§7: "
+      8: "&7»&6 %COINS%"
+      7: "&a&l "
+      6: "&bRank&7: "
+      5: "&7»&b %RANK%"
+      4: "&b&l "
+      3: "&aServer&7: "
+      2: "&7»&a %SERVER%"
+      1: "&c&l "
   Command:
     Overall:
       NoPermission: "&7Du hast keine Rechte für diesen Befehl."
       UknownPlayer: "&b%TARGET%&7 ist unserem System nicht bekannt."
+      HelpInformation: "&7Durch das Klick auf einen Befehl, wird dir dieser Befehl vorgeschalgen."
     Ping:
       Use: "&b%PLAYER%&7's Ping lautet&6 %PING%ms&7."
       Usage:
         Own: "Zeige deinen Ping"
         Another: "Zeige den von von jemand anderen"
+      Hover:
+        Own: "&7Zeigt deinen Ping an."
+        Another: "&7Zeigt den Pen eines anderen an."
     Lobby:
       Teleport: "&7Du hast dich zum Spawn teleportiert."
       Setup:
@@ -24,6 +39,9 @@ de:
       Usage:
         Teleport: "Teleportiert dich zum spawn"
         SetLobby: "Setzt den Spawn"
+      Hover:
+        Lobby: "&7Teleportiert dich zum Spawn."
+        Setup: "&7Setzt den Lobby-Spawn."
       Error:
         LobbyWarpNotSet: "&7Der Spawn wurde noch nicht gesetzt."
     Build:
@@ -55,7 +73,13 @@ de:
         Spawn: "&aSpawn&7: "
         Players: "&bSpieler&7: "
         Seed: "&fSeed: "
-      Hover: "&7Klicke hier um dich zu teleportieren"
+      Hover:
+        World: "&7Zeigt dir Infos über diese Welt"
+        Information: "&7Zeigt dir Infos über diese Welt"
+        Join: "&7Betritt eine andere Welt"
+        Create: "&7Erstelle einen neue Welt"
+        Delete: "&7Entferne eine vorhandene Welt"
+        TP: "&7Klicke hier um dich zu teleportieren"
       Usage:
         Information: "Informationen über diese Welt"
         Join: "Betritt eine andere Welt"
@@ -78,9 +102,21 @@ de:
         Remove: "&7Entferent ein Warp"
         Update: "&7Updated die Location von einem Warp zu deine Location"
         Rename: "&7Nenne ein Warp um"
+      Hover:
+        Warp: "&7Teleportiert dich zu einem Warp"
+        List: "&7Listet alle Warps auf"
+        Set: "&7Setzte einen neuen Warp"
+        Remove: "&7Entferne einen vorhandenen Warp"
+        Update: "&7Aktualisiere einen vorhandenen Warp"
+        Rename: "&7Benne einen vorhandenen Warp um"
       Error:
         WarpNotExisting: "&7Dieser Warp wurde in unserem System nicht gefunden."
         WarpAlreadyExisting: "&7Dieser Warp ist unserem System schon bekannt."
+    Rank:
+      GetRank: "&7Du hast den Ran&6 %RANG%&7."
+  Inventory:
+    RankPermissions: "&7Permissions von&b %RANK_NAME%&7 [&6%PERMISSIONS&7]"
+    WorldList: "&aWelten&7 [&6%WORLD_COUNT%&7]"
 en:
   Overall:
     JoinMessage: "&7The Player&b %PLAYER%&7 joined the server."
@@ -88,6 +124,17 @@ en:
     KickMessage:
       1: "&4Restart"
       2: "&7The server is restarting!"
+  UI:
+    SideBar:
+      9: "&6Coins§7: "
+      8: "&7»&6 %COINS%"
+      7: "&a&l "
+      6: "&bRank&7: "
+      5: "&7»&b %RANK%"
+      4: "&b&l "
+      3: "&aServer&7: "
+      2: "&7»&a %SERVER%"
+      1: "&c&l "
   Command:
     Overall:
       NoPermission: "&7You do not have the permission to use this command."
