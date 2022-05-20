@@ -22,3 +22,6 @@ commands:
   ping:
     description: This command contains to the Lobby-System.
     permissions: [ lobby.*, lobby.ping ]
+  rank:
+    description: This command contais to the Lobby-System
+    permissions: [ lobby.*, lobby.rank ]
