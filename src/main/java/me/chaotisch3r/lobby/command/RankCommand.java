@@ -39,15 +39,15 @@ public class RankCommand implements CommandExecutor {
     private final PlayerDataManager playerDataManager;
     private final RankDataManager rankDataManager;
     /*
-        - /rank create <rankName> <rankID> <rankListName> <rankDisplayName> <permissions>
-        - /rank delete <rankName/rankID>                                            ✔
-        - /rank set <playername> <rankName>                                         ✔
-        - /rank remove <playername> <rankName>                                      ✔
-        - /rank <rankName/rankID> info / information                                ✔
-        - /rank <rankName/rankID> readjustID <newRankID>                            ✔
-        - /rank <rankName/rankID> rename <newRankName>                              ✔
-        - /rank <rankName/rankID> renameList <newListName>                          ✔
-        - /rank <rankName/rankID> renameDisplayName <newDisplayName>                ✔
+        - /rank create <rankName> <rankID> <rankListName> <rankDisplayName> <permissions>   ✔
+        - /rank delete <rankName/rankID>                                                    ✔
+        - /rank set <playername> <rankName>                                                 ✔
+        - /rank remove <playername> <rankName>                                              ✔
+        - /rank <rankName/rankID> info / information                                        ✔
+        - /rank <rankName/rankID> readjustID <newRankID>                                    ✔
+        - /rank <rankName/rankID> rename <newRankName>                                      ✔
+        - /rank <rankName/rankID> renameList <newListName>                                  ✔
+        - /rank <rankName/rankID> renameDisplayName <newDisplayName>                        ✔
 
         `player` is a default rank, no changes should be done to this rank.
         The only thing that can chnage is Display- & ListName

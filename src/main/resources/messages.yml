@@ -10,6 +10,7 @@ de:
       2: "&7Der Server wird neugestartet!"
   UI:
     SideBar:
+      10: "&d&l "
       9: "&6Coins§7: "
       8: "&7»&6 %COINS%"
       7: "&a&l "
@@ -119,13 +120,14 @@ de:
     WorldList: "&aWelten&7 [&6%WORLD_COUNT%&7]"
 en:
   Overall:
-    JoinMessage: "&7The Player&b %PLAYER%&7 joined the server."
-    QuitMessage: "&7The player&b %PLAYER%&7 left the server."
+    JoinMessage: "&b%PLAYER%&7 joined the server."
+    QuitMessage: "&b%PLAYER%&7 left the server."
     KickMessage:
-      1: "&4Restart"
+      1: "&4Restart!"
       2: "&7The server is restarting!"
   UI:
     SideBar:
+      10: "&d&l "
       9: "&6Coins§7: "
       8: "&7»&6 %COINS%"
       7: "&a&l "
@@ -137,74 +139,99 @@ en:
       1: "&c&l "
   Command:
     Overall:
-      NoPermission: "&7You do not have the permission to use this command."
-      UknownPlayer: "&b%TARGET%&7 is not know to our system."
+      NoPermission: "&7You do not have permissions to use this command."
+      UknownPlayer: "&b%TARGET%&7 is not known to our system."
+      HelpInformation: "&7By clicking on this comman, this command will be suggested."
     Ping:
       Use: "&b%PLAYER%&7's ping is&6 %PING%ms&7."
       Usage:
-        Own: "&7Show your ping"
-        Another: "&7Show anothers ping"
+        Own: "Shows your ping"
+        Another: "Shows the ping of another player"
+      Hover:
+        Own: "&7Shows your ping."
+        Another: "&7Shows the ping of another player."
     Lobby:
       Teleport: "&7You were teleported to the spawn."
       Setup:
-        SetLobby: "&7You have set the spawn."
+        SetLobby: "&You have set the spawn."
       Usage:
-        Teleport: "Teleport you to the spawn"
+        Teleport: "Teleports you to the spawn"
         SetLobby: "Sets the spawn"
+      Hover:
+        Lobby: "&7Teleports you to the spawn."
+        Setup: "&7Sets the spawn."
       Error:
-        LobbyWarpNotSet: "&7The spawn isn't set yet."
+        LobbyWarpNotSet: "&7The spawn is not set yet."
     Build:
       Add: "&b%PLAYER%&7 was set into build mode."
       Remove: "&b%PLAYER%&7 was removed from build mode."
       Usage:
-        Single: "Put you into build mode"
-        Multi: "Put someone else inot build mode"
+        Single: "Sets you into build mode"
+        Multi: "Sets another player into build mode"
     Language:
       Reload: "&7You have reloaded all messages."
       Use: "&7The language of&b %PLAYER%&7 is&6 %LANGUAGE%&7."
       List: "&7These languages are known to our system: "
-      Change: "&7You have changed you language to&6 %LANGUAGE%&7."
+      Change: "&7You changed your language to&6 %LANGUAGE%&7."
       Usage:
-        Use: "Shows your language"
+        Use: "Shows your current language"
         List: "Lists every language"
-        Change: "Change the language"
+        Change: "Changes to a language"
       Error:
-        UknownLanguage: "&7This language is not know to our system."
-        SameLanguage: "&7This is your current language."
+        UknownLanguage: "&7This language is not know to our system"
+        SameLanguage: "&7This is your current language"
     World:
-      Join: "&7You joined the world&6 %WORLD%&7."
+      Join: "&7You have join the world&6 %WORLD%&7."
       Create:
         1: "&7You have created the world&6 %WORLD%&7."
-        2: "&7[Click to join]"
-      Delete: "&7Yu have deleted the world&6 %WORLD%&7."
+        2: "&7[Click here to join]"
+      Delete: "&7You have removed the world&6 %WORLD%&7."
       Information:
         World: "&6World&7: "
         Spawn: "&aSpawn&7: "
         Players: "&bPlayers&7: "
         Seed: "&fSeed: "
-      Hover: "&7Click here to teleport"
+      Hover:
+        World: "&7Shows information about a world"
+        Information: "&7Shows information about your current world"
+        Join: "&7Joines another world"
+        Create: "&7Creates a new world"
+        Delete: "&7Deletes a world"
+        TP: "&7Click here to teleport"
       Usage:
         Information: "Information about this world"
-        Join: "Join another world"
-        Create: "Create a new world"
-        Delete: "Delete a world"
+        Join: "Joins a world"
+        Create: "Creates a world"
+        Delete: "Deletes a world"
       Error:
-        WorldNotExisting: "&7This world is not know to our system."
-        WorldAlreadyExisting: "&7This world is already known to our system"
-        WorldAlreadJoined: "&7You are already on this world."
+        WorldNotExisting: "&7This world is not known to our system."
+        WorldAlreadyExisting: "&7This world is already know to our system."
+        WorldAlreadJoined: "&7You are on this world."
     Warp:
-      Use: "&7You warp yourself to&6 %WARP%&7."
-      Set: "&7You have set the warp&6 %WARP%&7."
-      Remove: "&7You have removed the warp&6 %WAR%&7."
-      Update: "&7You have updated the warp&6 %WARP%."
-      Rename: "&7You have renamed the warp&6 %OLD_WARP%&7 to&b %NEW_WARP%&7."
+      Use: "&7You have been warped to&6 %WARP%&7."
+      Set: "&7You have set the warpp&6 %WARP%&7."
+      Remove: "&7You have removed the warp&6 %WARP%&7."
+      Update: "&7You have upedated the warp&6 %WARP%&7."
+      Rename: "&7The warp&6 %OLD_WARP%&7 was renamed to&b %NEW_WARP%&7."
       Usage:
-        List: "&7Lists you all warps"
+        List: "Lists all warps"
+        Warp: "Teleports you to the warp"
+        Set: "Sets a warp"
+        Remove: "Removes a warp"
+        Update: "Updates the location of a warp"
+        Rename: "Renames a warp"
+      Hover:
         Warp: "&7Teleports you to a warp"
-        Set: "&7Set a warp"
-        Remove: "&7Remove a warp"
-        Update: "&7Sets a warps location to your current location"
-        Rename: "&7Rename a warp"
+        List: "&7Lists all warps"
+        Set: "&7Sets a new warp"
+        Remove: "&7Removes a warp"
+        Update: "&7Updates a warp"
+        Rename: "&7Renames a warp"
       Error:
-        WarpNotExisting: "&7This warp is not know to our system."
-        WarpAlreadyExisting: "&7This warp is already know to our system."
+        WarpNotExisting: "&7This warp is not known to our system."
+        WarpAlreadyExisting: "&7This warp is already known to our system."
+    Rank:
+      GetRank: "&7You rank is&6 %RANG%&7."
+  Inventory:
+    RankPermissions: "&7Permissions of&b %RANK_NAME%&7 [&6%PERMISSIONS&7]"
+    WorldList: "&aWorlds&7 [&6%WORLD_COUNT%&7]"

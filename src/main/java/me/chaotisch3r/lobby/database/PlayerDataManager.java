@@ -1,5 +1,6 @@
 package me.chaotisch3r.lobby.database;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.PlayerData;
@@ -23,11 +24,12 @@ import java.util.UUID;
  * Created for Lobby-System, 11:31 - 20.04.2022
  **/
 
+@RequiredArgsConstructor
 public class PlayerDataManager {
 
     private final MySQL mySQL = Lobby.getInstance().getMySQL();
     private final Map<UUID, PlayerData> playerCache = new HashMap<>();
-    private final RankDataManager rankDataManager = Lobby.getInstance().getRankDataManager();
+    private final RankDataManager rankDataManager;
 
     public void registerPlayer() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {

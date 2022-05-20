@@ -101,6 +101,7 @@ public class Lobby extends JavaPlugin {
         getCommand("warp").setExecutor(new WarpCommand(language, warpDataManager));
         getCommand("lobby").setExecutor(new LobbyCommand(language, warpDataManager));
         getCommand("ping").setExecutor(new PingCommand(language));
+        getCommand("rank").setExecutor(new RankCommand(language, commandUtil, itemManager, playerDataManager, rankDataManager));
     }
 
     private void registerTabComplete() {
@@ -111,12 +112,14 @@ public class Lobby extends JavaPlugin {
         commands.add("ping");
         commands.add("warp");
         commands.add("world");
+        commands.add("rank");
         commands.forEach(cmd -> getCommand(cmd).setTabCompleter(new TabComplete(worldDataManager, warpDataManager)));
     }
 
     private void registerClasses() {
         this.mySQL = new MySQL();
-        this.playerDataManager = new PlayerDataManager();
+        this.rankDataManager = new RankDataManager();
+        this.playerDataManager = new PlayerDataManager(rankDataManager);
         this.playerDataManager.registerPlayer();
         this.lobbyDataManager = new LobbyDataManager();
         this.pluginManager = Bukkit.getPluginManager();
@@ -127,7 +130,7 @@ public class Lobby extends JavaPlugin {
         this.itemManager = new ItemManager(itemConfig, language, playerDataManager, worldDataManager);
         this.worldDataManager = new WorldDataManager();
         this.warpDataManager = new WarpDataManager();
-        this.rankDataManager = new RankDataManager();
+
     }
 
     private void registerDatabase() {

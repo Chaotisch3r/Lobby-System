@@ -27,8 +27,8 @@ public class RankDataManager {
     public void registerRank() {
         if(!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS `rank_data`(" +
-                "`rankName` VARCHAR(36) NOT NULL, `rankID` INT NOT NULL, `ranListName` VERCHAR(36) NOT NULL, `rankDisplayName` VARCHAR(36) NOT NULL," +
-                " `rankPermissions` VARCHAR(0) NOT NULL, PRIMARY KEY (`rankID`), UNIQUE INDEX `rankName_UNIQUE` (`rankName`))")) {
+                "`rankName` VARCHAR(36) NOT NULL, `rankID` INT NOT NULL, `rankListName` VARCHAR(36) NOT NULL, `rankDisplayName` VARCHAR(36) NOT NULL, " +
+                "`rankPermissions` TEXT NOT NULL, PRIMARY KEY (`rankID`), UNIQUE INDEX `rankName_UNIQUE` (`rankName`))")) {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -113,18 +113,20 @@ public class RankDataManager {
     private void update(RankData rankData) {
         if (!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement preparedStatement = mySQL.getStatement("INSERT INTO rank_data(`rankName`, `rankID`, `rankListName`, `rankDisplayName`, `rankPermissions`) " +
-                "VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE `rankDisplayName`=?, `rankPermissions`=?")) {
+                "VALUES(?,?,?,?,?) ON DUPLICATE KEY UPDATE `rankListName`=?, `rankDisplayName`=?, `rankPermissions`=?")) {
             preparedStatement.setString(1, rankData.getRankName());
             preparedStatement.setInt(2, rankData.getRankID());
             preparedStatement.setString(3, rankData.getRankListName());
             preparedStatement.setString(4, rankData.getRankDisplayName());
-            preparedStatement.setString(5, Arrays.toString(rankData.getRankPermissions()).replace("[", "")
-                    .replaceAll(",", ";").replaceAll(" ", "").replace("]", ""));
+            preparedStatement.setString(5, Arrays.toString(rankData.getRankPermissions())
+                    .replaceAll(",", ";").replaceAll(" ", "")
+                    .replace("[", "").replace("]", ""));
 
             preparedStatement.setString(6, rankData.getRankListName());
             preparedStatement.setString(7, rankData.getRankDisplayName());
-            preparedStatement.setString(8, Arrays.toString(rankData.getRankPermissions()).replace("[", "")
-                    .replaceAll(",", ";").replaceAll(" ", "").replace("]", ""));
+            preparedStatement.setString(8, Arrays.toString(rankData.getRankPermissions())
+                    .replaceAll(",", ";").replaceAll(" ", "")
+                    .replace("[", "").replace("]", ""));
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
