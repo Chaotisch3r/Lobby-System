@@ -32,10 +32,6 @@ import java.util.List;
 
 /*
     TODO:
-     - Warp List Inv
-     - World List chnagen zum Inv -> Overwold: Grass; Nether: Netherrack; End: End Stone
-     - Alle Help Messages Hoverbar machen mit einer genaueren Beschreibung
-     - Alle Help Messages Klickbar machen, der den geklickten Befehl Suggested
  */
 
 @Getter
