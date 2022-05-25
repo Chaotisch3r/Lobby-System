@@ -17,6 +17,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -104,7 +105,33 @@ public class WorldCommand implements CommandExecutor {
                 return true;
             }
             sendHelp(player);
-        } else sendHelp(player);
+        }
+        else if (args.length == 3) {
+            if (!(args[0].equalsIgnoreCase("create"))) {
+                sendHelp(player);
+                return true;
+            }
+            String worldName = args[1];
+            String destination = args[2];
+            if (Bukkit.getWorld(worldName) != null) {
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldAlreadyExisting"));
+                return true;
+            }
+            World.Environment environment = World.Environment.valueOf(destination);
+            if (!(Arrays.stream(World.Environment.values()).toList().contains(environment))) {
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.EnvironmentNotExisting"));
+                return true;
+            }
+            World world = Bukkit.createWorld(new WorldCreator(worldName).environment(environment));
+            Bukkit.getWorlds().add(world);
+            worldDataManager.loadWorld(world);
+            player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Create.1")
+                    .replace("%WORLD%", world.getName()));
+            TextComponent component = new TextComponent(language.getColoredString(uuid, "Command.World.Create.2"));
+            component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/world join " + worldName));
+            player.spigot().sendMessage(component);
+        }
+        else sendHelp(player);
         return false;
     }
 

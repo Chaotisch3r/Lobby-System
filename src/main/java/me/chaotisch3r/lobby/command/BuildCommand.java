@@ -6,6 +6,7 @@ import me.chaotisch3r.lobby.data.RankData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.util.CommandUtil;
+import me.chaotisch3r.lobby.util.ItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -30,6 +31,7 @@ public class BuildCommand implements CommandExecutor {
     private final Language language;
     private final CommandUtil commandUtil;
     private final PlayerDataManager playerDataManager;
+    private final ItemManager itemManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -48,10 +50,12 @@ public class BuildCommand implements CommandExecutor {
             if (player.getGameMode() == GameMode.CREATIVE) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Add").replace("%PLAYER%", player.getName()));
                 commandUtil.build.add(player);
+                player.getInventory().clear();
             }
             if (player.getGameMode() == GameMode.SURVIVAL) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Remove").replace("%PLAYER%", player.getName()));
                 commandUtil.build.remove(player);
+                itemManager.setStartEquip(player);
             }
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("help")) {

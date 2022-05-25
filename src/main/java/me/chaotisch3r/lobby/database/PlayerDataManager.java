@@ -6,7 +6,6 @@ import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.mysql.MySQL;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,8 +34,10 @@ public class PlayerDataManager {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
             if (!mySQL.isConnected()) mySQL.connect();
             try (PreparedStatement preparedStatement = mySQL.getStatement("CREATE TABLE IF NOT EXISTS player_data(" +
-                    "`id` int NOT NULL AUTO_INCREMENT, `uuid` varchar(64) NOT NULL, `name` varchar(16) NOT NULL, `ipAddress` varchar(45) DEFAULT NULL," +
-                    " `rank` varchar(32) NOT NULL DEFAULT 'Player', `locale` varchar(4) NOT NULL DEFAULT 'en', `coins` int NOT NULL DEFAULT '0', PRIMARY KEY (`id`), UNIQUE KEY `uuid_UNIQUE` (`uuid`))")) {
+                    "`id` int NOT NULL AUTO_INCREMENT, `uuid` varchar(64) NOT NULL, `name` varchar(16) NOT NULL," +
+                    " `ipAddress` varchar(45) DEFAULT NULL, `rank` varchar(32) NOT NULL DEFAULT 'Player'," +
+                    " `locale` varchar(4) NOT NULL DEFAULT 'en', `coins` int NOT NULL DEFAULT '0', PRIMARY KEY (`id`)," +
+                    " UNIQUE KEY `uuid_UNIQUE` (`uuid`))")) {
                 preparedStatement.executeUpdate();
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
@@ -72,14 +73,18 @@ public class PlayerDataManager {
         }
     }
 
-    public void setRank(OfflinePlayer player, String rankName) {
+    public void setRank(UUID uuid, String rankName) {
         if(!mySQL.isConnected()) mySQL.connect();
-        try (PreparedStatement ps = mySQL.getStatement("UPDATE player_data SET `rank`=? WHERE `uuid`=?")) {
-            ps.setString(1, rankName);
-            ps.setString(2, player.getUniqueId().toString());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
+           try (PreparedStatement ps = mySQL.getStatement("UPDATE `player_data` SET `rank`=? WHERE `uuid`=?")) {
+               ps.setString(1, rankName);
+               ps.setString(2, uuid.toString());
+
+               ps.executeUpdate();
+           } catch (SQLException e) {
+               throw new RuntimeException(e);
+           }
+        });
     }
 
     public void unloadPlayer(UUID uuid) {

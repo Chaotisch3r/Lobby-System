@@ -6,6 +6,7 @@ import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.RankData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
+import me.chaotisch3r.lobby.database.WarpDataManager;
 import me.chaotisch3r.lobby.database.WorldDataManager;
 import me.chaotisch3r.lobby.filemanagement.ItemConfig;
 import org.bukkit.Bukkit;
@@ -38,6 +39,7 @@ public class ItemManager {
     private Locale locale;
     private final PlayerDataManager playerDataManager;
     private final WorldDataManager worldDataManager;
+    private final WarpDataManager warpDataManager;
 
     private final FileConfiguration config = Lobby.getInstance().getConfig();
 
@@ -45,6 +47,7 @@ public class ItemManager {
 
     private Inventory rankPermissionsInventory;
     private Inventory worldListInventory;
+    private Inventory warpListInventory;
 
     public void setStartEquip(Player player) {
         locale = playerDataManager.getPlayer(player.getUniqueId()).getLocale();
@@ -92,9 +95,7 @@ public class ItemManager {
         rankPermissionsInventory = Bukkit.createInventory(player, 5*9, language.getColoredString(uuid, "Inventory.RankPermissions.Name")
                 .replace("%RANK_NAME%", rankData.getRankName())
                 .replace("%PERMISSIONS%", String.valueOf(rankData.getRankPermissions().length)));
-        Arrays.stream(rankData.getRankPermissions()).forEach(permission -> {
-            rankPermissionsInventory.addItem(new ItemBuilder(Material.PAPER, permission).get());
-        });
+        Arrays.stream(rankData.getRankPermissions()).forEach(permission -> rankPermissionsInventory.addItem(new ItemBuilder(Material.PAPER, permission).get()));
         player.openInventory(rankPermissionsInventory);
     }
 
@@ -110,6 +111,17 @@ public class ItemManager {
             else if (worldData.getEnvironment() == World.Environment.THE_END)
                 worldListInventory.addItem(new ItemBuilder(Material.END_STONE, "&6" + worldData.getWorldName()).get());
         });
+        player.openInventory(worldListInventory);
+    }
+
+    public void openWarpListInventory(Player player) {
+        UUID uuid = player.getUniqueId();
+        warpListInventory = Bukkit.createInventory(player, 5*9, language.getColoredString(uuid, "Inventory.WarpList.Name")
+                .replace("%WARP_COUNT%", String.valueOf(warpDataManager.getWarps().size())));
+        warpDataManager.getWarps().forEach(warpData -> {
+            warpListInventory.addItem(new ItemBuilder(Material.NETHER_STAR, "§d" + warpData.getWarpName()).get());
+        });
+        player.openInventory(warpListInventory);
     }
 
 }

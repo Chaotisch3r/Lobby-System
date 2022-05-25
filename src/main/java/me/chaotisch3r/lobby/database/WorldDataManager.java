@@ -61,7 +61,7 @@ public class WorldDataManager {
     }
 
     @SneakyThrows
-    private void worldLoading(World world) {
+    public void loadWorld(World world) {
         if (!mySQL.isConnected()) mySQL.connect();
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM world_data WHERE uid=?");
         ResultSet rs = null;
@@ -89,10 +89,6 @@ public class WorldDataManager {
         }
     }
 
-    public void loadWorld(World world) {
-        worldLoading(world);
-    }
-
     public void loadWorld(List<World> worlds) {
         worlds.forEach(this::loadWorld);
     }
@@ -117,7 +113,7 @@ public class WorldDataManager {
     public void update(WorldData worldData) {
         if (!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement preparedStatement = mySQL.getStatement("INSERT INTO world_data(`uid`, `worldName`, `environment`, `X`, `Y`, `Z`, `Yaw`, `Pitch`) " +
-                "VALUES(?,,??,?,?,?,?,?) ON DUPLICATE KEY UPDATE `worldName`=?, `environment`=?, `X`=?, `Y`=?, `Z`=?, `Yaw`=?, `Pitch`=?")) {
+                "VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `worldName`=?, `environment`=?, `X`=?, `Y`=?, `Z`=?, `Yaw`=?, `Pitch`=?")) {
             preparedStatement.setString(1, worldData.getUid().toString());
             preparedStatement.setString(2, worldData.getWorldName());
             preparedStatement.setString(3, worldData.getEnvironment().toString());

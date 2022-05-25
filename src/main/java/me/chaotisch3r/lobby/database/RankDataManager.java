@@ -140,10 +140,14 @@ public class RankDataManager {
 
     public List<Integer> getRankIDs() {
         List<Integer> ids = new ArrayList<>();
-        getRanks().forEach(rankData -> {
-            ids.add(rankData.getRankID());
-        });
+        getRanks().forEach(rankData -> ids.add(rankData.getRankID()));
         return ids;
+    }
+
+    public List<String> getRankNames() {
+        List<String> names = new ArrayList<>();
+        getRanks().forEach(rankData -> names.add(rankData.getRankName()));
+        return names;
     }
 
     public RankData getRank(String rankName) {

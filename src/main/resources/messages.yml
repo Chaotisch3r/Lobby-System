@@ -6,8 +6,8 @@ de:
     JoinMessage: "&7Der Spieler&b %PLAYER%&7 hat den Server betreten."
     QuitMessage: "&7Der Spieler&b %PLAYER%&7 hat den Server verlassen."
     KickMessage:
-      1: "&4Neustart!"
-      2: "&7Der Server wird neugestartet!"
+      1: "&4Du wurdest vom Server gekickt!"
+      2: "&7Grund: &bDer Server wird neugestartet!"
   UI:
     SideBar:
       10: "&d&l "
@@ -81,15 +81,18 @@ de:
         Create: "&7Erstelle einen neue Welt"
         Delete: "&7Entferne eine vorhandene Welt"
         TP: "&7Klicke hier um dich zu teleportieren"
+        CreateDimension: "&7Erstellt eine neue Welt mir anderer Dimension"
       Usage:
         Information: "Informationen über diese Welt"
         Join: "Betritt eine andere Welt"
         Create: "Erstellt eine neue Welt"
         Delete: "Löschte eine Welt"
+        CreateDimension: "Erstellt eine neue Welt mir anderer Dimension"
       Error:
-        WorldNotExisting: "&7Diese Welt wurde in unserem System nicht gefunden."
-        WorldAlreadyExisting: "&7Diese Welt ist unserem System schon bekannt."
+        WorldNotExisting: "&7Diese Welt ist unserem System nicht bekannt."
+        WorldAlreadyExisting: "&7Diese Welt ist unserem System bereits bekannt."
         WorldAlreadJoined: "&7Du bist bereits in dieser Welt."
+        EnvironmentNotExisting: "&7Diese Dimension ist unserem System nicht bekannt."
     Warp:
       Use: "&7Du hast dich zu&6 %WARP%&7 gewarp."
       Set: "&7Du hast den Warp&6 %WARP%&7 gesetzt."
@@ -111,20 +114,71 @@ de:
         Update: "&7Aktualisiere einen vorhandenen Warp"
         Rename: "&7Benne einen vorhandenen Warp um"
       Error:
-        WarpNotExisting: "&7Dieser Warp wurde in unserem System nicht gefunden."
-        WarpAlreadyExisting: "&7Dieser Warp ist unserem System schon bekannt."
+        WarpNotExisting: "&7Dieser Warp ist unserem System nicht bekannt."
+        WarpAlreadyExisting: "&7Dieser Warp ist unserem System bereits bekannt."
     Rank:
-      GetRank: "&7Du hast den Ran&6 %RANG%&7."
+      GetRank: "&7Dein Rang ist&6 %RANK_NAME%&7."
+      Delete: "&7Du hast den Rang&6 %RANK_NAME%&7 entfernt."
+      Set: "&7Du hast&b %TARGET%&7's Rang zu&6 %RANK_NAME%&7 geändert."
+      Remove: "&7Du hast%TARGET%&7's Rang entfernt."
+      ReadjustID: "&7Du hast die RandID von&b %RANK_NAME%&7 zu&6 %RANK_ID%&7 geändert."
+      Rename: "&7Du hast den Rang&b %OLD_RANK_NAME%&7 zu&6 %NEW_RANK_NAME%&7 umbenannt."
+      RenameListName: "&7Du hast&b %RANK_NAME%&7's Listen Namen zu&6 %RANK_LIST_NAME%&7 geändert."
+      RenameDisplayName: "&7Du hast&b %RANK_NME%&7's Anzeigenamen zu&6 %RANK_DISPLAY_NAME%&7 geändert."
+      Create: "&7Du hast den Rang&6 %RANK_NAME%&7 erstellt."
+      Kick: "&7Grund:&b Rangupdate"
+      Information:
+        Name: "&7Name:&6 %RANK_NAME%"
+        ID: "&7ID:&b %RANK_ID%"
+        List: "&7Listennamen: &d%RANK_LIST_NAME%"
+        Display: "&7Anzeigenamen: &a%RANK_DISPLAY_NAME%"
+        Permissions: "&7Klicke um alle Berechtigungen aufzulisten"
+      Usage:
+        General:
+          Create: "&7Erstellt einen neuen Rang"
+          Delete: "&7Entfernt einen Rang"
+          Set: "&7Setzt einem Spieler einen Rang"
+          Remove: "&7Entfent einem Spieler seinen Rang"
+        Rank:
+          Information: "&7Zeigt Informationen über einen Rang"
+          ReadjustID: "&7Setzt eine neue RangID"
+          Rename: "&7Setzt einen neune Rangnamen"
+          RenameList: "&7Setzt einen neune Listennamen"
+          RenameDisplay: "&7Setzte einen neuen Anzeigenamen"
+      Hover:
+        General:
+          Create: "&7Erstellt einen neuen Rang."
+          Delete: "&7Entfernt einen existierenden Rang."
+          Set: "&7Setzte einem Sieler einen Rang."
+          Remove: "&7Entefrnt dem Spieler seinen Rang."
+        Rank:
+          Information: "&7Zeigt Informationen über einen Rang."
+          ReadjustID: "&7Setzt eine neue RangID."
+          Rename: "&7Setzt einen neuen Rangnamen."
+          RenameList: "&7Setzt einen neuen Listennamen."
+          RenameDisplay: "7Setzt einen neuen Anzeigenamen."
+      Error:
+        RankNotExisting: "&7Dieser Rang ist unserem System nicht bekannt."
+        ConnotDeleteDefaultRank: "&7Du bist nicht erlaubt, den Standart Rang zu entfernen."
+        CannotReadjustSameID: "&7Diese RangID ist unserem System schon bekannt."
+        ConnotRenameDefaultRank: "&7Du bist nicht erlaubt, den Standart Rang um zu benennen."
+        CannotRenameSameName: "&7Dies ist der aktuelle Namen des Ranges."
+        CannotRenameExistingName: "&7Dieser Rangname ist unserem System bereits bekannt."
+        CannotRenameSameListName: "&7Dieser Listenname ist der aktuelle Listenname des Ranges."
+        CannotRenameSameDisplayName: "&7Dieser Anzeigename ist der aktuelle Anzeigename des Ranges."
+        RankAlreadyExisting: "&7Dieser Rang ist unserem System bereits bekannt."
+        IDAlreadyTaken: "&7Diese RangID ist unserem System bereits bekannt."
   Inventory:
-    RankPermissions: "&7Permissions von&b %RANK_NAME%&7 [&6%PERMISSIONS&7]"
+    RankPermissions: "&7Rechte von&b %RANK_NAME%&7 [&6%PERMISSIONS&7]"
     WorldList: "&aWelten&7 [&6%WORLD_COUNT%&7]"
+    WarpList: "&dWarps&7 [&6%WARP_COUNT%&7]"
 en:
   Overall:
     JoinMessage: "&b%PLAYER%&7 joined the server."
     QuitMessage: "&b%PLAYER%&7 left the server."
     KickMessage:
-      1: "&4Restart!"
-      2: "&7The server is restarting!"
+      1: "&4You were kikcked from the Server!"
+      2: "&7Reason:&b The server is restarting!"
   UI:
     SideBar:
       10: "&d&l "
@@ -198,15 +252,18 @@ en:
         Create: "&7Creates a new world"
         Delete: "&7Deletes a world"
         TP: "&7Click here to teleport"
+        CreateDimension: "&7Creates a new world with another Dimension"
       Usage:
         Information: "Information about this world"
         Join: "Joins a world"
         Create: "Creates a world"
         Delete: "Deletes a world"
+        CreateDimension: "Creates a world with a dimension"
       Error:
         WorldNotExisting: "&7This world is not known to our system."
         WorldAlreadyExisting: "&7This world is already know to our system."
         WorldAlreadJoined: "&7You are on this world."
+        EnvironmentNotExisting: "&7This dimension is not known to our system."
     Warp:
       Use: "&7You have been warped to&6 %WARP%&7."
       Set: "&7You have set the warpp&6 %WARP%&7."
@@ -231,7 +288,58 @@ en:
         WarpNotExisting: "&7This warp is not known to our system."
         WarpAlreadyExisting: "&7This warp is already known to our system."
     Rank:
-      GetRank: "&7You rank is&6 %RANG%&7."
+      GetRank: "&7You rank is&6 %RANK_NAME%&7."
+      Delete: "&7You have deleted the rank&6 %RANK_NAME%&7."
+      Set: "&7You have changed&b %TARGET%&7's rank to&6 %RANK_NAME%"
+      Remove: "&7You have removed %TARGET%&7's rank."
+      ReadjustID: "&7You have updates the ID of&b %RANK_NAME%&7 to&6 %RANK_ID%&7."
+      Rename: "&7You have renamed the rank&b %OLD_RANK_NAME%&7 to&6 %NEW_RANK_NAME%&7."
+      RenameListName: "&7You have changed&b %RANK_NAME%&7's list name to&6 %RANK_LIST_NAME%&7."
+      RenameDisplayName: "&7You have changed&b %RANK_NME%&7's display name&6 %RANK_DISPLAY_NAME%&7."
+      Create: "&7You have created the rank&6 %RANK_NAME%&7."
+      Kick: "&7Reason:&b Rankupdate"
+      Information:
+        Name: "&7Name:&6 %RANK_NAME%"
+        ID: "&7ID:&b %RANK_ID%"
+        List: "&7List name: &d%RANK_LIST_NAME%"
+        Display: "&7Display name: &a%RANK_DISPLAY_NAME%"
+        Permissions: "&7Click to list all permissions"
+      Usage:
+        General:
+          Create: "&7Creates a new rank"
+          Delete: "&7Delets a rank"
+          Set: "&7SSets a player a rank"
+          Remove: "&7Removes the rank of a player"
+        Rank:
+          Information: "&7Shows information about a rank"
+          ReadjustID: "&7Sets a new rankID"
+          Rename: "&7Sets a new rankname"
+          RenameList: "&7Sets a new listname"
+          RenameDisplay: "&7Sets a new displayname"
+      Hover:
+        General:
+          Create: "&7Creates a new rank."
+          Delete: "&7Delets a rank."
+          Set: "&7Sets a player a rank."
+          Remove: "&7Removes the rank of a player."
+        Rank:
+          Information: "&7Shows inforamtion about a rank."
+          ReadjustID: "&7Sets a new rankID."
+          Rename: "&7Sets a new rankname."
+          RenameList: "&7Sets a new listname."
+          RenameDisplay: "7Sets a new displayname."
+      Error:
+        RankNotExisting: "&7This rank is not know to our system."
+        ConnotDeleteDefaultRank: "&7You are not allowed to delete the default rank."
+        CannotReadjustSameID: "&7This ID is already known to our system"
+        ConnotRenameDefaultRank: "&7You are not allowed to rename the default rank."
+        CannotRenameSameName: "&7This is already the name of the rank."
+        CannotRenameExistingName: "&7This name is already known to our system."
+        CannotRenameSameListName: "&7This is already the list name of the rank."
+        CannotRenameSameDisplayName: "&7This is already the display name of the rank."
+        RankAlreadyExisting: "&7This rank is already known to our system."
+        IDAlreadyTaken: "&7THis ID is already known to our system."
   Inventory:
     RankPermissions: "&7Permissions of&b %RANK_NAME%&7 [&6%PERMISSIONS&7]"
     WorldList: "&aWorlds&7 [&6%WORLD_COUNT%&7]"
+    WarpList: "&dWarps&7 [&6%WARP_COUNT%&7]"

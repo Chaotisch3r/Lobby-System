@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.WarpDataManager;
+import me.chaotisch3r.lobby.util.ItemManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,6 +26,7 @@ public class WarpCommand implements CommandExecutor {
 
     private final String prefix = Lobby.getInstance().getPrefix();
     private final Language language;
+    private final ItemManager itemManager;
     private final WarpDataManager warpDataManager;
 
     @Override
@@ -45,7 +47,7 @@ public class WarpCommand implements CommandExecutor {
                 }
             }
             if (args[0].equalsIgnoreCase("list")) {
-                //Öffne ein Inv, dass alle Warp in sich hat!
+                itemManager.openWarpListInventory(player);
             }
             String warpName = args[0];
             if (warpDataManager.getWarp(warpName) == null) {

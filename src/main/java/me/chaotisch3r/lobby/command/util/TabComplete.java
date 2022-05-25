@@ -1,6 +1,7 @@
 package me.chaotisch3r.lobby.command.util;
 
 import lombok.RequiredArgsConstructor;
+import me.chaotisch3r.lobby.database.RankDataManager;
 import me.chaotisch3r.lobby.database.WarpDataManager;
 import me.chaotisch3r.lobby.database.WorldDataManager;
 import org.bukkit.Bukkit;
@@ -25,6 +26,7 @@ public class TabComplete implements TabCompleter {
 
     private final WorldDataManager worldDataManager;
     private final WarpDataManager warpDataManager;
+    private final RankDataManager rankDataManager;
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
@@ -66,6 +68,13 @@ public class TabComplete implements TabCompleter {
                     worldDataManager.getWorlds().forEach(worldData -> tabComplete.add(worldData.getWorldName()));
                 }
             }
+            else if (args.length == 3) {
+                if (args[0].equalsIgnoreCase("create")) {
+                    tabComplete.add("NORMAL");
+                    tabComplete.add("NETHER");
+                    tabComplete.add("THE_END");
+                }
+            }
         }
         if (command.getName().equalsIgnoreCase("warp")) {
             if (args.length == 1) {
@@ -95,6 +104,34 @@ public class TabComplete implements TabCompleter {
                 return tabComplete;
             if(args.length == 1) {
                 Bukkit.getOnlinePlayers().forEach(players -> tabComplete.add(players.getName()));
+            }
+        }
+        if (command.getName().equalsIgnoreCase("rank")) {
+            if (args.length == 1) {
+                tabComplete.add("create");
+                tabComplete.add("delete");
+                tabComplete.add("set");
+                tabComplete.add("remove");
+            }
+            if (args.length == 2) {
+                if (args[0].equalsIgnoreCase("delete")) {
+                    tabComplete.addAll(rankDataManager.getRankNames());
+                }
+                if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("remove")) {
+                    Bukkit.getOnlinePlayers().forEach(players -> tabComplete.add(players.getName()));
+                }
+                if (!(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("set")
+                        || args[0].equalsIgnoreCase("remove"))) {
+                    tabComplete.add("information");
+                    tabComplete.add("readjustID");
+                    tabComplete.add("rename");
+                    tabComplete.add("renameList");
+                    tabComplete.add("renameDisplay");
+                }
+            }
+            if (args.length == 3) {
+                if(!(args[0].equalsIgnoreCase("set"))) return tabComplete;
+                tabComplete.addAll(rankDataManager.getRankNames());
             }
         }
         return tabComplete;

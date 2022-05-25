@@ -14,7 +14,6 @@ import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -95,10 +94,10 @@ public class Lobby extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("build").setExecutor(new BuildCommand(language, commandUtil, playerDataManager));
+        getCommand("build").setExecutor(new BuildCommand(language, commandUtil, playerDataManager, itemManager));
         getCommand("language").setExecutor(new LanguageCommand(language, messageConfig));
         getCommand("world").setExecutor(new WorldCommand(language, worldDataManager, itemManager));
-        getCommand("warp").setExecutor(new WarpCommand(language, warpDataManager));
+        getCommand("warp").setExecutor(new WarpCommand(language, itemManager, warpDataManager));
         getCommand("lobby").setExecutor(new LobbyCommand(language, warpDataManager));
         getCommand("ping").setExecutor(new PingCommand(language));
         getCommand("rank").setExecutor(new RankCommand(language, commandUtil, itemManager, playerDataManager, rankDataManager));
@@ -113,7 +112,7 @@ public class Lobby extends JavaPlugin {
         commands.add("warp");
         commands.add("world");
         commands.add("rank");
-        commands.forEach(cmd -> getCommand(cmd).setTabCompleter(new TabComplete(worldDataManager, warpDataManager)));
+        commands.forEach(cmd -> getCommand(cmd).setTabCompleter(new TabComplete(worldDataManager, warpDataManager, rankDataManager)));
     }
 
     private void registerClasses() {
@@ -127,10 +126,9 @@ public class Lobby extends JavaPlugin {
         this.language = new Language(messageConfig, playerDataManager);
         this.commandUtil = new CommandUtil(language);
         this.itemConfig = new ItemConfig();
-        this.itemManager = new ItemManager(itemConfig, language, playerDataManager, worldDataManager);
         this.worldDataManager = new WorldDataManager();
         this.warpDataManager = new WarpDataManager();
-
+        this.itemManager = new ItemManager(itemConfig, language, playerDataManager, worldDataManager, warpDataManager);
     }
 
     private void registerDatabase() {
@@ -142,27 +140,23 @@ public class Lobby extends JavaPlugin {
     }
 
     private void setupWorld(Plugin plugin) {
-        World world = Bukkit.getWorld(this.getConfig().getString("World"));
+        this.worldDataManager.loadWorld(Bukkit.getWorlds());
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> this.worldDataManager.getWorlds().forEach(worldData -> {
+            if (Bukkit.getWorld(worldData.getUid()) == null) {
+                new WorldCreator(worldData.getWorldName());
+            }
+        }));
+        World world = Bukkit.getWorld(plugin.getConfig().getString("World"));
         if (world == null)
             return;
-        for (Entity e : world.getEntities()) {
-            for (String str : this.getConfig().getStringList("RemovedEntity")) {
-                if (!(e.getType() == EntityType.valueOf(str.toUpperCase()))) e.remove();
-            }
-        }
+        world.getEntities().forEach(entity -> plugin.getConfig().getStringList("RemovedEntity").forEach(s -> {
+            if (!(entity.getType() == EntityType.valueOf(s.toUpperCase()))) entity.remove();
+        }));
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> world.setTime(6000), 20, 20 * 30);
         world.setThundering(false);
         world.setStorm(false);
         world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         world.setGameRule(GameRule.DO_ENTITY_DROPS, false);
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            this.worldDataManager.loadWorld(Bukkit.getWorlds());
-            this.worldDataManager.getWorlds().forEach(worldData -> {
-                if (Bukkit.getWorld(worldData.getUid()) == null) {
-                    new WorldCreator(worldData.getWorldName());
-                }
-            });
-        });
     }
 
     private void setupRanks() {
