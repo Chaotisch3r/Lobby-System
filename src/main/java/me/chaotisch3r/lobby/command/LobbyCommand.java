@@ -2,7 +2,9 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.database.WarpDataManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -24,8 +26,11 @@ import java.util.UUID;
 public class LobbyCommand implements CommandExecutor {
 
     private final String prefix = Lobby.getInstance().getPrefix();
+
     private final Language language;
+
     private final WarpDataManager warpDataManager;
+    private final PlayerDataManager playerDataManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -35,7 +40,8 @@ public class LobbyCommand implements CommandExecutor {
         }
         UUID uuid = player.getUniqueId();
         if(args.length >= 1) {
-            if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.setup"))) {
+            PlayerData playerData = playerDataManager.getPlayer(uuid);
+            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.setup"))) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
                 return true;
             }

@@ -2,7 +2,9 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +25,10 @@ import java.util.UUID;
 public class PingCommand implements CommandExecutor {
 
     private final String prefix = Lobby.getInstance().getPrefix();
+
     private final Language language;
+
+    private final PlayerDataManager playerDataManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -38,7 +43,8 @@ public class PingCommand implements CommandExecutor {
                     .replace("%PING%", String.valueOf(player.getPing())));
         }
         else if (args.length == 1) {
-           if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.ping"))) {
+            PlayerData playerData = playerDataManager.getPlayer(uuid);
+            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.ping"))) {
                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
                return true;
            }

@@ -3,7 +3,7 @@
 
 Prefix: "&8[&6Lobby&8]&7 » "
 
-# If 'useSideBar' is 'true' thats means that this Plugin uses its own SideBar System
+# If 'useSideBar' is 'true' that means that this Plugin uses its own SideBar System
 # The 'useSideBarAnimation' is only active, if 'useSideBar' is on true
 
 useSideBar: true
@@ -22,7 +22,7 @@ MySQL:
 # ---------------------------------------- MySQL ----------------------------------------
 
 # ---------------------------------------- IMPORTANT ----------------------------------------
-# World means the world name thats running the lobby system
+# World means the world name that running the lobby system
 # 'RemovedEntity' means which entites will not be removed on the start of the server. Please write this in uppercase
 # You can disable the Broadcast message if you want (not recommended)
 # If you want to use the secound line in the MOTD, use '\n' to do it
@@ -46,7 +46,7 @@ XP:
 
 # Change the Inventory of the start menu here
 # Use size if you want the normal inventory
-# Use Type if you want to use an other inventory, here is a link to website that contains all Type with the right name: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryType.html, you have to scroll down to 'Enum Constant Summary'
+# Use Type if you want to use another inventory, here is a link to website that contains all Type with the right name: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/inventory/InventoryType.html, you have to scroll down to 'Enum Constant Summary'
 # The type is overwriting the size method, so just delete 'Size' if you want to use 'Type' and the other way
 # You can change the items on the items.yml file
 Inventory:

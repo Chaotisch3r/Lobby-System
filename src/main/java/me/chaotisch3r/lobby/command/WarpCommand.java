@@ -2,7 +2,9 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.database.WarpDataManager;
 import me.chaotisch3r.lobby.util.ItemManager;
 import org.bukkit.Location;
@@ -25,9 +27,12 @@ import java.util.UUID;
 public class WarpCommand implements CommandExecutor {
 
     private final String prefix = Lobby.getInstance().getPrefix();
+
     private final Language language;
+
     private final ItemManager itemManager;
     private final WarpDataManager warpDataManager;
+    private final PlayerDataManager playerDataManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -57,7 +62,8 @@ public class WarpCommand implements CommandExecutor {
             player.teleport(warpDataManager.getWarp(warpName).toLocation());
             player.sendMessage(prefix, language.getColoredString(uuid, "Command.Warp.Use"));
         } else if (args.length == 2) {
-            if (!(player.isOp() || player.hasPermission("lobby.warp") || player.hasPermission("lobby.*"))) {
+            PlayerData playerData = playerDataManager.getPlayer(uuid);
+            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.warp"))) {
                 sendHelp(player);
                 return true;
             }

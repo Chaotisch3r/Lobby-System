@@ -2,7 +2,9 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.database.WorldDataManager;
 import me.chaotisch3r.lobby.util.ItemManager;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -32,9 +34,12 @@ import java.util.UUID;
 public class WorldCommand implements CommandExecutor {
 
     private final String prefix = Lobby.getInstance().getPrefix();
+
     private final Language language;
-    private final WorldDataManager worldDataManager;
     private final ItemManager itemManager;
+
+    private final WorldDataManager worldDataManager;
+    private final PlayerDataManager playerDataManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -43,7 +48,8 @@ public class WorldCommand implements CommandExecutor {
             return true;
         }
         UUID uuid = player.getUniqueId();
-        if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.world"))) {
+        PlayerData playerData = playerDataManager.getPlayer(uuid);
+        if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.world"))) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
             return true;
         }

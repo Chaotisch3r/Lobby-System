@@ -28,10 +28,12 @@ import java.util.UUID;
 public class BuildCommand implements CommandExecutor {
 
     private final String prefix = Lobby.getInstance().getPrefix();
+
     private final Language language;
     private final CommandUtil commandUtil;
-    private final PlayerDataManager playerDataManager;
     private final ItemManager itemManager;
+
+    private final PlayerDataManager playerDataManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

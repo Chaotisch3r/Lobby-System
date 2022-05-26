@@ -13,6 +13,7 @@ import me.chaotisch3r.lobby.listener.ServerListener;
 import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
+import me.chaotisch3r.lobby.util.UIManager;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
@@ -90,12 +91,12 @@ public class Lobby extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("build").setExecutor(new BuildCommand(language, commandUtil, playerDataManager, itemManager));
-        getCommand("language").setExecutor(new LanguageCommand(language, messageConfig));
-        getCommand("world").setExecutor(new WorldCommand(language, worldDataManager, itemManager));
-        getCommand("warp").setExecutor(new WarpCommand(language, itemManager, warpDataManager));
-        getCommand("lobby").setExecutor(new LobbyCommand(language, warpDataManager));
-        getCommand("ping").setExecutor(new PingCommand(language));
+        getCommand("build").setExecutor(new BuildCommand(language, commandUtil, itemManager, playerDataManager));
+        getCommand("language").setExecutor(new LanguageCommand(language, messageConfig, playerDataManager));
+        getCommand("world").setExecutor(new WorldCommand(language, itemManager, worldDataManager, playerDataManager));
+        getCommand("warp").setExecutor(new WarpCommand(language, itemManager, warpDataManager, playerDataManager));
+        getCommand("lobby").setExecutor(new LobbyCommand(language, warpDataManager, playerDataManager));
+        getCommand("ping").setExecutor(new PingCommand(language, playerDataManager));
         getCommand("rank").setExecutor(new RankCommand(language, commandUtil, itemManager, playerDataManager, rankDataManager));
     }
 
@@ -108,7 +109,7 @@ public class Lobby extends JavaPlugin {
         commands.add("warp");
         commands.add("world");
         commands.add("rank");
-        commands.forEach(cmd -> getCommand(cmd).setTabCompleter(new TabComplete(worldDataManager, warpDataManager, rankDataManager)));
+        commands.forEach(cmd -> getCommand(cmd).setTabCompleter(new TabComplete(worldDataManager, warpDataManager, rankDataManager, playerDataManager)));
     }
 
     private void registerClasses() {
@@ -125,6 +126,7 @@ public class Lobby extends JavaPlugin {
         this.worldDataManager = new WorldDataManager();
         this.warpDataManager = new WarpDataManager();
         this.itemManager = new ItemManager(itemConfig, language, playerDataManager, worldDataManager, warpDataManager);
+        new UIManager(language, playerDataManager);
     }
 
     private void registerDatabase() {

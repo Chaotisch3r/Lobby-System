@@ -2,7 +2,9 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -11,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -24,8 +27,11 @@ import java.util.Locale;
 public class LanguageCommand implements CommandExecutor {
 
     private final String prefix = Lobby.getInstance().getPrefix();
+    
     private final Language language;
     private final MessageConfig messageConfig;
+    
+    private final PlayerDataManager playerDataManager;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -33,25 +39,27 @@ public class LanguageCommand implements CommandExecutor {
             sender.sendMessage(prefix + "§7Dieser Befehl kann nur als Spieler ausgeführt werden,");
             return true;
         }
+        UUID uuid = player.getUniqueId();
         if (args.length == 0) {
-            player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Language.Use")
+            player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Use")
                     .replace("%PLAYER%", player.getName())
-                    .replace("%LANGUAGE%", language.getLocale(player.getUniqueId()).getDisplayName()));
+                    .replace("%LANGUAGE%", language.getLocale(uuid).getDisplayName()));
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
-                if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.language"))) {
-                    player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
+                PlayerData playerData = playerDataManager.getPlayer(uuid);
+                if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.language"))) {
+                    player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
                     return true;
                 }
                 messageConfig.reloadMessageConfig();
-                player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Language.Reload"));
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Reload"));
             }
             if (args[0].equalsIgnoreCase("help")) {
                 sendHelp(player);
                 return true;
             }
             if (args[0].equalsIgnoreCase("list")) {
-                player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Language.List"));
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.List"));
                 player.sendMessage("§7-§6 de§7 (Deutsch)");
                 player.sendMessage("§7-§6 en§7 (English)");
                 System.out.println(language.getLocales());
@@ -63,12 +71,12 @@ public class LanguageCommand implements CommandExecutor {
             }
             String targetName = args[0];
             if (Bukkit.getPlayer(targetName) == null) {
-                player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.UknownPlayer")
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UknownPlayer")
                         .replace("%TARGET%", targetName));
                 return true;
             }
             Player target = Bukkit.getPlayer(targetName);
-            player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Language.Use")
+            player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Use")
                     .replace("%PLAYER%", target.getName())
                     .replace("%LANGUAGE%", language.getLocale(target.getUniqueId()).getLanguage()));
         } else if (args.length == 2) {
@@ -78,16 +86,16 @@ public class LanguageCommand implements CommandExecutor {
                 return true;
             }
             if (Locale.forLanguageTag(lang) == null) {
-                player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Language.Error.UknownLanguage"));
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Error.UknownLanguage"));
                 return true;
             }
             Locale locale = Locale.forLanguageTag(lang);
             if (language.getLocale(player.getUniqueId()).equals(locale)) {
-                player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Language.Error.SameLanguage"));
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Error.SameLanguage"));
                 return true;
             }
-            language.setLocale(player.getUniqueId(), locale);
-            player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Language.Change")
+            language.setLocale(uuid, locale);
+            player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Change")
                     .replace("%LANGUAGE%", locale.getDisplayName()));
         } else {
             sendHelp(player);
@@ -96,10 +104,11 @@ public class LanguageCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player) {
+        UUID uuid = player.getUniqueId();
         player.sendMessage(prefix + "§7----------[§6 Language§7-§6Help§7]----------");
-        player.sendMessage("§6/language§7 - " + language.getColoredString(player.getUniqueId(), "Command.Language.Usage.Use"));
-        player.sendMessage("§6/language list§7 - " + language.getColoredString(player.getUniqueId(), "Command.Language.Usage.List"));
-        player.sendMessage("§6/language change§7 <§blanguage§7> - " + language.getColoredString(player.getUniqueId(), "Command.Language.Usage.Change"));
+        player.sendMessage("§6/language§7 - " + language.getColoredString(uuid, "Command.Language.Usage.Use"));
+        player.sendMessage("§6/language list§7 - " + language.getColoredString(uuid, "Command.Language.Usage.List"));
+        player.sendMessage("§6/language change§7 <§blanguage§7> - " + language.getColoredString(uuid, "Command.Language.Usage.Change"));
         player.sendMessage(prefix + "§7----------[§6 Language§7-§6Help§7]----------");
     }
 

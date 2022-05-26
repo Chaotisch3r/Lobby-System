@@ -1,8 +1,12 @@
 package me.chaotisch3r.lobby.util;
 
+import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.PlayerData;
+import me.chaotisch3r.lobby.data.RankData;
 import me.chaotisch3r.lobby.database.Language;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
+import me.chaotisch3r.lobby.database.RankDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -24,7 +28,13 @@ import java.util.*;
 public class UIManager {
 
     private Calendar calendar;
-    private final Language language = Lobby.getInstance().getLanguage();
+    private Language language;
+    private PlayerDataManager playerDataManager;
+
+    public UIManager(Language language, PlayerDataManager playerDataManager) {
+        this.language = language;
+        this.playerDataManager = playerDataManager;
+    }
 
     public UIManager(Player player) {
         calendar = Calendar.getInstance(Locale.GERMAN);
@@ -33,6 +43,7 @@ public class UIManager {
                 config.getInt("XP.Level"));
         sendTimeActionBar(player);
         setSideBar(player);
+        setupDisplay(player);
     }
 
     private void sendTimeActionBar(Player player) {
@@ -80,6 +91,13 @@ public class UIManager {
                     .setScore(s.getValue());
         }
         player.setScoreboard(scoreboard);
+    }
+
+    private void setupDisplay(Player player) {
+        PlayerData playerData = playerDataManager.getPlayer(player.getUniqueId());
+        RankData rankData = playerData.getRank();
+        player.setDisplayName(rankData.getRankDisplayName());
+        player.setPlayerListName(rankData.getRankListName());
     }
 
     private Map<String, Integer> getScores(UUID uuid) {

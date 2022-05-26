@@ -1,6 +1,8 @@
 package me.chaotisch3r.lobby.command.util;
 
 import lombok.RequiredArgsConstructor;
+import me.chaotisch3r.lobby.data.PlayerData;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.database.RankDataManager;
 import me.chaotisch3r.lobby.database.WarpDataManager;
 import me.chaotisch3r.lobby.database.WorldDataManager;
@@ -12,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -27,14 +30,17 @@ public class TabComplete implements TabCompleter {
     private final WorldDataManager worldDataManager;
     private final WarpDataManager warpDataManager;
     private final RankDataManager rankDataManager;
+    private final PlayerDataManager playerDataManager;
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> tabComplete = new ArrayList<>();
         if (!(sender instanceof Player player)) return tabComplete;
         Bukkit.getOnlinePlayers().forEach(players -> tabComplete.remove(player.getName()));
+        UUID uuid = player.getUniqueId();
+        PlayerData playerData = playerDataManager.getPlayer(uuid);
         if (command.getName().equalsIgnoreCase("build")) {
-            if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.build")))
+            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.build")))
                 return tabComplete;
             if (args.length == 1) {
                 tabComplete.add("help");
@@ -43,7 +49,7 @@ public class TabComplete implements TabCompleter {
         }
         if (command.getName().equalsIgnoreCase("language") || command.getName().equalsIgnoreCase("lang")) {
             if (args.length == 1) {
-                if (player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.language"))
+                if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.language")))
                     tabComplete.add("reload");
                 tabComplete.add("help");
                 tabComplete.add("change");
@@ -56,7 +62,7 @@ public class TabComplete implements TabCompleter {
             }
         }
         if (command.getName().equalsIgnoreCase("world")) {
-            if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.world")))
+            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.world")))
                 return tabComplete;
             if (args.length == 1) {
                 tabComplete.add("information");
@@ -91,7 +97,7 @@ public class TabComplete implements TabCompleter {
         if (command.getName().equalsIgnoreCase("lobby")) {
             if(args.length == 1) {
                 tabComplete.add("help");
-                if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.setup")))
+                if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.setup")))
                     return tabComplete;
                 tabComplete.add("setup");
             }
@@ -100,13 +106,15 @@ public class TabComplete implements TabCompleter {
             }
         }
         if (command.getName().equalsIgnoreCase("ping")) {
-            if(!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.setup")))
+            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.ping")))
                 return tabComplete;
             if(args.length == 1) {
                 Bukkit.getOnlinePlayers().forEach(players -> tabComplete.add(players.getName()));
             }
         }
         if (command.getName().equalsIgnoreCase("rank")) {
+            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.build")))
+                return tabComplete;
             if (args.length == 1) {
                 tabComplete.add("create");
                 tabComplete.add("delete");
