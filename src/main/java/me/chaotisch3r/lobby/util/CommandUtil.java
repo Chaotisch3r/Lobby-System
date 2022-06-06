@@ -1,9 +1,10 @@
 package me.chaotisch3r.lobby.util;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.RankData;
 import me.chaotisch3r.lobby.database.Language;
+import me.chaotisch3r.lobby.database.PlayerDataManager;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -23,34 +24,42 @@ import java.util.UUID;
  **/
 
 @Getter
-@RequiredArgsConstructor
 public class CommandUtil {
 
     public final List<Player> build = new ArrayList<>();
+
     private final String prefix = Lobby.getInstance().getPrefix();
-    private Language language;
+
     private UUID uuid;
+
+    private Language language;
+
+    private PlayerDataManager playerDataManager;
+    private RankData rankData;
+
+    public CommandUtil(Language language, PlayerDataManager playerDataManager) {
+        this.language = language;
+        this.playerDataManager = playerDataManager;
+    }
 
     public CommandUtil(UUID uuid) {
         this.uuid = uuid;
     }
 
-    public CommandUtil(Language language) {
-        this.language = language;
-    }
-
     public void sendWarpHelp(Player player) {
-        TextComponent warp = new TextComponent("-§6 /warp§7 <§bwarpname§7> - "
+        this.rankData = this.playerDataManager.getPlayer(uuid).getRank();
+
+        TextComponent warp = new TextComponent("-§6 /warp§7 <§bwarpName§7> - "
                 + language.getColoredString(uuid, "Command.Warp.Usage.Warp"));
         TextComponent list = new TextComponent("-§6 /warp list§7 - "
                 + language.getColoredString(uuid, "Command.Warp.Usage.List"));
-        TextComponent set = new TextComponent("-§6 /warp set§7 <§bwarpname§7> - "
+        TextComponent set = new TextComponent("-§6 /warp set§7 <§bwarpName§7> - "
                 + language.getColoredString(uuid, "Command.Warp.Usage.Set"));
-        TextComponent remove = new TextComponent("-§6 /warp remove§7 <§bwarpname§7> - "
+        TextComponent remove = new TextComponent("-§6 /warp remove§7 <§bwarpName§7> - "
                 + language.getColoredString(uuid, "Command.Warp.Usage.Remove"));
-        TextComponent update = new TextComponent("-§6 /warp update§7 <§bwarpname§7> - "
+        TextComponent update = new TextComponent("-§6 /warp update§7 <§bwarpName§7> - "
                 + language.getColoredString(uuid, "Command.Warp.Usage.Update"));
-        TextComponent rename = new TextComponent("-§6 /warp rename§7 <§5oldwarpname§7> <§bnewwarpname§7> - "
+        TextComponent rename = new TextComponent("-§6 /warp rename§7 <§5oldWarpnNme§7> <§bnewWarpName§7> - "
                 + language.getColoredString(uuid, "Command.Warp.Usage.Rename"));
 
         warp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
@@ -73,7 +82,8 @@ public class CommandUtil {
         update.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/warp update "));
         rename.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/warp rename "));
 
-        if (!(player.isOp() || player.hasPermission("lobbyq.*") || player.hasPermission("lobby.warp"))) {
+        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.warp"))) {
+            player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
             player.sendMessage(prefix + "§7----------[§6 Warp§7-§6Help§7]----------");
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.HelpInformation"));
             player.spigot().sendMessage(list);
@@ -98,13 +108,13 @@ public class CommandUtil {
                 + language.getColoredString(uuid, "Command.World.Usage.Information"));
         TextComponent info = new TextComponent("§6/world information§7 - "
                 + language.getColoredString(uuid, "Command.World.Usage.Information"));
-        TextComponent join = new TextComponent("§6/world join§7 <§bworldname§7> - "
+        TextComponent join = new TextComponent("§6/world join§7 <§bworldName§7> - "
                 + language.getColoredString(uuid, "Command.World.Usage.Join"));
         TextComponent create = new TextComponent("§6/world create§7 <§bname§7> - "
                 + language.getColoredString(uuid, "Command.World.Usage.Create"));
-        TextComponent create2 = new TextComponent("§6/world create§7 <§bname§7> <§dDimension>§7 - "
+        TextComponent create2 = new TextComponent("§6/world create§7 <§bname§7> <§ddimension>§7 - "
                 + language.getColoredString(uuid, "Command.World.Usage.CreateDimension"));
-        TextComponent delete = new TextComponent("§6/world delete§7 <§bworldname§7> - "
+        TextComponent delete = new TextComponent("§6/world delete§7 <§bworldName§7> - "
                 + language.getColoredString(uuid, "Command.World.Usage.Delete"));
 
         world.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
@@ -139,6 +149,8 @@ public class CommandUtil {
     }
 
     public void sendLobbyHelp(Player player) {
+        this.rankData = this.playerDataManager.getPlayer(uuid).getRank();
+
         TextComponent lobby = new TextComponent("-§6 /lobby§7 - "
                 + language.getColoredString(uuid, "Command.Lobby.Usage.Teleport"));
         TextComponent setup = new TextComponent("-§6 /lobby setup setlobby§7 - "
@@ -152,7 +164,7 @@ public class CommandUtil {
         lobby.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/lobby"));
         setup.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/lobby setup setlobby"));
 
-        if (!(player.isOp() || player.hasPermission("lobbyq.*") || player.hasPermission("lobby.warp"))) {
+        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.lobby"))) {
             player.sendMessage(prefix + "§7----------[§6 Ping§7-§6Help§7]----------");
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.HelpInformation"));
             player.spigot().sendMessage(lobby);
@@ -168,9 +180,11 @@ public class CommandUtil {
     }
 
     public void sendPingHelp(Player player) {
+        this.rankData = this.playerDataManager.getPlayer(uuid).getRank();
+
         TextComponent pingOwn = new TextComponent("-§6 /ping§7 - "
                 + language.getColoredString(uuid, "Command.Ping.Usage.Own"));
-        TextComponent pingAnother = new TextComponent("-§6 /ping <§bplayername§7> - "
+        TextComponent pingAnother = new TextComponent("-§6 /ping <§bplayerName§7> - "
                 + language.getColoredString(uuid, "Command.Ping.Usage.Another"));
 
         pingOwn.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
@@ -181,7 +195,7 @@ public class CommandUtil {
         pingAnother.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/ping "));
         pingOwn.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/ping"));
 
-        if (!(player.isOp() || player.hasPermission("lobby.*") || player.hasPermission("lobby.warp"))) {
+        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.ping"))) {
             player.sendMessage(prefix + "§7----------[§6 Ping§7-§6Help§7]----------");
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.HelpInformation"));
             player.spigot().sendMessage(pingOwn);
@@ -198,7 +212,6 @@ public class CommandUtil {
 
     public void sendRankCompleteHelp(Player player) {
         // /rank create/...
-        uuid = player.getUniqueId();
         TextComponent c1 = new TextComponent("-§6 /rank create§7 <§brankName§7> - "
                 + language.getColoredString(uuid, "Command.Rank.Usage.General.Create"));
         TextComponent c2 = new TextComponent("-§6 /rank delete§7 <§brankName§7> - "
@@ -232,7 +245,6 @@ public class CommandUtil {
 
     public void sendRankHelp(Player player, String rankName) {
         // /rank <rankname> ...
-        uuid = player.getUniqueId();
         TextComponent c1 = new TextComponent("-§6 /rank " + rankName + " information§7 - "
                 + language.getColoredString(uuid, "Command.Rank.Usage.Rank.Information"));
         TextComponent c2 = new TextComponent("-§6 /rank " + rankName + " readjustID§7 <§bnewID§7> - "
@@ -268,5 +280,53 @@ public class CommandUtil {
         player.spigot().sendMessage(c4);
         player.spigot().sendMessage(c5);
         player.sendMessage(prefix + "§7----------[§6 Rank§7-§6Help§7]----------");
+    }
+
+    public void sendCoinsHelp(Player player, String targetName) {
+        TextComponent c1 = new TextComponent("-§6 /coins§7 - "
+                + language.getColoredString(uuid, "Command.Coins.Usage.GetCoins"));
+        TextComponent c2 = new TextComponent("-§6 /coins§7 <§bplayerName§7> - "
+                + language.getColoredString(uuid, "Command.Coins.Usage.GetCoins"));
+        TextComponent c3 = new TextComponent("-§6 /coins set <§bplayerName§7> <§dcoins§7> - "
+                + language.getColoredString(uuid, "Command.Coins.Usage.SetCoins"));
+        TextComponent c4 = new TextComponent("-§6 /coins add <§bplayerName§7> <§dcoins§7> - "
+                + language.getColoredString(uuid, "Command.Coins.Usage.AddCoins"));
+        TextComponent c5 = new TextComponent("-§6 /coins remove <§bplayerName§7> <§dcoins§7> - "
+                + language.getColoredString(uuid, "Command.Coins.Usage.RemoveCoins"));
+
+        c1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new Text(language.getColoredString(uuid, "Command.Coins.Hover.GetCoins"))));
+        c2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new Text(language.getColoredString(uuid, "Command.Coins.Hover.GetCoins"))));
+        c3.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new Text(language.getColoredString(uuid, "Command.Coins.Hover.SetCoins"))));
+        c4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new Text(language.getColoredString(uuid, "Command.Coins.Hover.AddCoins"))));
+        c5.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new Text(language.getColoredString(uuid, "Command.Coins.Hover.RemoveCoins"))));
+
+        c1.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins "));
+        c2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins "));
+        c3.setClickEvent(!targetName.equals("") ? new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins set " + targetName)
+                : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins set"));
+        c4.setClickEvent(!targetName.equals("") ? new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins add " + targetName)
+                : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins add"));
+        c5.setClickEvent(!targetName.equals("") ? new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins remove " + targetName)
+                : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins remove"));
+
+        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.coins"))) {
+            player.sendMessage(prefix + "§7----------[§6 Coins§7-§6Help§7]----------");
+            player.spigot().sendMessage(c1);
+            player.spigot().sendMessage(c2);
+            player.sendMessage(prefix + "§7----------[§6 Coins§7-§6Help§7]----------");
+            return;
+        }
+        player.sendMessage(prefix + "§7----------[§6 Coins§7-§6Help§7]----------");
+        player.spigot().sendMessage(c1);
+        player.spigot().sendMessage(c2);
+        player.spigot().sendMessage(c3);
+        player.spigot().sendMessage(c4);
+        player.spigot().sendMessage(c5);
+        player.sendMessage(prefix + "§7----------[§6 Coins§7-§6Help§7]----------");
     }
 }

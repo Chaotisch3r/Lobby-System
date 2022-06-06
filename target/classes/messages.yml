@@ -168,10 +168,31 @@ de:
         CannotRenameSameDisplayName: "&7Dieser Anzeigename ist der aktuelle Anzeigename des Ranges."
         RankAlreadyExisting: "&7Dieser Rang ist unserem System bereits bekannt."
         IDAlreadyTaken: "&7Diese RangID ist unserem System bereits bekannt."
+    Coins:
+      GetCoins: "&b%PLAYER%&7's besitzt&6 %COINS% Coins&7."
+      SetCoins: "&7Du hast&6 %TARGET%&7's Coins auf&6 %COINS% Coins&7 gesetzt."
+      AddCoins: "&7Du hast&b %TARGET%&6 %COINS% Coins%&7 hinzugefügt."
+      RemoveCoins: "&7Du hast&b %TARGET% &6%COINS% Coins&7 entfernt."
+      Usage:
+        GetCoins: "Gibt die Anzahl der Coins eines Spielers zurück"
+        SetCoins: "Setzt die Coins eines Spielers"
+        AddCoins: "Fügt Coins zu einem Spieler hinzu"
+        RemoveCoins: "Entfernt Coins von einem Spieler"
+      Hover:
+        GetCoins: "&7Gibt die Anzahl der Coins eines Spielers zurück."
+        SetCoins: "&7Setzt die Coins eines Spielers."
+        AddCoins: "&7Fügt Coins zu einem Spieler hinzu."
+        RemoveCoins: "&7Entfernt Coins von einem Spieler."
+      Error:
+        CoinsBelowOne: "&7Die Anzahl der Coins kann nicht unter 1 liegen."
+        GetCoinsNotVisible: "&7Dir ist es nicht erlaubt, die Coins von diesem Spieler zu sehen."
+        UnknownCoins: "&7Gebe eine Zahl ein."
   Inventory:
     RankPermissions: "&7Rechte von&b %RANK_NAME%&7 [&6%PERMISSIONS&7]"
     WorldList: "&aWelten&7 [&6%WORLD_COUNT%&7]"
     WarpList: "&dWarps&7 [&6%WARP_COUNT%&7]"
+    Profile: "&bProfil"
+    Hider: "&6Verstecker"
 en:
   Overall:
     JoinMessage: "&b%PLAYER%&7 joined the server."
@@ -339,7 +360,28 @@ en:
         CannotRenameSameDisplayName: "&7This is already the display name of the rank."
         RankAlreadyExisting: "&7This rank is already known to our system."
         IDAlreadyTaken: "&7THis ID is already known to our system."
+    Coins:
+      GetCoins: "&b%PLAYER%&7's amount of coins is&6 %COINS%&7."
+      SetCoins: "&7You have set&6 %TARGET%&7's coins to&6 %COINS%&7."
+      AddCoins: "&7You have added&6 %COINS% coins&7 to&b %TARGET%&7."
+      RemoveCoins: "&7You have removed&6 %COINS% coins&7 from&b %TARGET%&7."
+      Usage:
+        GetCoins: "Gets the coins from a player"
+        SetCoins: "Sets the coins of a player"
+        AddCoins: "Adds coins to a player"
+        RemoveCoins: "Removes coins from a player"
+      Hover:
+        GetCoins: "&7Gets the coins from a player."
+        SetCoins: "&7Sets the coins of a player."
+        AddCoins: "&7Adds coins to a player."
+        RemoveCoins: "&7Removes coins from a player."
+      Error:
+        CoinsBelowOne: "&7The amount cannot be below 1."
+        GetCoinsNotVisible: "&7You are not allowed, to see this player's coins."
+        UnknownCoins: "&7Enter an existing number."
   Inventory:
     RankPermissions: "&7Permissions of&b %RANK_NAME%&7 [&6%PERMISSIONS&7]"
     WorldList: "&aWorlds&7 [&6%WORLD_COUNT%&7]"
     WarpList: "&dWarps&7 [&6%WARP_COUNT%&7]"
+    Profile: "&bProfile"
+    Hider: "&6Hider"

@@ -70,12 +70,12 @@ public class LanguageCommand implements CommandExecutor {
                 return true;
             }
             String targetName = args[0];
-            if (Bukkit.getPlayer(targetName) == null) {
+            Player target;
+            if ((target = Bukkit.getPlayer(targetName)) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UknownPlayer")
                         .replace("%TARGET%", targetName));
                 return true;
             }
-            Player target = Bukkit.getPlayer(targetName);
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Use")
                     .replace("%PLAYER%", target.getName())
                     .replace("%LANGUAGE%", language.getLocale(target.getUniqueId()).getLanguage()));

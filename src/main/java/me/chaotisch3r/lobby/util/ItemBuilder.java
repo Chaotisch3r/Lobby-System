@@ -26,7 +26,7 @@ import java.util.List;
 public class ItemBuilder {
 
     private final ItemStack itemStack;
-    private final ArrayList<String> itemLore = new ArrayList<>();
+    private ArrayList<String> itemLore = new ArrayList<>();
     private ItemMeta itemMeta;
     private SkullMeta skullMeta;
     private Inventory inventory;
@@ -75,6 +75,13 @@ public class ItemBuilder {
         assert this.skullMeta != null;
         this.skullMeta.setOwningPlayer(player);
         this.skullMeta.setDisplayName(displayName);
+    }
+
+    public ItemBuilder(ItemStack itemStack) {
+        this.itemStack = itemStack;
+        this.itemMeta = itemStack.getItemMeta();
+        if (itemMeta.getLore() == null) return;
+        this.itemLore = (ArrayList<String>) this.itemMeta.getLore();
     }
 
     public ItemBuilder setDisplayName(String displayName) {

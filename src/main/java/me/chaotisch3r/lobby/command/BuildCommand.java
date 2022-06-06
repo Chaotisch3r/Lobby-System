@@ -65,11 +65,12 @@ public class BuildCommand implements CommandExecutor {
                 return true;
             }
             String targetName = args[0];
-            if (Bukkit.getPlayer(targetName) == null) {
-                player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.UknownPlayer").replace("%TARGET%", targetName));
+            Player target;
+            if ((target = Bukkit.getPlayer(targetName)) == null) {
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UknownPlayer")
+                        .replace("%TARGET%", targetName));
                 return true;
             }
-            Player target = Bukkit.getPlayer(targetName);
             target.setGameMode(commandUtil.build.contains(target) ? GameMode.SURVIVAL : GameMode.CREATIVE);
             if (target.getGameMode() == GameMode.CREATIVE) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Add").replace("%PLAYER%", target.getName()));

@@ -6,14 +6,10 @@ import me.chaotisch3r.lobby.command.util.TabComplete;
 import me.chaotisch3r.lobby.database.*;
 import me.chaotisch3r.lobby.filemanagement.ItemConfig;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
-import me.chaotisch3r.lobby.listener.BlockListener;
-import me.chaotisch3r.lobby.listener.EntityListener;
-import me.chaotisch3r.lobby.listener.PlayerListener;
-import me.chaotisch3r.lobby.listener.ServerListener;
+import me.chaotisch3r.lobby.listener.*;
 import me.chaotisch3r.lobby.mysql.MySQL;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
-import me.chaotisch3r.lobby.util.UIManager;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
@@ -33,6 +29,10 @@ import java.util.List;
 
 /*
     TODO:
+     - Settings Databse:
+       - /coin <Dein Name> ein/auschaltbar machen (perms ignore this)
+       - Glass farbe in Inv
+       - ...
  */
 
 @Getter
@@ -52,6 +52,7 @@ public class Lobby extends JavaPlugin {
     private WorldDataManager worldDataManager;
     private WarpDataManager warpDataManager;
     private RankDataManager rankDataManager;
+    private SettingsDataManager settingsDataManager;
 
     private PluginManager pluginManager;
 
@@ -64,7 +65,7 @@ public class Lobby extends JavaPlugin {
         instance = this;
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
-        prefix = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Prefix"));
+        prefix = getColoredString("Prefix");
         registerClasses();
         registerDatabase();
         registerCommands();
@@ -76,18 +77,21 @@ public class Lobby extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        instance = null;
-        Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer(language.getColoredString(player.getUniqueId(), "Overall.KickMessage.1")
+        Bukkit.getOnlinePlayers().forEach(player ->
+                player.kickPlayer(language.getColoredString(player.getUniqueId(), "Overall.KickMessage.1")
                 + "\n" + language.getColoredString(player.getUniqueId(), "Overall.KickMessage.2")));
         this.mySQL.disconnect();
+        instance = null;
     }
 
     private void registerListeners(Plugin plugin) {
-        this.pluginManager.registerEvents(new PlayerListener(playerDataManager, lobbyDataManager,
-                language, commandUtil, itemManager), plugin);
+        this.pluginManager.registerEvents(new PlayerListener(language, commandUtil, itemManager, playerDataManager,
+                lobbyDataManager, settingsDataManager), plugin);
         this.pluginManager.registerEvents(new ServerListener(), plugin);
         this.pluginManager.registerEvents(new BlockListener(), plugin);
         this.pluginManager.registerEvents(new EntityListener(), plugin);
+        this.pluginManager.registerEvents(new InventoryListener(language, itemConfig, itemManager, playerDataManager,
+                lobbyDataManager), plugin);
     }
 
     private void registerCommands() {
@@ -98,6 +102,7 @@ public class Lobby extends JavaPlugin {
         getCommand("lobby").setExecutor(new LobbyCommand(language, warpDataManager, playerDataManager));
         getCommand("ping").setExecutor(new PingCommand(language, playerDataManager));
         getCommand("rank").setExecutor(new RankCommand(language, commandUtil, itemManager, playerDataManager, rankDataManager));
+        getCommand("coins").setExecutor(new CoinsCommand(language, commandUtil, playerDataManager, settingsDataManager));
     }
 
     private void registerTabComplete() {
@@ -121,12 +126,13 @@ public class Lobby extends JavaPlugin {
         this.pluginManager = Bukkit.getPluginManager();
         this.messageConfig = new MessageConfig();
         this.language = new Language(messageConfig, playerDataManager);
-        this.commandUtil = new CommandUtil(language);
         this.itemConfig = new ItemConfig();
         this.worldDataManager = new WorldDataManager();
         this.warpDataManager = new WarpDataManager();
-        this.itemManager = new ItemManager(itemConfig, language, playerDataManager, worldDataManager, warpDataManager);
-        new UIManager(language, playerDataManager);
+        this.settingsDataManager = new SettingsDataManager();
+        this.commandUtil = new CommandUtil(language, playerDataManager);
+        this.itemManager = new ItemManager(itemConfig, language, playerDataManager, worldDataManager, warpDataManager,
+                lobbyDataManager, settingsDataManager);
     }
 
     private void registerDatabase() {
@@ -135,15 +141,17 @@ public class Lobby extends JavaPlugin {
         this.worldDataManager.registerWorld();
         this.warpDataManager.registerWarp();
         this.rankDataManager.registerRank();
+        this.settingsDataManager.registerSettings();
     }
 
     private void setupWorld(Plugin plugin) {
+        this.worldDataManager.loadWorlds();
         this.worldDataManager.loadWorld(Bukkit.getWorlds());
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> this.worldDataManager.getWorlds().forEach(worldData -> {
+        this.worldDataManager.getWorlds().forEach(worldData -> {
             if (Bukkit.getWorld(worldData.getUid()) == null) {
-                new WorldCreator(worldData.getWorldName());
+                Bukkit.createWorld(new WorldCreator(worldData.getWorldName()));
             }
-        }));
+        });
         World world = Bukkit.getWorld(plugin.getConfig().getString("World"));
         if (world == null)
             return;
@@ -159,9 +167,14 @@ public class Lobby extends JavaPlugin {
 
     private void setupRanks() {
         if(this.rankDataManager.getRank("owner") == null)
-            this.rankDataManager.loadRank("owner", 1, "&4Owner&7 |&4 ", "&4Owner&7 » ", new String[]{ "lobby.*" });
+            this.rankDataManager.loadRank("owner", 1, "&4Owner&7 |&4 ",
+                    "&4Owner&7 » ", new String[]{ "lobby.*" });
         if(this.rankDataManager.getRank("player") == null)
-            this.rankDataManager.loadRank("player", 30, "&7Player | ", "&7Player » ", new String[]{ "" });
+            this.rankDataManager.loadRank("player", 30, "&7Player | ",
+                    "&7Player » ", new String[]{ "" });
     }
 
+    public String getColoredString(String path) {
+        return ChatColor.translateAlternateColorCodes('&', getConfig().getString(path));
+    }
 }

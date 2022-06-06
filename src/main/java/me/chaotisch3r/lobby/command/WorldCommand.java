@@ -67,11 +67,11 @@ public class WorldCommand implements CommandExecutor {
         } else if (args.length == 2) {
             String worldName = args[1];
             if (args[0].equalsIgnoreCase("join")) {
-                if (Bukkit.getWorld(worldName) == null) {
+                World world;
+                if ((world = Bukkit.getWorld(worldName)) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldNotExisting"));
                     return true;
                 }
-                World world = Bukkit.getWorld(worldName);
                 if (player.getWorld() == world) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldAlreadyJoined"));
                     return true;
@@ -90,18 +90,18 @@ public class WorldCommand implements CommandExecutor {
                 Bukkit.getWorlds().add(world);
                 worldDataManager.loadWorld(world);
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Create.1")
-                        .replace("%WORLD%", world.getName()));
+                        .replace("%WORLD%", worldName));
                 TextComponent component = new TextComponent(language.getColoredString(uuid, "Command.World.Create.2"));
                 component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/world join " + worldName));
                 player.spigot().sendMessage(component);
                 return true;
             }
             if (args[0].equalsIgnoreCase("delete")) {
-                if (Bukkit.getWorld(worldName) == null) {
+                World world;
+                if ((world = Bukkit.getWorld(worldName)) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldNotExisting"));
                     return true;
                 }
-                World world = Bukkit.getWorld(worldName);
                 worldDataManager.addWorldToDeletedList(world);
                 worldDataManager.removeWorld(world);
                 Bukkit.unloadWorld(world, false);
@@ -119,10 +119,6 @@ public class WorldCommand implements CommandExecutor {
             }
             String worldName = args[1];
             String destination = args[2];
-            if (Bukkit.getWorld(worldName) != null) {
-                player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldAlreadyExisting"));
-                return true;
-            }
             World.Environment environment = World.Environment.valueOf(destination);
             if (!(Arrays.stream(World.Environment.values()).toList().contains(environment))) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.EnvironmentNotExisting"));
@@ -132,7 +128,7 @@ public class WorldCommand implements CommandExecutor {
             Bukkit.getWorlds().add(world);
             worldDataManager.loadWorld(world);
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Create.1")
-                    .replace("%WORLD%", world.getName()));
+                    .replace("%WORLD%", worldName));
             TextComponent component = new TextComponent(language.getColoredString(uuid, "Command.World.Create.2"));
             component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/world join " + worldName));
             player.spigot().sendMessage(component);

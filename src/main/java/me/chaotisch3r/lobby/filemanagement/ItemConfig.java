@@ -1,10 +1,10 @@
 package me.chaotisch3r.lobby.filemanagement;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.LobbyData;
+import me.chaotisch3r.lobby.database.LobbyDataManager;
 import me.chaotisch3r.lobby.util.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -30,11 +31,10 @@ public class ItemConfig {
 
     private final File file;
     private YamlConfiguration config;
-    private Gson gson;
 
+    private final LobbyDataManager lobbyDataManager = Lobby.getInstance().getLobbyDataManager();
 
     public ItemConfig() {
-        gson = new GsonBuilder().setPrettyPrinting().create();
         file = new File(Lobby.getInstance().getDataFolder(), "items.yml");
         loadConfig();
         config.options().copyDefaults(true);
@@ -84,7 +84,26 @@ public class ItemConfig {
         ItemStack hiderSetting = new ItemBuilder(Material.REPEATER)
                 .setDisplayName("§4Setting")
                 .addLore("§7Currently: ")
-                .addLore("%HIDER_STATUS%")
+                .addLore("§6%HIDER_STATUS%")
+                .get();
+        //Inventory: Hider
+        ItemStack profileBack = new ItemBuilder(Material.ARROW)
+                .setDisplayName("§6Back")
+                .get();
+        ItemStack profileFriends = new ItemBuilder(Material.PLAYER_HEAD)
+                .setDisplayName("§bFriends")
+                .get();
+        ItemStack profileParty = new ItemBuilder(Material.CAKE)
+                .setDisplayName("§dParty")
+                .get();
+        ItemStack profileClan = new ItemBuilder(Material.GOLDEN_CHESTPLATE)
+                .setDisplayName("§eClan")
+                .get();
+        ItemStack profileSettings = new ItemBuilder(Material.REPEATER)
+                .setDisplayName("§4Settings")
+                .get();
+        ItemStack profileForward = new ItemBuilder(Material.ARROW)
+                .setDisplayName("§6Forward")
                 .get();
         //Hotbar-set
         config.addDefault(prefix + "StartItem.Compass",  startItemCompass);
@@ -97,6 +116,13 @@ public class ItemConfig {
         config.addDefault(prefix + "Hider.VIP", hiderVip);
         config.addDefault(prefix + "Hider.None", hiderNone);
         config.addDefault(prefix + "Hider.Setting", hiderSetting);
+        //Inventory: Profile-set
+        config.addDefault(prefix + "Profile.Back",  profileBack);
+        config.addDefault(prefix + "Profile.Friends", profileFriends);
+        config.addDefault(prefix + "Profile.Party",  profileParty);
+        config.addDefault(prefix + "Profile.Clan",  profileClan);
+        config.addDefault(prefix + "Profile.Settings", profileSettings);
+        config.addDefault(prefix + "Profile.Forward", profileForward);
     }
 
     public void addGermanItems() {
@@ -133,7 +159,26 @@ public class ItemConfig {
         ItemStack hiderSetting = new ItemBuilder(Material.REPEATER)
                 .setDisplayName("§4Einstellung")
                 .addLore("§7Aktuell: ")
-                .addLore("%HIDER_STATUS%")
+                .addLore("§6%HIDER_STATUS%")
+                .get();
+        //Inventory: Hider
+        ItemStack profileBack = new ItemBuilder(Material.ARROW)
+                .setDisplayName("§6Back")
+                .get();
+        ItemStack profileFriends = new ItemBuilder(Material.PLAYER_HEAD)
+                .setDisplayName("§bFriends")
+                .get();
+        ItemStack profileParty = new ItemBuilder(Material.CAKE)
+                .setDisplayName("§dParty")
+                .get();
+        ItemStack profileClan = new ItemBuilder(Material.GOLDEN_CHESTPLATE)
+                .setDisplayName("§eClan")
+                .get();
+        ItemStack profileSettings = new ItemBuilder(Material.REPEATER)
+                .setDisplayName("§4Settings")
+                .get();
+        ItemStack profileForward = new ItemBuilder(Material.ARROW)
+                .setDisplayName("§6Forward")
                 .get();
         //Hotbar-set
         config.addDefault(prefix + "StartItem.Compass",  startItemCompass);
@@ -146,6 +191,13 @@ public class ItemConfig {
         config.addDefault(prefix + "Hider.VIP", hiderVip);
         config.addDefault(prefix + "Hider.None", hiderNone);
         config.addDefault(prefix + "Hider.Setting", hiderSetting);
+        //Inventory: Profile-set
+        config.addDefault(prefix + "Profile.Back",  profileBack);
+        config.addDefault(prefix + "Profile.Friends", profileFriends);
+        config.addDefault(prefix + "Profile.Party",  profileParty);
+        config.addDefault(prefix + "Profile.Clan",  profileClan);
+        config.addDefault(prefix + "Profile.Settings", profileSettings);
+        config.addDefault(prefix + "Profile.Forward", profileForward);
     }
 
     public ItemStack getItem(Locale locale, String path) {
@@ -162,6 +214,13 @@ public class ItemConfig {
         isMeta.setOwningPlayer(owner);
         is.setItemMeta(isMeta);
         return is;
+    }
+
+    public ItemStack getGlassPane(UUID uuid) {
+        LobbyData lobbyData = lobbyDataManager.getLobby(uuid);
+        return new ItemBuilder(Material.valueOf(lobbyData.getColor() + "_STAINED_GLASS_PANE"))
+                .setDisplayName(" ")
+                .get();
     }
 
     public void loadConfig() {

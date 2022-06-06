@@ -4,13 +4,16 @@ import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.LobbyData;
 import me.chaotisch3r.lobby.data.PlayerData;
+import me.chaotisch3r.lobby.data.RankData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.LobbyDataManager;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
+import me.chaotisch3r.lobby.database.SettingsDataManager;
 import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
 import me.chaotisch3r.lobby.util.UIManager;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,10 +21,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -34,14 +34,16 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @RequiredArgsConstructor
 public class PlayerListener implements Listener {
 
-    private final PlayerDataManager playerDataManager;
-    private final LobbyDataManager lobbyDataManager;
+    private final String prefix = Lobby.getInstance().getPrefix();
+    private final FileConfiguration config = Lobby.getInstance().getConfig();
 
     private final Language language;
-    private final FileConfiguration config = Lobby.getInstance().getConfig();
-    private final String prefix = Lobby.getInstance().getPrefix();
     private final CommandUtil commandUtil;
     private final ItemManager itemManager;
+
+    private final PlayerDataManager playerDataManager;
+    private final LobbyDataManager lobbyDataManager;
+    private final SettingsDataManager settingsDataManager;
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void handle(AsyncPlayerPreLoginEvent event) {
@@ -64,6 +66,7 @@ public class PlayerListener implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         lobbyDataManager.loadLobby(player.getUniqueId());
+        settingsDataManager.loadSetting(player.getUniqueId());
         new UIManager(player);
         new CommandUtil(player.getUniqueId());
         event.setJoinMessage(null);
@@ -72,6 +75,12 @@ public class PlayerListener implements Listener {
                         .replace("%PLAYER%", player.getName())));
         player.setHealth(20);
         player.setFoodLevel(20);
+        RankData rankData = playerDataManager.getPlayer(player.getUniqueId()).getRank();
+        if (player.getGameMode() == GameMode.CREATIVE && (player.isOp() || rankData.hasPermission("lobby.*")
+                || rankData.hasPermission("lobby.build"))) {
+            commandUtil.build.add(player);
+            return;
+        }
         itemManager.setStartEquip(player);
     }
 
@@ -85,7 +94,7 @@ public class PlayerListener implements Listener {
         commandUtil.build.remove(player);
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
         if(event.getAction() == Action.LEFT_CLICK_AIR ||event.getAction() == Action.LEFT_CLICK_BLOCK) return;
         if(event.getItem() == null) return;
@@ -94,12 +103,33 @@ public class PlayerListener implements Listener {
                 getItem(language.getLocale(event.getPlayer().getUniqueId()), "StartItem.Hider").getItemMeta().getDisplayName())) {
             itemManager.openHiderInventory(event.getPlayer());
         }
+        if(event.getItem().getItemMeta().getDisplayName().equals(itemManager.getItemConfig().
+                getItem(language.getLocale(event.getPlayer().getUniqueId()), "StartItem.Profile").getItemMeta().getDisplayName())) {
+            itemManager.openProfileInventory(event.getPlayer());
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
+        new UIManager(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onFoodLevelChangeEvent(FoodLevelChangeEvent event) {
         event.setFoodLevel(20);
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+        event.setCancelled(player.getGameMode() != GameMode.CREATIVE);
+    }
+
+    @EventHandler
+    public void onPlayerPickupItemEvent(PlayerPickupItemEvent event) {
+        Player player = event.getPlayer();
+        event.setCancelled(player.getGameMode() != GameMode.CREATIVE);
     }
 
 }

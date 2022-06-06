@@ -1,12 +1,10 @@
 package me.chaotisch3r.lobby.util;
 
-import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.data.RankData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
-import me.chaotisch3r.lobby.database.RankDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -28,19 +26,15 @@ import java.util.*;
 public class UIManager {
 
     private Calendar calendar;
-    private Language language;
-    private PlayerDataManager playerDataManager;
 
-    public UIManager(Language language, PlayerDataManager playerDataManager) {
-        this.language = language;
-        this.playerDataManager = playerDataManager;
-    }
+    private final Language language = Lobby.getInstance().getLanguage();
+    private final PlayerDataManager playerDataManager = Lobby.getInstance().getPlayerDataManager();
 
     public UIManager(Player player) {
         calendar = Calendar.getInstance(Locale.GERMAN);
         FileConfiguration config = Lobby.getInstance().getConfig();
-        player.setLevel(config.getBoolean("XP.useYearXP") ? Math.addExact(calendar.getTime().getYear(), 1900) :
-                config.getInt("XP.Level"));
+        Bukkit.getOnlinePlayers().forEach(players -> players.setLevel(config.getBoolean("XP.useOnlinePlayerXP") ? Bukkit.getOnlinePlayers().size() :
+                config.getInt("XP.Level")));
         sendTimeActionBar(player);
         setSideBar(player);
         setupDisplay(player);
@@ -96,8 +90,8 @@ public class UIManager {
     private void setupDisplay(Player player) {
         PlayerData playerData = playerDataManager.getPlayer(player.getUniqueId());
         RankData rankData = playerData.getRank();
-        player.setDisplayName(rankData.getRankDisplayName());
-        player.setPlayerListName(rankData.getRankListName());
+        player.setDisplayName(rankData.getRankDisplayName() + player.getName());
+        player.setPlayerListName(rankData.getRankListName() + player.getName());
     }
 
     private Map<String, Integer> getScores(UUID uuid) {

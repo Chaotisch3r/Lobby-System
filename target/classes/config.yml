@@ -41,7 +41,7 @@ Broadcast:
 JoinMessage: true
 QuitMessage: true
 XP:
-  useYearXP: true
+  useOnlinePlayerXP: true
   Level: 0
 
 # Change the Inventory of the start menu here

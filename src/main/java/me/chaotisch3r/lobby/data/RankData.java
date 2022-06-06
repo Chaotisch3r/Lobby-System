@@ -2,6 +2,7 @@ package me.chaotisch3r.lobby.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 
@@ -25,6 +26,14 @@ public class RankData {
 
     public boolean hasPermission(String permission) {
         return Arrays.stream(rankPermissions).toList().contains(permission);
+    }
+
+    public String getRankDisplayName() {
+        return ChatColor.translateAlternateColorCodes('&', rankDisplayName);
+    }
+
+    public String getRankListName() {
+        return ChatColor.translateAlternateColorCodes('&', rankListName);
     }
 
 }

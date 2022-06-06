@@ -36,7 +36,7 @@ public class RankDataManager {
     }
 
     @SneakyThrows
-    public void loadRank(String rankName, int randID, String rankListName, String rankDisplayName, String[] rankPermissions) {
+    public void loadRank(String rankName, int rankID, String rankListName, String rankDisplayName, String[] rankPermissions) {
         if (!mySQL.isConnected()) mySQL.connect();
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM rank_data WHERE rankName=?");
         ResultSet rs = null;
@@ -50,7 +50,7 @@ public class RankDataManager {
                         rs.getString("rankListName"), rs.getString("rankDisplayName"),
                         rs.getString("rankPermissions").split(";"))));
             } else {
-                rankCache.put(rankName, (rankData = new RankData(rankName, randID, rankListName, rankDisplayName, rankPermissions)));
+                rankCache.put(rankName, (rankData = new RankData(rankName, rankID, rankListName, rankDisplayName, rankPermissions)));
                 updateAsync(rankData);
             }
             if (!rankData.getRankName().equals(rankName)) updateAsync(rankData);

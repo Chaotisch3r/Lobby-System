@@ -60,6 +60,21 @@ public class WorldDataManager {
         });
     }
 
+    public void loadWorlds() {
+        if(!mySQL.isConnected()) mySQL.connect();
+        try (PreparedStatement ps = mySQL.getStatement("SELECT * FROM `world_data`");
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                worldCache.put(UUID.fromString(rs.getString("uid")), new WorldData(UUID.fromString(rs.getString("uid")),
+                        rs.getString("worldName"), World.Environment.valueOf(rs.getString("environment")),
+                        rs.getDouble("X"), rs.getDouble("Y"), rs.getDouble("Z"),
+                        rs.getFloat("Yaw"), rs.getFloat("Pitch")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @SneakyThrows
     public void loadWorld(World world) {
         if (!mySQL.isConnected()) mySQL.connect();

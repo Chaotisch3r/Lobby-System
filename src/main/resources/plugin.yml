@@ -9,6 +9,7 @@ commands:
     permissions: [ lobby.*, lobby.build ]
   language:
     description: This command contains to the Lobby-System.
+    permissions: [ lobby.*, lobby.language ]
     aliases: [ lang ]
   world:
     description: This command contains to the Lobby-System.
@@ -23,5 +24,9 @@ commands:
     description: This command contains to the Lobby-System.
     permissions: [ lobby.*, lobby.ping ]
   rank:
-    description: This command contais to the Lobby-System
+    description: This command contais to the Lobby-System.
     permissions: [ lobby.*, lobby.rank ]
+  coins:
+    description: This Command contains to the Lobby-System.
+    permissions: [ lobby.*, lobby.coins ]
+    aliases: [ coin ]

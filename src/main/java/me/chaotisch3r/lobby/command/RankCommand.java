@@ -2,6 +2,7 @@ package me.chaotisch3r.lobby.command;
 
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
+import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.data.RankData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
@@ -32,9 +33,11 @@ import java.util.UUID;
 public class RankCommand implements CommandExecutor {
 
     private final String prefix = Lobby.getInstance().getPrefix();
+
     private final Language language;
     private final CommandUtil commandUtil;
     private final ItemManager itemManager;
+
     private final PlayerDataManager playerDataManager;
     private final RankDataManager rankDataManager;
     /*
@@ -108,6 +111,29 @@ public class RankCommand implements CommandExecutor {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Delete")
                         .replace("%RANK_NAME%", rankName));
             }
+            if(args[0].equalsIgnoreCase("remove")) {
+                String playerName = args[1];
+                OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
+                PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
+                if (targetData == null) {
+                    player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
+                    return true;
+                }
+                if (playerDataManager.getOfflinePlayer(target.getUniqueId()) == null) {
+                    player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer"));
+                    return true;
+                }
+                playerDataManager.setRank(target.getUniqueId(), "player");
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Set")
+                        .replace("%TARGET%", targetData.getName()).replace("%RANK_NAME%", "player"));
+                if (target.isOnline()) {
+                    UUID uuid1 = target.getUniqueId();
+                    Player t = (Player) target;
+                    t.kickPlayer(language.getColoredString(uuid1, "Overall.KickMessage.1" + "\n"
+                            + language.getColoredString(uuid1, "Command.Rank.Kick")));
+                }
+                return true;
+            }
             String rankName = args[0];
             if (rankDataManager.getRank(rankName) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
@@ -126,7 +152,8 @@ public class RankCommand implements CommandExecutor {
                 String playerName = args[1];
                 String rankName = args[2];
                 OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
-                if (playerDataManager.getPlayer(target.getUniqueId()) == null) {
+                PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
+                if (targetData == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer"));
                     return true;
                 }
@@ -136,35 +163,12 @@ public class RankCommand implements CommandExecutor {
                 }
                 playerDataManager.setRank(target.getUniqueId(), rankName);
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Set")
-                        .replace("%TARGET%", target.getName()).replace("%RANK_NAME%", rankName));
+                        .replace("%TARGET%", targetData.getName()).replace("%RANK_NAME%", rankName));
                 if (target.isOnline()) {
                     UUID uuid1 = target.getUniqueId();
                     Player t = (Player) target;
-                    t.kickPlayer(language.getColoredString(uuid1, "Overall.KickMessage.1"
-                            + "\n" + language.getColoredString(uuid1, "Command.Rank.Kick")));
-                }
-                return true;
-            }
-            if(args[0].equalsIgnoreCase("remove")) {
-                String playerName = args[1];
-                String rankName = args[2];
-                OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
-                if (rankDataManager.getRank(rankName) == null) {
-                    player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
-                    return true;
-                }
-                if (playerDataManager.getPlayer(target.getUniqueId()) == null) {
-                    player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer"));
-                    return true;
-                }
-                playerDataManager.setRank(target.getUniqueId(), "player");
-                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Set")
-                        .replace("%TARGET%", target.getName()).replace("%RANK_NAME%", "player"));
-                if (target.isOnline()) {
-                    UUID uuid1 = target.getUniqueId();
-                    Player t = (Player) target;
-                    t.kickPlayer(language.getColoredString(uuid1, "Overall.KickMessage.1" + "\n"
-                            + language.getColoredString(uuid1, "Command.Rank.Kick")));
+                    t.kickPlayer(language.getColoredString(uuid1, "Overall.KickMessage.1")
+                            + "\n" + language.getColoredString(uuid1, "Command.Rank.Kick"));
                 }
                 return true;
             }

@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.RankData;
-import me.chaotisch3r.lobby.database.Language;
-import me.chaotisch3r.lobby.database.PlayerDataManager;
-import me.chaotisch3r.lobby.database.WarpDataManager;
-import me.chaotisch3r.lobby.database.WorldDataManager;
+import me.chaotisch3r.lobby.database.*;
 import me.chaotisch3r.lobby.filemanagement.ItemConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,8 +14,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -34,16 +33,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ItemManager {
 
+    private Locale locale;
+
     private final ItemConfig itemConfig;
     private final Language language;
-    private Locale locale;
     private final PlayerDataManager playerDataManager;
     private final WorldDataManager worldDataManager;
     private final WarpDataManager warpDataManager;
+    private final LobbyDataManager lobbyDataManager;
+    private final SettingsDataManager settingsDataManager;
 
     private final FileConfiguration config = Lobby.getInstance().getConfig();
 
     private Inventory hiderInventory;
+    private Inventory profileInventory;
 
     private Inventory rankPermissionsInventory;
     private Inventory worldListInventory;
@@ -64,28 +67,47 @@ public class ItemManager {
     }
 
     public void openHiderInventory(Player player) {
+        UUID uuid = player.getUniqueId();
         //Item management
         locale = playerDataManager.getPlayer(player.getUniqueId()).getLocale();
         ItemStack setting = itemConfig.getItem(locale, "Hider.Setting");
         ItemStack all = itemConfig.getItem(locale, "Hider.All");
         ItemStack vip = itemConfig.getItem(locale, "Hider.VIP");
         ItemStack none = itemConfig.getItem(locale, "Hider.None");
+        ItemMeta settingMeta = setting.getItemMeta();
+        List<String> lore = settingMeta.getLore();
+        lore.forEach(line -> line.replace("%HIDER_STATUS%", settingsDataManager.getSettings(uuid).getHiderStatus()));
+        settingMeta.setLore(lore);
+        setting.setItemMeta(settingMeta);
         //Inventory management
-        if(config.contains("Inventory.Hider.Slot")) {
-            hiderInventory = Bukkit.createInventory(player, config.getInt("Inventory.Hider.Slot"));
-        }
-        else if(config.contains("Inventory.Hider.Type")) {
-            InventoryType inventoryType = InventoryType.valueOf(config.getString("Inventory.Hider.Type"));
-            hiderInventory = Bukkit.createInventory(player, inventoryType);
-        }
-        else {
-            hiderInventory = Bukkit.createInventory(player, InventoryType.BREWING);
-            hiderInventory.setItem(0, all);
-            hiderInventory.setItem(1, vip);
-            hiderInventory.setItem(2, none);
-            hiderInventory.setItem(3, setting);
-        }
+        hiderInventory = Bukkit.createInventory(player, InventoryType.BREWING, language.getColoredString(uuid, "Inventory.Hider"));
+        hiderInventory.setItem(0, all);
+        hiderInventory.setItem(1, vip);
+        hiderInventory.setItem(2, none);
+        hiderInventory.setItem(3, setting);
         player.openInventory(hiderInventory);
+    }
+
+    public void openProfileInventory(Player player) {
+        UUID uuid = player.getUniqueId();
+        locale = playerDataManager.getPlayer(uuid).getLocale();
+        //Item management
+        ItemStack back = itemConfig.getItem(locale, "Profile.Back");
+        ItemStack friends = itemConfig.getHead(locale, "Profile.Friends", player);
+        ItemStack party = itemConfig.getItem(locale, "Profile.Party");
+        ItemStack clan = itemConfig.getItem(locale, "Profile.Clan");
+        ItemStack settings = itemConfig.getItem(locale, "Profile.Settings");
+        ItemStack forward = itemConfig.getItem(locale, "Profile.Forward");
+        //Inventory management
+        profileInventory = Bukkit.createInventory(player, 6*9, language.getColoredString(uuid, "Inventory.Profile"));
+        setGlassPane(uuid, profileInventory, 4);
+        new ItemBuilder(back).build(profileInventory, 5, 0);
+        new ItemBuilder(friends).build(profileInventory, 5, 2);
+        new ItemBuilder(party).build(profileInventory, 5, 3);
+        new ItemBuilder(clan).build(profileInventory, 5, 5);
+        new ItemBuilder(settings).build(profileInventory, 5, 6);
+        new ItemBuilder(forward).build(profileInventory, 5, 8);
+        player.openInventory(profileInventory);
     }
 
     // Command Inventories
@@ -118,10 +140,23 @@ public class ItemManager {
         UUID uuid = player.getUniqueId();
         warpListInventory = Bukkit.createInventory(player, 5*9, language.getColoredString(uuid, "Inventory.WarpList.Name")
                 .replace("%WARP_COUNT%", String.valueOf(warpDataManager.getWarps().size())));
-        warpDataManager.getWarps().forEach(warpData -> {
-            warpListInventory.addItem(new ItemBuilder(Material.NETHER_STAR, "§d" + warpData.getWarpName()).get());
-        });
+        warpDataManager.getWarps().forEach(warpData -> warpListInventory.addItem(new ItemBuilder(Material.NETHER_STAR, "§d" + warpData.getWarpName()).get()));
         player.openInventory(warpListInventory);
     }
 
+    private void setGlassPane(UUID uuid, Inventory inventory, int line) {
+        int i = switch (line) {
+            case 1 -> 9;
+            case 2 -> 18;
+            case 3 -> 27;
+            case 4 -> 36;
+            case 5 -> 45;
+            default -> -1;
+        };
+        int newI = i+9;
+        for (; i < newI; i++) {
+            if (inventory.getItem(i) == null)
+                inventory.setItem(i, itemConfig.getGlassPane(uuid));
+        }
+    }
 }

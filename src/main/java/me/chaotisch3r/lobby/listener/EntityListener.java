@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
 /**
@@ -17,6 +18,11 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
  **/
 
 public class EntityListener implements Listener {
+
+    @EventHandler
+    public void onEntityDamageEvent(EntityDamageEvent e) {
+        e.setCancelled(true);
+    }
 
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {
