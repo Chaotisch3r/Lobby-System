@@ -1,6 +1,6 @@
 name: Lobby-System
 main: me.chaotisch3r.lobby.Lobby
-version: 1.0
+version: Alpha_1.0.9
 author: Chaotisch3r
 api-version: 1.13
 commands:
