@@ -96,11 +96,11 @@ public class Lobby extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("build").setExecutor(new BuildCommand(language, commandUtil, itemManager, playerDataManager));
-        getCommand("language").setExecutor(new LanguageCommand(language, messageConfig, playerDataManager));
-        getCommand("world").setExecutor(new WorldCommand(language, itemManager, worldDataManager, playerDataManager));
-        getCommand("warp").setExecutor(new WarpCommand(language, itemManager, warpDataManager, playerDataManager));
-        getCommand("lobby").setExecutor(new LobbyCommand(language, warpDataManager, playerDataManager));
-        getCommand("ping").setExecutor(new PingCommand(language, playerDataManager));
+        getCommand("language").setExecutor(new LanguageCommand(language, commandUtil, messageConfig, playerDataManager));
+        getCommand("world").setExecutor(new WorldCommand(language, commandUtil, itemManager, worldDataManager, playerDataManager));
+        getCommand("warp").setExecutor(new WarpCommand(language, commandUtil, itemManager, warpDataManager, playerDataManager));
+        getCommand("lobby").setExecutor(new LobbyCommand(language, commandUtil, warpDataManager, playerDataManager));
+        getCommand("ping").setExecutor(new PingCommand(language, commandUtil,playerDataManager));
         getCommand("rank").setExecutor(new RankCommand(language, commandUtil, itemManager, playerDataManager, rankDataManager));
         getCommand("coins").setExecutor(new CoinsCommand(language, commandUtil, playerDataManager, settingsDataManager));
     }

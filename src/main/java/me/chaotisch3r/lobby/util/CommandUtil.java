@@ -10,6 +10,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +45,10 @@ public class CommandUtil {
 
     public CommandUtil(UUID uuid) {
         this.uuid = uuid;
+        this.rankData = this.playerDataManager.getPlayer(uuid).getRank();
     }
 
     public void sendWarpHelp(Player player) {
-        this.rankData = this.playerDataManager.getPlayer(uuid).getRank();
-
         TextComponent warp = new TextComponent("-§6 /warp§7 <§bwarpName§7> - "
                 + language.getColoredString(uuid, "Command.Warp.Usage.Warp"));
         TextComponent list = new TextComponent("-§6 /warp list§7 - "
@@ -149,8 +149,6 @@ public class CommandUtil {
     }
 
     public void sendLobbyHelp(Player player) {
-        this.rankData = this.playerDataManager.getPlayer(uuid).getRank();
-
         TextComponent lobby = new TextComponent("-§6 /lobby§7 - "
                 + language.getColoredString(uuid, "Command.Lobby.Usage.Teleport"));
         TextComponent setup = new TextComponent("-§6 /lobby setup setlobby§7 - "
@@ -180,8 +178,6 @@ public class CommandUtil {
     }
 
     public void sendPingHelp(Player player) {
-        this.rankData = this.playerDataManager.getPlayer(uuid).getRank();
-
         TextComponent pingOwn = new TextComponent("-§6 /ping§7 - "
                 + language.getColoredString(uuid, "Command.Ping.Usage.Own"));
         TextComponent pingAnother = new TextComponent("-§6 /ping <§bplayerName§7> - "
@@ -305,7 +301,7 @@ public class CommandUtil {
         c5.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                 new Text(language.getColoredString(uuid, "Command.Coins.Hover.RemoveCoins"))));
 
-        c1.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins "));
+        c1.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins"));
         c2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins "));
         c3.setClickEvent(!targetName.equals("") ? new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins set " + targetName)
                 : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins set"));
@@ -329,4 +325,26 @@ public class CommandUtil {
         player.spigot().sendMessage(c5);
         player.sendMessage(prefix + "§7----------[§6 Coins§7-§6Help§7]----------");
     }
+
+    public void sendLanguageHelp(Player player) {
+        TextComponent c1 = new TextComponent("§6/language§7 - "
+                + language.getColoredString(uuid, "Command.Language.Usage.Use"));
+        TextComponent c2 = new TextComponent("§6/language list§7 - "
+                + language.getColoredString(uuid, "Command.Language.Usage.List"));
+        TextComponent c3 = new TextComponent("§6/language change§7 <§blanguage§7> - " + language.getColoredString(uuid, "Command.Language.Usage.Change"));
+
+        c1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(language.getColoredString(uuid, "Command.Language.Hover.Use"))));
+        c2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(language.getColoredString(uuid, "Command.Language.Hover.List"))));
+        c3.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(language.getColoredString(uuid, "Command.Language.Hover.Change"))));
+
+        c1.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/language"));
+        c2.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/language list"));
+        c3.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/language change "));
+        player.sendMessage(prefix + "§7----------[§6 Language§7-§6Help§7]----------");
+        player.spigot().sendMessage(c1);
+        player.spigot().sendMessage(c2);
+        player.spigot().sendMessage(c3);
+        player.sendMessage(prefix + "§7----------[§6 Language§7-§6Help§7]----------");
+    }
+
 }

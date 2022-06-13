@@ -5,6 +5,7 @@ import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
+import me.chaotisch3r.lobby.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,6 +28,7 @@ public class PingCommand implements CommandExecutor {
     private final String prefix = Lobby.getInstance().getPrefix();
 
     private final Language language;
+    private final CommandUtil commandUtil;
 
     private final PlayerDataManager playerDataManager;
 
@@ -66,6 +68,6 @@ public class PingCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player) {
-        Lobby.getInstance().getCommandUtil().sendPingHelp(player);
+        commandUtil.sendPingHelp(player);
     }
 }

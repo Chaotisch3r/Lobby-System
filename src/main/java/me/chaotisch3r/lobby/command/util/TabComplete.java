@@ -128,14 +128,15 @@ public class TabComplete implements TabCompleter {
                 if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("remove")) {
                     Bukkit.getOnlinePlayers().forEach(players -> tabComplete.add(players.getName()));
                 }
-                if (!(args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("set")
-                        || args[0].equalsIgnoreCase("remove"))) {
-                    tabComplete.add("information");
-                    tabComplete.add("readjustID");
-                    tabComplete.add("rename");
-                    tabComplete.add("renameList");
-                    tabComplete.add("renameDisplay");
+                if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("set")
+                        || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("create")) {
+                    return tabComplete;
                 }
+                tabComplete.add("information");
+                tabComplete.add("readjustID");
+                tabComplete.add("rename");
+                tabComplete.add("renameList");
+                tabComplete.add("renameDisplay");
             }
             if (args.length == 3) {
                 if(!(args[0].equalsIgnoreCase("set"))) return tabComplete;

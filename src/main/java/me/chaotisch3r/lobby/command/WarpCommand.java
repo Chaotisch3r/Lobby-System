@@ -6,6 +6,7 @@ import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.database.WarpDataManager;
+import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -29,8 +30,9 @@ public class WarpCommand implements CommandExecutor {
     private final String prefix = Lobby.getInstance().getPrefix();
 
     private final Language language;
-
+    private final CommandUtil commandUtil;
     private final ItemManager itemManager;
+
     private final WarpDataManager warpDataManager;
     private final PlayerDataManager playerDataManager;
 
@@ -118,7 +120,7 @@ public class WarpCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player) {
-        Lobby.getInstance().getCommandUtil().sendWarpHelp(player);
+        commandUtil.sendWarpHelp(player);
     }
 
 }

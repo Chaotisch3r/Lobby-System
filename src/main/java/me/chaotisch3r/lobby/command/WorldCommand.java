@@ -6,6 +6,7 @@ import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.database.WorldDataManager;
+import me.chaotisch3r.lobby.util.CommandUtil;
 import me.chaotisch3r.lobby.util.ItemManager;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -36,6 +37,7 @@ public class WorldCommand implements CommandExecutor {
     private final String prefix = Lobby.getInstance().getPrefix();
 
     private final Language language;
+    private final CommandUtil commandUtil;
     private final ItemManager itemManager;
 
     private final WorldDataManager worldDataManager;
@@ -154,7 +156,7 @@ public class WorldCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player) {
-        Lobby.getInstance().getCommandUtil().sendWorldHelp(player);
+        commandUtil.sendWorldHelp(player);
     }
 
 }

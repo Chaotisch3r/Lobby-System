@@ -52,7 +52,7 @@ public class RankCommand implements CommandExecutor {
         - /rank <rankName/rankID> renameDisplayName <newDisplayName>                        ✔
 
         `player` is a default rank, no changes should be done to this rank.
-        The only thing that can chnage is Display- & ListName
+        The only thing that can change is Display- & ListName
      */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -72,7 +72,8 @@ public class RankCommand implements CommandExecutor {
                 return true;
             }
             if (args[0].equalsIgnoreCase("create") || args[0].equalsIgnoreCase("delete")
-                || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("remove")) {
+                || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("remove")
+                || args[0].equalsIgnoreCase("-help")) {
                 sendCompleteHelp(player);
             }
             String rankName = args[0];

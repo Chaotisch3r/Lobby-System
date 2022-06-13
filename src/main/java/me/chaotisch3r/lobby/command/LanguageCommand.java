@@ -6,6 +6,7 @@ import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.filemanagement.MessageConfig;
+import me.chaotisch3r.lobby.util.CommandUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,6 +30,7 @@ public class LanguageCommand implements CommandExecutor {
     private final String prefix = Lobby.getInstance().getPrefix();
     
     private final Language language;
+    private final CommandUtil commandUtil;
     private final MessageConfig messageConfig;
     
     private final PlayerDataManager playerDataManager;
@@ -104,12 +106,7 @@ public class LanguageCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player) {
-        UUID uuid = player.getUniqueId();
-        player.sendMessage(prefix + "§7----------[§6 Language§7-§6Help§7]----------");
-        player.sendMessage("§6/language§7 - " + language.getColoredString(uuid, "Command.Language.Usage.Use"));
-        player.sendMessage("§6/language list§7 - " + language.getColoredString(uuid, "Command.Language.Usage.List"));
-        player.sendMessage("§6/language change§7 <§blanguage§7> - " + language.getColoredString(uuid, "Command.Language.Usage.Change"));
-        player.sendMessage(prefix + "§7----------[§6 Language§7-§6Help§7]----------");
+        commandUtil.sendLanguageHelp(player);
     }
 
 }
