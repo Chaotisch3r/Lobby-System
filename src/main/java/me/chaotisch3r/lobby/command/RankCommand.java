@@ -17,6 +17,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -88,6 +89,7 @@ public class RankCommand implements CommandExecutor {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
                 return true;
             }
+            PermissionAttachment attachment;
             if (args[0].equalsIgnoreCase("openRankPermissions")) {
                String rankName = args[1];
                 if (rankDataManager.getRank(rankName) == null) {
@@ -124,12 +126,19 @@ public class RankCommand implements CommandExecutor {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer"));
                     return true;
                 }
+                RankData oldRank = targetData.getRank();
+                RankData rankData = rankDataManager.getRank("player");
                 playerDataManager.setRank(target.getUniqueId(), "player");
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Set")
                         .replace("%TARGET%", targetData.getName()).replace("%RANK_NAME%", "player"));
                 if (target.isOnline()) {
                     UUID uuid1 = target.getUniqueId();
                     Player t = (Player) target;
+                    attachment = commandUtil.permissions.get(uuid1);
+                    Arrays.stream(oldRank.getRankPermissions()).forEach(attachment::unsetPermission);
+                    Arrays.stream(rankData.getRankPermissions()).forEach(perms -> {
+                        attachment.setPermission(perms, true);
+                    });
                     t.kickPlayer(language.getColoredString(uuid1, "Overall.KickMessage.1" + "\n"
                             + language.getColoredString(uuid1, "Command.Rank.Kick")));
                 }
@@ -149,6 +158,7 @@ public class RankCommand implements CommandExecutor {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
                 return true;
             }
+            PermissionAttachment attachment;
             if(args[0].equalsIgnoreCase("set")) {
                 String playerName = args[1];
                 String rankName = args[2];
@@ -162,12 +172,19 @@ public class RankCommand implements CommandExecutor {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
                     return true;
                 }
+                RankData oldRank = targetData.getRank();
                 playerDataManager.setRank(target.getUniqueId(), rankName);
+                RankData rankData = rankDataManager.getRank(rankName);
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Set")
                         .replace("%TARGET%", targetData.getName()).replace("%RANK_NAME%", rankName));
                 if (target.isOnline()) {
                     UUID uuid1 = target.getUniqueId();
                     Player t = (Player) target;
+                    attachment = commandUtil.permissions.get(uuid1);
+                    Arrays.stream(oldRank.getRankPermissions()).forEach(attachment::unsetPermission);
+                    Arrays.stream(rankData.getRankPermissions()).forEach(perms -> {
+                        attachment.setPermission(perms, true);
+                    });
                     t.kickPlayer(language.getColoredString(uuid1, "Overall.KickMessage.1")
                             + "\n" + language.getColoredString(uuid1, "Command.Rank.Kick"));
                 }

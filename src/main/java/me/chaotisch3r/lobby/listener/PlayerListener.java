@@ -22,6 +22,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.permissions.PermissionAttachment;
+
+import java.util.Arrays;
 
 /**
  * Copyright © Chaotisch3r, All Rights Reserved
@@ -75,7 +78,12 @@ public class PlayerListener implements Listener {
                         .replace("%PLAYER%", player.getName())));
         player.setHealth(20);
         player.setFoodLevel(20);
+        PermissionAttachment attachment = player.addAttachment(Lobby.getInstance());
         RankData rankData = playerDataManager.getPlayer(player.getUniqueId()).getRank();
+        Arrays.stream(rankData.getRankPermissions()).forEach(permission -> {
+            attachment.setPermission(permission, true);
+        });
+        commandUtil.permissions.put(player.getUniqueId(), attachment);
         if (player.getGameMode() == GameMode.CREATIVE && (player.isOp() || rankData.hasPermission("lobby.*")
                 || rankData.hasPermission("lobby.build"))) {
             commandUtil.build.add(player);
@@ -92,6 +100,7 @@ public class PlayerListener implements Listener {
                 players.sendMessage(prefix + language.getColoredString(players.getUniqueId(), "Overall.QuitMessage")
                         .replace("%PLAYER%", player.getName())));
         commandUtil.build.remove(player);
+        player.removeAttachment(commandUtil.permissions.get(player.getUniqueId()));
     }
 
     @EventHandler(priority = EventPriority.HIGH)

@@ -10,9 +10,10 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.units.qual.C;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,7 @@ import java.util.UUID;
 public class CommandUtil {
 
     public final List<Player> build = new ArrayList<>();
+    public final HashMap<UUID, PermissionAttachment> permissions = new HashMap<>();
 
     private final String prefix = Lobby.getInstance().getPrefix();
 

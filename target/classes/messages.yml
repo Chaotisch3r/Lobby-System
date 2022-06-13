@@ -60,6 +60,10 @@ de:
         Use: "Zeigt dir deine aktuelle Sprache"
         List: "Listet alle Sprachen auf"
         Change: "Wechselt zu einer anderen Sprache"
+      Hover:
+        Use: "Shows your current language"
+        List: "Lists every language"
+        Change: "Changes to a language"
       Error:
         UknownLanguage: "&7Diese Sprache ist unserem System nicht bekannt."
         SameLanguage: "&7Dies ist deine aktuelle Sprache"
@@ -249,6 +253,10 @@ en:
       List: "&7These languages are known to our system: "
       Change: "&7You changed your language to&6 %LANGUAGE%&7."
       Usage:
+        Use: "Shows your current language"
+        List: "Lists every language"
+        Change: "Changes to a language"
+      Hover:
         Use: "Shows your current language"
         List: "Lists every language"
         Change: "Changes to a language"
