@@ -27,16 +27,18 @@ public class SettingsDataManager {
     private final MySQL mySQL = Lobby.getInstance().getMySQL();
     
     public void registerSettings() {
-        if (!mySQL.isConnected()) mySQL.connect();
-        try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS `settings_data` ( `id` INT NOT NULL AUTO_INCREMENT," +
-                " `uuid` VARCHAR(36) NOT NULL, `hiderStatus` VARCHAR(10) NOT NULL DEFAULT 'ALL', `getCoins` TINYINT NOT NULL DEFAULT 1, `friendRequest` TINYINT NOT NULL DEFAULT 1," +
-                " `friendJoin` TINYINT NOT NULL DEFAULT 1, `pm` TINYINT NOT NULL DEFAULT 1, `partyRequest` TINYINT NOT NULL DEFAULT 1," +
-                " `partyJump` TINYINT NOT NULL DEFAULT 1, `clanRequest` TINYINT NOT NULL DEFAULT 1, `clanJoin` TINYINT NOT NULL DEFAULT 1," +
-                " PRIMARY KEY (`id`), UNIQUE INDEX `uuid_UNIQUE` (`uuid`))")) {
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
+            if (!mySQL.isConnected()) mySQL.connect();
+            try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS `settings_data` ( `id` INT NOT NULL AUTO_INCREMENT," +
+                    " `uuid` VARCHAR(36) NOT NULL, `hiderStatus` VARCHAR(10) NOT NULL DEFAULT 'ALL', `getCoins` TINYINT NOT NULL DEFAULT 1, `friendRequest` TINYINT NOT NULL DEFAULT 1," +
+                    " `friendJoin` TINYINT NOT NULL DEFAULT 1, `pm` TINYINT NOT NULL DEFAULT 1, `partyRequest` TINYINT NOT NULL DEFAULT 1," +
+                    " `partyJump` TINYINT NOT NULL DEFAULT 1, `clanRequest` TINYINT NOT NULL DEFAULT 1, `clanJoin` TINYINT NOT NULL DEFAULT 1," +
+                    " PRIMARY KEY (`id`), UNIQUE INDEX `uuid_UNIQUE` (`uuid`))")) {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @SneakyThrows

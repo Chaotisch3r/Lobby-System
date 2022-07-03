@@ -28,6 +28,7 @@ import java.util.UUID;
 @Getter
 public class CommandUtil {
 
+
     public final List<Player> build = new ArrayList<>();
     public final HashMap<UUID, PermissionAttachment> permissions = new HashMap<>();
 
@@ -37,12 +38,11 @@ public class CommandUtil {
 
     private Language language;
 
-    private PlayerDataManager playerDataManager;
+    private final PlayerDataManager playerDataManager = Lobby.getInstance().getPlayerDataManager();
     private RankData rankData;
 
-    public CommandUtil(Language language, PlayerDataManager playerDataManager) {
+    public CommandUtil(Language language) {
         this.language = language;
-        this.playerDataManager = playerDataManager;
     }
 
     public CommandUtil(UUID uuid) {
@@ -210,7 +210,7 @@ public class CommandUtil {
 
     public void sendRankCompleteHelp(Player player) {
         // /rank create/...
-        TextComponent c1 = new TextComponent("-§6 /rank create§7 <§brankName§7> - "
+        TextComponent c1 = new TextComponent("-§6 /rank create§7 <§brankName§7> <§crankID§7> <§alistName§7> <§bdisplayName§7> <permission> <permission> ... - "
                 + language.getColoredString(uuid, "Command.Rank.Usage.General.Create"));
         TextComponent c2 = new TextComponent("-§6 /rank delete§7 <§brankName§7> - "
                 + language.getColoredString(uuid, "Command.Rank.Usage.General.Delete"));

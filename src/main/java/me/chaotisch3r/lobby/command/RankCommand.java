@@ -76,6 +76,7 @@ public class RankCommand implements CommandExecutor {
                 || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("remove")
                 || args[0].equalsIgnoreCase("-help")) {
                 sendCompleteHelp(player);
+                return true;
             }
             String rankName = args[0];
             if (rankDataManager.getRank(rankName) == null) {
@@ -256,8 +257,8 @@ public class RankCommand implements CommandExecutor {
             }
             String rankName = args[1];
             int rankID = Integer.parseInt(args[2]);
-            String rankListName = args[3];
-            String rankDisplayName = args[4];
+            String rankListName = args[3].replace('-', ' ');
+            String rankDisplayName = args[4].replace('-', ' ');
             String[] argsCollctor = Arrays.toString(args).split(";");
             String readjustPermissions = Arrays.toString(argsCollctor).replace(rankName + ";", "")
                     .replace(rankID + ";", "").replace(rankListName + ";", "")

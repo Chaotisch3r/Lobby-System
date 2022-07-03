@@ -30,16 +30,17 @@ public class WarpDataManager {
     private final Map<String, WarpData> warpCache = new HashMap<>();
 
     public void registerWarp() {
-        if (mySQL.isConnected())
-            mySQL.connect();
-        try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS warp_data(" +
-                "`id` INT NOT NULL AUTO_INCREMENT, `warpName` VARCHAR(32) NOT NULL, `worldUID` VARCHAR(64) NOT NULL, " +
-                "`x` DOUBLE NOT NULL, `y` DOUBLE NOT NULL, `z` DOUBLE NOT NULL, `yaw` FLOAT NOT NULL, " +
-                "`pitch` FLOAT NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `warpName_UNIQUE` (`warpName`))")) {
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
+            if (mySQL.isConnected()) mySQL.connect();
+            try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS warp_data(" +
+                    "`id` INT NOT NULL AUTO_INCREMENT, `warpName` VARCHAR(32) NOT NULL, `worldUID` VARCHAR(64) NOT NULL, " +
+                    "`x` DOUBLE NOT NULL, `y` DOUBLE NOT NULL, `z` DOUBLE NOT NULL, `yaw` FLOAT NOT NULL, " +
+                    "`pitch` FLOAT NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `warpName_UNIQUE` (`warpName`))")) {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @SneakyThrows

@@ -15,6 +15,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +67,8 @@ public class Lobby extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         prefix = getColoredString("Prefix");
-        registerClasses();
         registerDatabase();
+        registerClasses();
         registerCommands();
         registerTabComplete();
         registerListeners(this);
@@ -85,7 +86,7 @@ public class Lobby extends JavaPlugin {
     }
 
     private void registerListeners(Plugin plugin) {
-        this.pluginManager.registerEvents(new PlayerListener(language, commandUtil, itemManager, playerDataManager,
+        this.pluginManager.registerEvents(new PlayerListener(language, itemManager, playerDataManager,
                 lobbyDataManager, settingsDataManager), plugin);
         this.pluginManager.registerEvents(new ServerListener(), plugin);
         this.pluginManager.registerEvents(new BlockListener(), plugin);
@@ -118,25 +119,25 @@ public class Lobby extends JavaPlugin {
     }
 
     private void registerClasses() {
-        this.mySQL = new MySQL();
-        this.rankDataManager = new RankDataManager();
-        this.playerDataManager = new PlayerDataManager(rankDataManager);
-        this.playerDataManager.registerPlayer();
-        this.lobbyDataManager = new LobbyDataManager();
         this.pluginManager = Bukkit.getPluginManager();
         this.messageConfig = new MessageConfig();
         this.language = new Language(messageConfig, playerDataManager);
+        this.commandUtil = new CommandUtil(language);
         this.itemConfig = new ItemConfig();
-        this.worldDataManager = new WorldDataManager();
-        this.warpDataManager = new WarpDataManager();
-        this.settingsDataManager = new SettingsDataManager();
-        this.commandUtil = new CommandUtil(language, playerDataManager);
         this.itemManager = new ItemManager(itemConfig, language, playerDataManager, worldDataManager, warpDataManager,
                 lobbyDataManager, settingsDataManager);
     }
 
     private void registerDatabase() {
+        this.mySQL = new MySQL();
+        this.rankDataManager = new RankDataManager();
+        this.playerDataManager = new PlayerDataManager(rankDataManager);
+        this.lobbyDataManager = new LobbyDataManager();
+        this.worldDataManager = new WorldDataManager();
+        this.warpDataManager = new WarpDataManager();
+        this.settingsDataManager = new SettingsDataManager();
         this.mySQL.connect();
+        this.playerDataManager.registerPlayer();
         this.lobbyDataManager.registerLobby();
         this.worldDataManager.registerWorld();
         this.warpDataManager.registerWarp();

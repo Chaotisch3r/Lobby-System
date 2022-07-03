@@ -25,15 +25,18 @@ public class RankDataManager {
     private final Map<String, RankData> rankCache = new HashMap<>();
 
     public void registerRank() {
-        if(!mySQL.isConnected()) mySQL.connect();
-        try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS `rank_data`(" +
-                "`rankName` VARCHAR(36) NOT NULL, `rankID` INT NOT NULL, `rankListName` VARCHAR(36) NOT NULL, `rankDisplayName` VARCHAR(36) NOT NULL, " +
-                "`rankPermissions` TEXT NOT NULL, PRIMARY KEY (`rankID`), UNIQUE INDEX `rankName_UNIQUE` (`rankName`))")) {
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
+            if(!mySQL.isConnected()) mySQL.connect();
+            try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS `rank_data`(" +
+                    "`rankName` VARCHAR(36) NOT NULL, `rankID` INT NOT NULL, `rankListName` VARCHAR(36) NOT NULL, `rankDisplayName` VARCHAR(36) NOT NULL, " +
+                    "`rankPermissions` TEXT NOT NULL, PRIMARY KEY (`rankID`), UNIQUE INDEX `rankName_UNIQUE` (`rankName`))")) {
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
+
 
     @SneakyThrows
     public void loadRank(String rankName, int rankID, String rankListName, String rankDisplayName, String[] rankPermissions) {

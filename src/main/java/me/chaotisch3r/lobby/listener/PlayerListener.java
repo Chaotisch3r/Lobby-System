@@ -38,10 +38,9 @@ import java.util.Arrays;
 public class PlayerListener implements Listener {
 
     private final String prefix = Lobby.getInstance().getPrefix();
-    private final FileConfiguration config = Lobby.getInstance().getConfig();
 
     private final Language language;
-    private final CommandUtil commandUtil;
+    private final CommandUtil commandUtil = Lobby.getInstance().getCommandUtil();
     private final ItemManager itemManager;
 
     private final PlayerDataManager playerDataManager;
