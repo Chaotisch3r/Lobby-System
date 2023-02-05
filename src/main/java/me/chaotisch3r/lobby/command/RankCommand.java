@@ -57,43 +57,43 @@ public class RankCommand implements CommandExecutor {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if(!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "Dieses Feature ist nur als Spieler möglich.");
             return true;
         }
         UUID uuid = player.getUniqueId();
         RankData playerRankData = playerDataManager.getPlayer(uuid).getRank();
-        if (args.length == 0) {
+        if(args.length == 0) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.GetRank")
                     .replace("%RANK_NAME%", playerRankData.getRankName()));
         }
         else if(args.length == 1) {
-            if (!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.rank"))) {
+            if(!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.rank"))) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
                 return true;
             }
-            if (args[0].equalsIgnoreCase("create") || args[0].equalsIgnoreCase("delete")
+            if(args[0].equalsIgnoreCase("create") || args[0].equalsIgnoreCase("delete")
                 || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("remove")
                 || args[0].equalsIgnoreCase("-help")) {
                 sendCompleteHelp(player);
                 return true;
             }
             String rankName = args[0];
-            if (rankDataManager.getRank(rankName) == null) {
+            if(rankDataManager.getRank(rankName) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
                 return true;
             }
             sendRankHelp(player, rankName);
         }
         else if(args.length == 2) {
-            if (!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.rank"))) {
+            if(!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.rank"))) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
                 return true;
             }
             PermissionAttachment attachment;
-            if (args[0].equalsIgnoreCase("openRankPermissions")) {
+            if(args[0].equalsIgnoreCase("openRankPermissions")) {
                String rankName = args[1];
-                if (rankDataManager.getRank(rankName) == null) {
+                if(rankDataManager.getRank(rankName) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
                     return true;
                 }
@@ -101,13 +101,13 @@ public class RankCommand implements CommandExecutor {
                 itemManager.openRankPermissionInventory(player, rankData1);
                 return true;
             }
-            if (args[0].equalsIgnoreCase("delete")) {
+            if(args[0].equalsIgnoreCase("delete")) {
                 String rankName = args[1];
-                if (rankDataManager.getRank(rankName) == null) {
+                if(rankDataManager.getRank(rankName) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
                     return true;
                 }
-                if (rankDataManager.getRank(rankName).getRankName().equals("player")) {
+                if(rankDataManager.getRank(rankName).getRankName().equals("player")) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.ConnotDeleteDefaultRank"));
                     return true;
                 }
@@ -119,11 +119,11 @@ public class RankCommand implements CommandExecutor {
                 String playerName = args[1];
                 OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
                 PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
-                if (targetData == null) {
+                if(targetData == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
                     return true;
                 }
-                if (playerDataManager.getOfflinePlayer(target.getUniqueId()) == null) {
+                if(playerDataManager.getOfflinePlayer(target.getUniqueId()) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer"));
                     return true;
                 }
@@ -132,7 +132,7 @@ public class RankCommand implements CommandExecutor {
                 playerDataManager.setRank(target.getUniqueId(), "player");
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Set")
                         .replace("%TARGET%", targetData.getName()).replace("%RANK_NAME%", "player"));
-                if (target.isOnline()) {
+                if(target.isOnline()) {
                     UUID uuid1 = target.getUniqueId();
                     Player t = (Player) target;
                     attachment = commandUtil.permissions.get(uuid1);
@@ -146,7 +146,7 @@ public class RankCommand implements CommandExecutor {
                 return true;
             }
             String rankName = args[0];
-            if (rankDataManager.getRank(rankName) == null) {
+            if(rankDataManager.getRank(rankName) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
                 return true;
             }
@@ -154,8 +154,8 @@ public class RankCommand implements CommandExecutor {
                 sendRankInformation(player, rankName);
             }
         }
-        else if (args.length == 3) {
-            if (!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.rank"))) {
+        else if(args.length == 3) {
+            if(!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.rank"))) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
                 return true;
             }
@@ -165,11 +165,11 @@ public class RankCommand implements CommandExecutor {
                 String rankName = args[2];
                 OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
                 PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
-                if (targetData == null) {
+                if(targetData == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer"));
                     return true;
                 }
-                if (rankDataManager.getRank(rankName) == null) {
+                if(rankDataManager.getRank(rankName) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
                     return true;
                 }
@@ -178,7 +178,7 @@ public class RankCommand implements CommandExecutor {
                 RankData rankData = rankDataManager.getRank(rankName);
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Set")
                         .replace("%TARGET%", targetData.getName()).replace("%RANK_NAME%", rankName));
-                if (target.isOnline()) {
+                if(target.isOnline()) {
                     UUID uuid1 = target.getUniqueId();
                     Player t = (Player) target;
                     attachment = commandUtil.permissions.get(uuid1);
@@ -192,14 +192,14 @@ public class RankCommand implements CommandExecutor {
                 return true;
             }
             String rankName = args[0];
-            if (rankDataManager.getRank(rankName) == null) {
+            if(rankDataManager.getRank(rankName) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
                 return true;
             }
             RankData rankData = rankDataManager.getRank(rankName);
-            if (args[1].equalsIgnoreCase("readjustID")) {
+            if(args[1].equalsIgnoreCase("readjustID")) {
                 int newRankID = Integer.parseInt(args[2]);
-                if (rankDataManager.getRank(rankName).getRankID() == newRankID) {
+                if(rankDataManager.getRank(rankName).getRankID() == newRankID) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.CannotReadjustSameID"));
                     return true;
                 }
@@ -208,17 +208,17 @@ public class RankCommand implements CommandExecutor {
                         .replace("%RANK_NAME%", rankData.getRankName())
                         .replace("%RANK_ID%", String.valueOf(newRankID)));
             }
-            if (args[1].equalsIgnoreCase("rename")) {
-                if (rankDataManager.getRank(rankName).getRankName().equals("player")) {
+            if(args[1].equalsIgnoreCase("rename")) {
+                if(rankDataManager.getRank(rankName).getRankName().equals("player")) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.ConnotRenameDefaultRank"));
                     return true;
                 }
                 String newRankName = args[2];
-                if (rankDataManager.getRank(rankName).getRankName().equals(newRankName)) {
+                if(rankDataManager.getRank(rankName).getRankName().equals(newRankName)) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.CannotRenameSameName"));
                     return true;
                 }
-                if (rankDataManager.getRankNames().contains(newRankName)) {
+                if(rankDataManager.getRankNames().contains(newRankName)) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.CannotRenameExistingName"));
                     return true;
                 }
@@ -227,9 +227,9 @@ public class RankCommand implements CommandExecutor {
                         .replace("%OLD_RANK_NAME%", rankName)
                         .replace("%NEW_RANK_NAME%", newRankName));
             }
-            if (args[1].equalsIgnoreCase("renameListName") || args[1].equalsIgnoreCase("renameList")) {
+            if(args[1].equalsIgnoreCase("renameListName") || args[1].equalsIgnoreCase("renameList")) {
                 String newRankListName = args[2];
-                if (rankDataManager.getRank(rankName).getRankListName().equals(newRankListName)) {
+                if(rankDataManager.getRank(rankName).getRankListName().equals(newRankListName)) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.CannotRenameSameListName"));
                     return true;
                 }
@@ -238,9 +238,9 @@ public class RankCommand implements CommandExecutor {
                         .replace("%RANK_NAME%", rankData.getRankName())
                         .replace("%RANK_LIST_NAME%", newRankListName));
             }
-            if (args[1].equalsIgnoreCase("renameDislpayName") || args[1].equalsIgnoreCase("renameDisplay")) {
+            if(args[1].equalsIgnoreCase("renameDislpayName") || args[1].equalsIgnoreCase("renameDisplay")) {
                 String newRankDisplayName = args[2];
-                if (rankDataManager.getRank(rankName).getRankDisplayName().equals(newRankDisplayName)) {
+                if(rankDataManager.getRank(rankName).getRankDisplayName().equals(newRankDisplayName)) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.CannotRenameSameDisplayName"));
                     return true;
                 }
@@ -261,14 +261,14 @@ public class RankCommand implements CommandExecutor {
             String rankDisplayName = args[4].replace('-', ' ');
             String[] argsCollctor = Arrays.toString(args).split(";");
             String readjustPermissions = Arrays.toString(argsCollctor).replace(rankName + ";", "")
-                    .replace(rankID + ";", "").replace(rankListName + ";", "")
-                    .replace(rankDisplayName + ";", "");
+                .replace(rankID + ";", "").replace(rankListName + ";", "")
+                .replace(rankDisplayName + ";", "");
             String[] rankPermissions = readjustPermissions.split(";");
-            if (rankDataManager.getRank(rankName) != null) {
+            if(rankDataManager.getRank(rankName) != null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankAlreadyExisting"));
                 return true;
             }
-            if (rankDataManager.getRankIDs().contains(rankID)) {
+            if(rankDataManager.getRankIDs().contains(rankID)) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.IDAlreadyTaken"));
                 return true;
             }
@@ -281,7 +281,7 @@ public class RankCommand implements CommandExecutor {
 
     private void sendRankInformation(Player player, String rankName) {
         UUID uuid = player.getUniqueId();
-        if (rankDataManager.getRank(rankName) == null) {
+        if(rankDataManager.getRank(rankName) == null) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Rank.Error.RankNotExisting"));
             return;
         }

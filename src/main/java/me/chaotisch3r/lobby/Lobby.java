@@ -149,15 +149,15 @@ public class Lobby extends JavaPlugin {
         this.worldDataManager.loadWorlds();
         this.worldDataManager.loadWorld(Bukkit.getWorlds());
         this.worldDataManager.getWorlds().forEach(worldData -> {
-            if (Bukkit.getWorld(worldData.getUid()) == null) {
+            if(Bukkit.getWorld(worldData.getUid()) == null) {
                 Bukkit.createWorld(new WorldCreator(worldData.getWorldName()));
             }
         });
         World world = Bukkit.getWorld(plugin.getConfig().getString("World"));
-        if (world == null)
-            return;
+        if(world == null)
+            throw new NullPointerException("Config is missing important information");
         world.getEntities().forEach(entity -> plugin.getConfig().getStringList("RemovedEntity").forEach(s -> {
-            if (!(entity.getType() == EntityType.valueOf(s.toUpperCase()))) entity.remove();
+            if(!(entity.getType() == EntityType.valueOf(s.toUpperCase()))) entity.remove();
         }));
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> world.setTime(6000), 20, 20 * 30);
         world.setThundering(false);

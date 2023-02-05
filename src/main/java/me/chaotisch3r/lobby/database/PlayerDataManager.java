@@ -33,7 +33,7 @@ public class PlayerDataManager {
 
     public void registerPlayer() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
-            if (!mySQL.isConnected()) mySQL.connect();
+            if(!mySQL.isConnected()) mySQL.connect();
             try (PreparedStatement preparedStatement = mySQL.getStatement("CREATE TABLE IF NOT EXISTS player_data(" +
                     "`id` int NOT NULL AUTO_INCREMENT, `uuid` varchar(64) NOT NULL, `name` varchar(16) NOT NULL," +
                     " `ipAddress` varchar(45) DEFAULT NULL, `rank` varchar(32) NOT NULL DEFAULT 'Player'," +
@@ -48,14 +48,14 @@ public class PlayerDataManager {
 
     @SneakyThrows
     public void loadPlayer(UUID uuid, String name, String address) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         PreparedStatement preparedStatement = mySQL.getStatement("SELECT * FROM player_data WHERE `uuid`=?");
         ResultSet resultSet = null;
         try {
             preparedStatement.setString(1, uuid.toString());
             resultSet = preparedStatement.executeQuery();
             PlayerData playerData;
-            if (resultSet.next()) {
+            if(resultSet.next()) {
                 playerCache.put(uuid, (playerData = new PlayerData(uuid, name, address,
                         rankDataManager.getRank(resultSet.getString("rank")),
                         Locale.forLanguageTag(resultSet.getString("locale")),
@@ -65,12 +65,12 @@ public class PlayerDataManager {
                         rankDataManager.getRank("player"), Locale.ENGLISH, 0)));
                 updateAsync(playerData);
             }
-            if (!playerData.getUuid().equals(uuid) || !playerData.getName().equals(name) || !playerData.getIpAddress().equals(address))
+            if(!playerData.getUuid().equals(uuid) || !playerData.getName().equals(name) || !playerData.getIpAddress().equals(address))
                 updateAsync(playerData);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if (resultSet != null) resultSet.close();
+            if(resultSet != null) resultSet.close();
             preparedStatement.close();
         }
     }
@@ -88,7 +88,7 @@ public class PlayerDataManager {
                throw new RuntimeException(e);
            }
         });
-        if (playerCache.containsKey(uuid)) playerCache.replace(uuid, new PlayerData(uuid, playerData.getName(), playerData.getIpAddress(),
+        if(playerCache.containsKey(uuid)) playerCache.replace(uuid, new PlayerData(uuid, playerData.getName(), playerData.getIpAddress(),
                 rankDataManager.getRank(rankName), playerData.getLocale(), playerData.getCoins()));
     }
 
@@ -101,7 +101,7 @@ public class PlayerDataManager {
     }
 
     public void update(PlayerData playerData) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement preparedStatement = mySQL.getStatement("INSERT INTO player_data(`uuid`, `name`, `ipAddress`," +
                 " `rank`, `locale`, `coins`) VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `name`=?, `ipAddress`=?, `rank`=?," +
                 " `locale`=?, `coins`=?")) {
@@ -122,7 +122,7 @@ public class PlayerDataManager {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (!playerCache.containsKey(playerData.getUuid())) return;
+        if(!playerCache.containsKey(playerData.getUuid())) return;
         playerCache.replace(playerData.getUuid(), playerData);
     }
 
@@ -132,14 +132,14 @@ public class PlayerDataManager {
 
     @SneakyThrows
     public PlayerData getOfflinePlayer(UUID uuid) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         PlayerData playerData;
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM player_data WHERE `uuid`=?");
         ResultSet rs;
         try {
             ps.setString(1, uuid.toString());
             rs = ps.executeQuery();
-            if (!rs.next()) return null;
+            if(!rs.next()) return null;
             playerData = new PlayerData(uuid, rs.getString("name"), rs.getString("ipAddress"),
                     rankDataManager.getRank(rs.getString("rank")), Locale.forLanguageTag(rs.getString("locale")),
                     rs.getInt("coins"));

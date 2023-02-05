@@ -33,12 +33,12 @@ public class MySQL {
     }
 
     public void connect() {
-        if (isConnected())
+        if(isConnected())
             return;
         String url = "jdbc:mysql://";
         String end_url = "?autoReconnect=true&useSSL=false";
         readInput();
-        if (useDafaultPort) {
+        if(useDafaultPort) {
             url = url + host + ":3306/" + database + end_url;
         } else url = url + host + ":" + port + "/" + database + end_url;
         try {
@@ -49,7 +49,7 @@ public class MySQL {
     }
 
     public void disconnect() {
-        if (!isConnected())
+        if(!isConnected())
             return;
         try {
             connection.close();
@@ -59,7 +59,7 @@ public class MySQL {
     }
 
     public PreparedStatement getStatement(String sql) {
-        if (!isConnected())
+        if(!isConnected())
             return null;
         PreparedStatement ps = null;
         try {

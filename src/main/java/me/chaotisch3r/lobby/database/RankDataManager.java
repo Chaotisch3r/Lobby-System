@@ -40,7 +40,7 @@ public class RankDataManager {
 
     @SneakyThrows
     public void loadRank(String rankName, int rankID, String rankListName, String rankDisplayName, String[] rankPermissions) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM rank_data WHERE rankName=?");
         ResultSet rs = null;
         try {
@@ -48,7 +48,7 @@ public class RankDataManager {
             rs = ps.executeQuery();
 
             RankData rankData;
-            if (rs.next()) {
+            if(rs.next()) {
                 rankCache.put(rankName, (rankData = new RankData(rankName, rs.getInt("rankID"),
                         rs.getString("rankListName"), rs.getString("rankDisplayName"),
                         rs.getString("rankPermissions").split(";"))));
@@ -56,11 +56,11 @@ public class RankDataManager {
                 rankCache.put(rankName, (rankData = new RankData(rankName, rankID, rankListName, rankDisplayName, rankPermissions)));
                 updateAsync(rankData);
             }
-            if (!rankData.getRankName().equals(rankName)) updateAsync(rankData);
+            if(!rankData.getRankName().equals(rankName)) updateAsync(rankData);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if (rs != null) rs.close();
+            if(rs != null) rs.close();
             ps.close();
         }
     }
@@ -87,9 +87,9 @@ public class RankDataManager {
     }
 
     public void readjustRandID(String rankName, int newRankID) {
-        if (!rankCache.containsKey(rankName)) return;
+        if(!rankCache.containsKey(rankName)) return;
         RankData oldRankData = rankCache.get(rankName);
-        if (getRankIDs().contains(newRankID)) return;
+        if(getRankIDs().contains(newRankID)) return;
         deleteRank(rankName);
         loadRank(oldRankData.getRankName(), oldRankData.getRankID(), oldRankData.getRankListName(), oldRankData.getRankDisplayName(), oldRankData.getRankPermissions());
     }
@@ -114,7 +114,7 @@ public class RankDataManager {
     public void unloadRank(String rankName) { rankCache.remove(rankName); }
 
     private void update(RankData rankData) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement preparedStatement = mySQL.getStatement("INSERT INTO rank_data(`rankName`, `rankID`, `rankListName`, `rankDisplayName`, `rankPermissions`) " +
                 "VALUES(?,?,?,?,?) ON DUPLICATE KEY UPDATE `rankListName`=?, `rankDisplayName`=?, `rankPermissions`=?")) {
             preparedStatement.setString(1, rankData.getRankName());

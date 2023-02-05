@@ -36,20 +36,20 @@ public class LobbyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if(!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "§7This will only work, if you are a player.");
             return true;
         }
         UUID uuid = player.getUniqueId();
         if(args.length >= 1) {
             PlayerData playerData = playerDataManager.getPlayer(uuid);
-            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.setup"))) {
+            if(!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.setup"))) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
                 return true;
             }
         }
-        if (args.length == 0) {
-            if (warpDataManager.getWarp("lobby") == null) {
+        if(args.length == 0) {
+            if(warpDataManager.getWarp("lobby") == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Lobby.Error.LobbyWarpNotSet"));
                 return true;
             }
@@ -57,15 +57,15 @@ public class LobbyCommand implements CommandExecutor {
             player.teleport(lobby);
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Lobby.Teleport"));
         }
-        else if (args.length == 1) {
+        else if(args.length == 1) {
             sendHelp(player);
         }
-        else if (args.length == 2) {
-            if (!args[0].equalsIgnoreCase("setup")) {
+        else if(args.length == 2) {
+            if(!args[0].equalsIgnoreCase("setup")) {
                 sendHelp(player);
                 return true;
             }
-            if (args[1].equalsIgnoreCase("setlobby")) {
+            if(args[1].equalsIgnoreCase("setlobby")) {
                 warpDataManager.loadWarp("lobby", player.getLocation());
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Lobby.Setup.SetLobby"));
                 return true;

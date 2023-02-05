@@ -126,11 +126,11 @@ public class ItemManager {
         worldListInventory = Bukkit.createInventory(player, 5*9, language.getColoredString(uuid, "Inventory.WorldList.Name")
                 .replace("%WORLD_COUNT%", String.valueOf(worldDataManager.getWorlds().size())));
         worldDataManager.getWorlds().forEach(worldData -> {
-            if (worldData.getEnvironment() == World.Environment.NORMAL)
+            if(worldData.getEnvironment() == World.Environment.NORMAL)
                 worldListInventory.addItem(new ItemBuilder(Material.GRASS, "§a" + worldData.getWorldName()).get());
-            else if (worldData.getEnvironment() == World.Environment.NETHER)
+            else if(worldData.getEnvironment() == World.Environment.NETHER)
                 worldListInventory.addItem(new ItemBuilder(Material.NETHERRACK, "§c" + worldData.getWorldName()).get());
-            else if (worldData.getEnvironment() == World.Environment.THE_END)
+            else if(worldData.getEnvironment() == World.Environment.THE_END)
                 worldListInventory.addItem(new ItemBuilder(Material.END_STONE, "&6" + worldData.getWorldName()).get());
         });
         player.openInventory(worldListInventory);
@@ -155,7 +155,7 @@ public class ItemManager {
         };
         int newI = i+9;
         for (; i < newI; i++) {
-            if (inventory.getItem(i) == null)
+            if(inventory.getItem(i) == null)
                 inventory.setItem(i, itemConfig.getGlassPane(uuid));
         }
     }

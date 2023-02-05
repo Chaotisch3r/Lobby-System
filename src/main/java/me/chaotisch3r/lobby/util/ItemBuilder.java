@@ -80,7 +80,7 @@ public class ItemBuilder {
     public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
         this.itemMeta = itemStack.getItemMeta();
-        if (itemMeta.getLore() == null) return;
+        if(itemMeta.getLore() == null) return;
         this.itemLore = (ArrayList<String>) this.itemMeta.getLore();
     }
 
@@ -90,7 +90,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setSkullName(String skullName) {
-        if (this.skullMeta == null) return null;
+        if(this.skullMeta == null) return null;
         this.skullMeta.setDisplayName(skullName);
         return this;
     }
@@ -133,12 +133,12 @@ public class ItemBuilder {
     }
 
     public ItemStack get() {
-        if (skullMeta != null) {
-            if (!this.itemLore.isEmpty()) this.skullMeta.setLore(itemLore);
+        if(skullMeta != null) {
+            if(!this.itemLore.isEmpty()) this.skullMeta.setLore(itemLore);
             this.itemStack.setItemMeta(this.skullMeta);
             return itemStack;
         }
-        if (!this.itemLore.isEmpty()) this.itemMeta.setLore(itemLore);
+        if(!this.itemLore.isEmpty()) this.itemMeta.setLore(itemLore);
         this.itemStack.setItemMeta(this.itemMeta);
         return itemStack;
     }
@@ -149,7 +149,7 @@ public class ItemBuilder {
             line--;
             slot = slot + 9;
         }
-        if (slot == -1) {
+        if(slot == -1) {
             this.inventory.addItem(get());
         } else {
             this.inventory.setItem(slot, get());
@@ -164,7 +164,7 @@ public class ItemBuilder {
         }
         Iterator<Inventory> iterator = inventories.iterator();
         while (iterator.hasNext()) {
-            if (slot != -1) {
+            if(slot != -1) {
                 iterator.next().setItem(slot, get());
             } else {
                 iterator.next().addItem(get());
@@ -178,7 +178,7 @@ public class ItemBuilder {
         Iterator<Integer> iterator1 = slots.iterator();
         while (iterator.hasNext()) {
             while (iterator1.hasNext()) {
-                if (iterator1.next() != -1) {
+                if(iterator1.next() != -1) {
                     iterator.next().setItem(iterator1.next(), get());
                 } else {
                     iterator.next().addItem(get());
@@ -191,7 +191,7 @@ public class ItemBuilder {
     public ItemBuilder build(List<Inventory> inventories, int slot) {
         Iterator<Inventory> iterator = inventories.iterator();
         while (iterator.hasNext()) {
-            if (slot != -1) {
+            if(slot != -1) {
                 iterator.next().setItem(slot, get());
             } else {
                 iterator.next().addItem(get());
@@ -203,7 +203,7 @@ public class ItemBuilder {
     public ItemBuilder build(Inventory inventory, List<Integer> slots) {
         Iterator<Integer> iterator = slots.iterator();
         while (iterator.hasNext()) {
-            if (iterator.next() != -1) {
+            if(iterator.next() != -1) {
                 inventory.setItem(iterator.next(), get());
             } else {
                 inventory.addItem(get());
@@ -214,7 +214,7 @@ public class ItemBuilder {
 
     public ItemBuilder build(Inventory inventory, int slot) {
         this.inventory = inventory;
-        if (slot == -1) {
+        if(slot == -1) {
             this.inventory.addItem(get());
         } else {
             this.inventory.setItem(slot, get());

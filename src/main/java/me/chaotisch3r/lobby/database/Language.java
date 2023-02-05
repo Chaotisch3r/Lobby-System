@@ -50,7 +50,7 @@ public class Language {
     }
 
     public Locale getLanguage(UUID uuid) {
-        if (!mySQL.isConnected()) {
+        if(!mySQL.isConnected()) {
             mySQL.connect();
         }
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM player_data WHERE uuid=?");
@@ -58,7 +58,7 @@ public class Language {
         try {
             ps.setString(1, uuid.toString());
             rs = ps.executeQuery();
-            if (!rs.next()) {
+            if(!rs.next()) {
                 return Locale.ENGLISH;
             }
             return Locale.forLanguageTag(rs.getString("locale"));
@@ -70,7 +70,7 @@ public class Language {
 
     public Locale getLocale(UUID uuid) {
         Locale locale = localeMap.getOrDefault(uuid, Locale.ENGLISH);
-        if (!locales.contains(locale))
+        if(!locales.contains(locale))
             return Locale.ENGLISH;
         return locale;
     }
@@ -91,7 +91,7 @@ public class Language {
 
     private List<Locale> getlanguages() {
         List<Locale> locales = new ArrayList<>();
-        if (!mySQL.isConnected()) {
+        if(!mySQL.isConnected()) {
             mySQL.connect();
         }
         try (PreparedStatement ps = mySQL.getStatement("SELECT locale FROM player_data"); ResultSet rs = ps.executeQuery()) {

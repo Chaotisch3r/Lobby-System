@@ -29,7 +29,7 @@ public class LobbyDataManager {
 
     public void registerLobby() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
-            if (!mySQL.isConnected()) mySQL.connect();
+            if(!mySQL.isConnected()) mySQL.connect();
             try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS lobby_data(`id` int NOT NULL AUTO_INCREMENT," +
                     " `uuid` varchar(64) NOT NULL, `lastConnected` varchar(32) DEFAULT NULL, `color` varchar(16) NOT NULL DEFAULT 'LIME'," +
                     " `respawnType` enum('SPAWN','LOGOUT') NOT NULL DEFAULT 'SPAWN', `playtime` int NOT NULL DEFAULT '0',PRIMARY KEY (`id`)," +
@@ -43,7 +43,7 @@ public class LobbyDataManager {
 
     @SneakyThrows
     public void loadLobby(UUID uuid) {
-        if (!mySQL.isConnected())
+        if(!mySQL.isConnected())
             mySQL.connect();
         PreparedStatement preparedStatement = mySQL.getStatement("SELECT * FROM lobby_data WHERE uuid=?");
         ResultSet resultSet = null;
@@ -52,7 +52,7 @@ public class LobbyDataManager {
             resultSet = preparedStatement.executeQuery();
 
             LobbyData lobbyData;
-            if (resultSet.next()) {
+            if(resultSet.next()) {
                 lobbyCache.put(uuid, (lobbyData = new LobbyData(uuid, resultSet.getString("lastConnected"), DyeColor.valueOf(resultSet.getString("color")),
                         resultSet.getString("respawnType").equals("SPAWN"), resultSet.getLong("playtime"), System.currentTimeMillis())));
             } else {
@@ -60,12 +60,12 @@ public class LobbyDataManager {
                         true, 0, System.currentTimeMillis())));
                 updateAsync(lobbyData);
             }
-            if (lobbyData.getPlaytime() != 0)
+            if(lobbyData.getPlaytime() != 0)
                 updateAsync(lobbyData);
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
-            if (resultSet != null)
+            if(resultSet != null)
                 resultSet.close();
             preparedStatement.close();
         }
@@ -80,7 +80,7 @@ public class LobbyDataManager {
     }
 
     private void update(LobbyData lobbyData) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement preparedStatement = mySQL.getStatement("INSERT INTO lobby_data(`uuid`, `lastConnected`, `color`, `respawnType`, `playtime`) " +
                 "VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE `lastConnected`=?, `color`=?, `respawnType`=?, `playtime`=?")) {
             preparedStatement.setString(1, lobbyData.getUuid().toString());

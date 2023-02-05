@@ -34,25 +34,25 @@ public class PingCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if(!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "§bThis will only work, if you are a player.");
             return true;
         }
         UUID uuid = player.getUniqueId();
-        if (args.length == 0) {
+        if(args.length == 0) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Ping")
                     .replace("%PLAYER%", player.getName())
                     .replace("%PING%", String.valueOf(player.getPing())));
         }
-        else if (args.length == 1) {
+        else if(args.length == 1) {
             PlayerData playerData = playerDataManager.getPlayer(uuid);
-            if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.ping"))) {
+            if(!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.ping"))) {
                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
                return true;
            }
            String targetName = args[0];
             Player target;
-            if ((target = Bukkit.getPlayer(targetName)) == null) {
+            if((target = Bukkit.getPlayer(targetName)) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UknownPlayer")
                         .replace("%TARGET%", targetName));
                 return true;

@@ -76,8 +76,8 @@ public class UIManager {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName("§6Lobby");
         for (Map.Entry<String, Integer> s : getScores(player.getUniqueId()).entrySet()) {
-            if (objective.getScore(s.getKey()).isScoreSet()) continue;
-            if (s.getValue() == 15) continue;
+            if(objective.getScore(s.getKey()).isScoreSet()) continue;
+            if(s.getValue() == 15) continue;
             objective.getScore(s.getKey().replace('&', '§')
                             .replace("%COINS%", NumberFormat.getInstance(Locale.GERMAN).format(playerData.getCoins()))
                             .replace("%RANK%", playerData.getRank().getRankName())
@@ -98,8 +98,8 @@ public class UIManager {
         Map<String, Integer> scoreMap = new HashMap<>();
         for (int i = 15; i > 0; i--) {
             String score = language.getColoredString(uuid, "UI.SideBar." + i);
-            if (score == null) continue;
-            if (scoreMap.containsKey(score)) continue;
+            if(score == null) continue;
+            if(scoreMap.containsKey(score)) continue;
             scoreMap.put(score, i);
         }
         return scoreMap;

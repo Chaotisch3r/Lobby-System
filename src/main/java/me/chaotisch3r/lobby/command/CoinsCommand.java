@@ -40,20 +40,20 @@ public class CoinsCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if(!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "§7Dieser Befehl kann nur als Spieler ausgeführt werden.");
             return true;
         }
         UUID uuid = player.getUniqueId();
         RankData playerRankData = playerDataManager.getPlayer(uuid).getRank();
         PlayerData playerData = playerDataManager.getPlayer(uuid);
-        if (args.length == 0) {
+        if(args.length == 0) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.GetCoins")
                     .replace("%PLAYER%", player.getName())
                     .replace("%COINS%", NumberFormat.getInstance(playerData.getLocale()).format(playerData.getCoins())));
         }
-        else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add")
+        else if(args.length == 1) {
+            if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add")
                     || args[0].equalsIgnoreCase("remove")) {
                 sendHelp(player, "");
                 return true;
@@ -61,12 +61,12 @@ public class CoinsCommand implements CommandExecutor {
             String targetName = args[0];
             OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
             PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
-            if (targetData == null) {
+            if(targetData == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer")
                         .replace("%TARGET%", targetName));
                 return true;
             }
-            if (!settingsDataManager.getSettings(target.getUniqueId()).isGetCoins()) {
+            if(!settingsDataManager.getSettings(target.getUniqueId()).isGetCoins()) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.Error.GetCoinsNotVisible"));
                 return true;
             }
@@ -74,11 +74,11 @@ public class CoinsCommand implements CommandExecutor {
                     .replace("%PLAYER%", targetData.getName())
                     .replace("%COINS%", NumberFormat.getInstance(playerData.getLocale()).format(targetData.getCoins())));
         }
-        else if (args.length == 2) {
+        else if(args.length == 2) {
             sendHelp(player, "");
         }
-        else if (args.length == 3) {
-            if (!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.coins"))) {
+        else if(args.length == 3) {
+            if(!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.coins"))) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
                 return true;
             }
@@ -90,15 +90,15 @@ public class CoinsCommand implements CommandExecutor {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.Error.UnknownCoins"));
                 return true;
             }
-            if (args[0].equalsIgnoreCase("set")) {
+            if(args[0].equalsIgnoreCase("set")) {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
                 PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
-                if (targetData == null) {
+                if(targetData == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer")
                             .replace("%TARGET%", targetName));
                     return true;
                 }
-                if (coins < 0) {
+                if(coins < 0) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.Error.CoinsBelowOne"));
                     return true;
                 }
@@ -108,8 +108,8 @@ public class CoinsCommand implements CommandExecutor {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.SetCoins")
                         .replace("%TARGET%", targetData.getName())
                         .replace("%COINS%", NumberFormat.getInstance(playerData.getLocale()).format(coins)));
-                if (!target.isOnline()) return true;
-                if (target == player) {
+                if(!target.isOnline()) return true;
+                if(target == player) {
                     new UIManager(player);
                     return true;
                 }
@@ -122,15 +122,15 @@ public class CoinsCommand implements CommandExecutor {
                 new UIManager(t);
                 return true;
             }
-            if (args[0].equalsIgnoreCase("add")) {
+            if(args[0].equalsIgnoreCase("add")) {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
                 PlayerData oldTargetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
-                if (oldTargetData == null) {
+                if(oldTargetData == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer")
                             .replace("%TARGET%", targetName));
                     return true;
                 }
-                if (coins <= 0) {
+                if(coins <= 0) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.Error.CoinsBelowOne"));
                     return true;
                 }
@@ -141,8 +141,8 @@ public class CoinsCommand implements CommandExecutor {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.AddCoins")
                         .replace("%TARGET%", newTargetData.getName())
                         .replace("%COINS%", NumberFormat.getInstance(playerData.getLocale()).format(coins)));
-                if (!target.isOnline()) return true;
-                if (target == player) {
+                if(!target.isOnline()) return true;
+                if(target == player) {
                     new UIManager(player);
                     return true;
                 }
@@ -155,21 +155,21 @@ public class CoinsCommand implements CommandExecutor {
                 new UIManager(t);
                 return true;
             }
-            if (args[0].equalsIgnoreCase("remove")) {
+            if(args[0].equalsIgnoreCase("remove")) {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
                 PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
-                if (targetData == null) {
+                if(targetData == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer")
                             .replace("%TARGET%", targetName));
                     return true;
                 }
-                if (coins <= 0) {
+                if(coins <= 0) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.Error.CoinsBelowOne"));
                     return true;
                 }
                 PlayerData newTargetData;
                 int newAmount = Math.subtractExact(targetData.getCoins(), coins);
-                if (newAmount < 0) {
+                if(newAmount < 0) {
                     newTargetData = new PlayerData(target.getUniqueId(), target.getName(), targetData.getIpAddress(),
                             targetData.getRank(), targetData.getLocale(), 0);
                 }
@@ -179,8 +179,8 @@ public class CoinsCommand implements CommandExecutor {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.RemoveCoins")
                         .replace("%TARGET%", targetData.getName())
                         .replace("%COINS%", NumberFormat.getInstance(playerData.getLocale()).format(coins)));
-                if (!target.isOnline()) return true;
-                if (target == player) {
+                if(!target.isOnline()) return true;
+                if(target == player) {
                     new UIManager(player);
                     return true;
                 }

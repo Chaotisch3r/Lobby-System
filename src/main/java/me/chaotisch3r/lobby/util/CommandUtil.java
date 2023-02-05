@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.entity.Cow;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
@@ -27,7 +28,6 @@ import java.util.UUID;
 
 @Getter
 public class CommandUtil {
-
 
     public final List<Player> build = new ArrayList<>();
     public final HashMap<UUID, PermissionAttachment> permissions = new HashMap<>();
@@ -84,7 +84,7 @@ public class CommandUtil {
         update.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/warp update "));
         rename.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/warp rename "));
 
-        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.warp"))) {
+        if(!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.warp"))) {
             player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
             player.sendMessage(prefix + "§7----------[§6 Warp§7-§6Help§7]----------");
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.HelpInformation"));
@@ -164,7 +164,7 @@ public class CommandUtil {
         lobby.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/lobby"));
         setup.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/lobby setup setlobby"));
 
-        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.lobby"))) {
+        if(!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.lobby"))) {
             player.sendMessage(prefix + "§7----------[§6 Ping§7-§6Help§7]----------");
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.HelpInformation"));
             player.spigot().sendMessage(lobby);
@@ -193,7 +193,7 @@ public class CommandUtil {
         pingAnother.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/ping "));
         pingOwn.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/ping"));
 
-        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.ping"))) {
+        if(!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.ping"))) {
             player.sendMessage(prefix + "§7----------[§6 Ping§7-§6Help§7]----------");
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.HelpInformation"));
             player.spigot().sendMessage(pingOwn);
@@ -312,7 +312,7 @@ public class CommandUtil {
         c5.setClickEvent(!targetName.equals("") ? new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins remove " + targetName)
                 : new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/coins remove"));
 
-        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.coins"))) {
+        if(!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.coins"))) {
             player.sendMessage(prefix + "§7----------[§6 Coins§7-§6Help§7]----------");
             player.spigot().sendMessage(c1);
             player.spigot().sendMessage(c2);

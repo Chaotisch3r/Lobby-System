@@ -38,7 +38,7 @@ public class ItemConfig {
         file = new File(Lobby.getInstance().getDataFolder(), "items.yml");
         loadConfig();
         config.options().copyDefaults(true);
-        if (!file.exists()) {
+        if(!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -202,13 +202,13 @@ public class ItemConfig {
 
     public ItemStack getItem(Locale locale, String path) {
         relaodConfig();
-        if (config.get(locale.toLanguageTag() + "." + path) == null) return null;
+        if(config.get(locale.toLanguageTag() + "." + path) == null) return null;
         return config.getItemStack(locale.toLanguageTag() + "." + path);
     }
 
     public ItemStack getHead(Locale locale, String path, OfflinePlayer owner) {
         relaodConfig();
-        if (config.get(locale.toLanguageTag() + "." + path) == null) return null;
+        if(config.get(locale.toLanguageTag() + "." + path) == null) return null;
         ItemStack is = config.getItemStack(locale.toLanguageTag() + "." + path);
         SkullMeta isMeta = (SkullMeta) is.getItemMeta();
         isMeta.setOwningPlayer(owner);

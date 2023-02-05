@@ -37,47 +37,47 @@ public class BuildCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if(!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "Dieses Feature ist nur als Spieler möglich.");
             return true;
         }
         UUID uuid = player.getUniqueId();
         RankData rankData = playerDataManager.getPlayer(uuid).getRank();
-        if (!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.build"))) {
+        if(!(player.isOp() || rankData.hasPermission("lobby.*") || rankData.hasPermission("lobby.build"))) {
             player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Overall.NoPermission"));
             return true;
         }
-        if (args.length == 0) {
+        if(args.length == 0) {
             player.setGameMode(commandUtil.build.contains(player) ? GameMode.SURVIVAL : GameMode.CREATIVE);
-            if (player.getGameMode() == GameMode.CREATIVE) {
+            if(player.getGameMode() == GameMode.CREATIVE) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Add").replace("%PLAYER%", player.getName()));
                 commandUtil.build.add(player);
                 player.getInventory().clear();
             }
-            if (player.getGameMode() == GameMode.SURVIVAL) {
+            if(player.getGameMode() == GameMode.SURVIVAL) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Remove").replace("%PLAYER%", player.getName()));
                 commandUtil.build.remove(player);
                 itemManager.setStartEquip(player);
             }
-        } else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("help")) {
+        } else if(args.length == 1) {
+            if(args[0].equalsIgnoreCase("help")) {
                 sendHelp(player);
                 return true;
             }
             String targetName = args[0];
             Player target;
-            if ((target = Bukkit.getPlayer(targetName)) == null) {
+            if((target = Bukkit.getPlayer(targetName)) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UknownPlayer")
                         .replace("%TARGET%", targetName));
                 return true;
             }
             target.setGameMode(commandUtil.build.contains(target) ? GameMode.SURVIVAL : GameMode.CREATIVE);
-            if (target.getGameMode() == GameMode.CREATIVE) {
+            if(target.getGameMode() == GameMode.CREATIVE) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Add").replace("%PLAYER%", target.getName()));
                 target.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Add").replace("%PLAYER%", target.getName()));
                 commandUtil.build.add(target);
             }
-            if (target.getGameMode() == GameMode.SURVIVAL) {
+            if(target.getGameMode() == GameMode.SURVIVAL) {
                 player.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Remove").replace("%PLAYER%", target.getName()));
                 target.sendMessage(prefix + language.getColoredString(player.getUniqueId(), "Command.Build.Remove").replace("%PLAYER%", target.getName()));
                 commandUtil.build.remove(target);

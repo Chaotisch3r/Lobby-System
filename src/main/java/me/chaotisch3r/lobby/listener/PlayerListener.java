@@ -83,7 +83,7 @@ public class PlayerListener implements Listener {
             attachment.setPermission(permission, true);
         });
         commandUtil.permissions.put(player.getUniqueId(), attachment);
-        if (player.getGameMode() == GameMode.CREATIVE && (player.isOp() || rankData.hasPermission("lobby.*")
+        if(player.getGameMode() == GameMode.CREATIVE && (player.isOp() || rankData.hasPermission("lobby.*")
                 || rankData.hasPermission("lobby.build"))) {
             commandUtil.build.add(player);
             return;

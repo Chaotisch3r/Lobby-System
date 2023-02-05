@@ -29,7 +29,6 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 public class InventoryListener implements Listener {
-
     private final String prefix = Lobby.getInstance().getPrefix();
 
     private final Language language;
@@ -41,41 +40,41 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onInventoryClickEvent(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player player))
+        if(!(event.getWhoClicked() instanceof Player player))
             return;
         //Setup
         UUID uuid = player.getUniqueId();
         PlayerData playerData = playerDataManager.getPlayer(uuid);
         Locale locale = playerData.getLocale();
-        if (event.getCurrentItem() == null)
+        if(event.getCurrentItem() == null)
             return;
-        if (event.getCurrentItem().getItemMeta() == null)
+        if(event.getCurrentItem().getItemMeta() == null)
             return;
-        if (event.getAction() == InventoryAction.UNKNOWN)
+        if(event.getAction() == InventoryAction.UNKNOWN)
             return;
-        if (player.getGameMode() == GameMode.CREATIVE)
+        if(player.getGameMode() == GameMode.CREATIVE)
             return;
         try {
             //Inventory
-            if (event.getClickedInventory() == player.getInventory()) {
+            if(event.getClickedInventory() == player.getInventory()) {
                 event.setCancelled(player.getGameMode() != GameMode.CREATIVE);
                 return;
             }
             //Inventory: Profile
-            if (event.getClickedInventory() == itemManager.getProfileInventory()) {
+            if(event.getClickedInventory() == itemManager.getProfileInventory()) {
                 if(!(event.getCurrentItem().getType() ==  itemConfig.getGlassPane(uuid).getType()))
                     player.sendMessage(prefix + "§4This is currently under construction§7.");
                 event.setCancelled(true);
                 return;
             }
             //Inventory: Hider
-            if (event.getClickedInventory().getType() == itemManager.getHiderInventory().getType()) {
+            if(event.getClickedInventory().getType() == itemManager.getHiderInventory().getType()) {
                 player.sendMessage(prefix + "§4This is currently under construction§7.");
                 event.setCancelled(true);
                 return;
             }
             //Open Profile-Settings
-            if (event.getCurrentItem().getItemMeta().getDisplayName().equals
+            if(event.getCurrentItem().getItemMeta().getDisplayName().equals
                     (itemConfig.getItem(locale, "Profile.Settings").getItemMeta().getDisplayName())) {
                 //openProfileSettings
             }

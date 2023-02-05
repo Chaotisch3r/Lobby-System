@@ -28,7 +28,7 @@ public class SettingsDataManager {
     
     public void registerSettings() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
-            if (!mySQL.isConnected()) mySQL.connect();
+            if(!mySQL.isConnected()) mySQL.connect();
             try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS `settings_data` ( `id` INT NOT NULL AUTO_INCREMENT," +
                     " `uuid` VARCHAR(36) NOT NULL, `hiderStatus` VARCHAR(10) NOT NULL DEFAULT 'ALL', `getCoins` TINYINT NOT NULL DEFAULT 1, `friendRequest` TINYINT NOT NULL DEFAULT 1," +
                     " `friendJoin` TINYINT NOT NULL DEFAULT 1, `pm` TINYINT NOT NULL DEFAULT 1, `partyRequest` TINYINT NOT NULL DEFAULT 1," +
@@ -43,7 +43,7 @@ public class SettingsDataManager {
 
     @SneakyThrows
     public void loadSetting(UUID uuid) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM `settings_data` WHERE `uuid`=?");
         ResultSet rs = null;
         try {
@@ -63,12 +63,12 @@ public class SettingsDataManager {
                         true, true, true, true, true, true)));
                 updateAsync(settingsData);
             }
-            if (!settingsData.getUuid().equals(uuid)) updateAsync(settingsData);
+            if(!settingsData.getUuid().equals(uuid)) updateAsync(settingsData);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {
-            if (rs != null) rs.close();
+            if(rs != null) rs.close();
             ps.close();
         }
     }
@@ -78,7 +78,7 @@ public class SettingsDataManager {
     }
     
     public void update(SettingsData settingsData) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement ps = mySQL.getStatement("INSERT INTO `settings_data`(`uuid`, `hiderStatus`, `getCoins`, `friendRequest`," +
                 " `friendJoin`, `pm`, `partyRequest`, `partyJump`, `clanRequest`, `clanJoin`)" +
                 " VALUES(?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `hiderStatus`=?, `getCoins`=?, `friendRequest`=?, `friendJoin`=?, " +

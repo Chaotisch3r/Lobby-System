@@ -26,7 +26,7 @@ public class MessageConfig {
         this.file = new File("plugins", "messages.yml");
         config = YamlConfiguration.loadConfiguration(file);
         InputStream inputStream = Lobby.getInstance().getResource("messages.yml");
-        if (inputStream != null) {
+        if(inputStream != null) {
             YamlConfiguration cfg = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream));
             this.config.setDefaults(cfg);
         }

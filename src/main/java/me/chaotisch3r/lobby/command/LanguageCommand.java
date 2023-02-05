@@ -37,43 +37,43 @@ public class LanguageCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if(!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "§7Dieser Befehl kann nur als Spieler ausgeführt werden,");
             return true;
         }
         UUID uuid = player.getUniqueId();
-        if (args.length == 0) {
+        if(args.length == 0) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Use")
                     .replace("%PLAYER%", player.getName())
                     .replace("%LANGUAGE%", language.getLocale(uuid).getDisplayName()));
-        } else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("reload")) {
+        } else if(args.length == 1) {
+            if(args[0].equalsIgnoreCase("reload")) {
                 PlayerData playerData = playerDataManager.getPlayer(uuid);
-                if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.language"))) {
+                if(!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.language"))) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
                     return true;
                 }
                 messageConfig.reloadMessageConfig();
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Reload"));
             }
-            if (args[0].equalsIgnoreCase("help")) {
+            if(args[0].equalsIgnoreCase("help")) {
                 sendHelp(player);
                 return true;
             }
-            if (args[0].equalsIgnoreCase("list")) {
+            if(args[0].equalsIgnoreCase("list")) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.List"));
                 player.sendMessage("§7-§6 de§7 (Deutsch)");
                 player.sendMessage("§7-§6 en§7 (English)");
                 System.out.println(language.getLocales());
                 return true;
             }
-            if (args[0].equalsIgnoreCase("change")) {
+            if(args[0].equalsIgnoreCase("change")) {
                 sendHelp(player);
                 return true;
             }
             String targetName = args[0];
             Player target;
-            if ((target = Bukkit.getPlayer(targetName)) == null) {
+            if((target = Bukkit.getPlayer(targetName)) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UknownPlayer")
                         .replace("%TARGET%", targetName));
                 return true;
@@ -81,18 +81,18 @@ public class LanguageCommand implements CommandExecutor {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Use")
                     .replace("%PLAYER%", target.getName())
                     .replace("%LANGUAGE%", language.getLocale(target.getUniqueId()).getLanguage()));
-        } else if (args.length == 2) {
+        } else if(args.length == 2) {
             String lang = args[1];
-            if (!(args[0].equalsIgnoreCase("change"))) {
+            if(!(args[0].equalsIgnoreCase("change"))) {
                 sendHelp(player);
                 return true;
             }
-            if (Locale.forLanguageTag(lang) == null) {
+            if(Locale.forLanguageTag(lang) == null) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Error.UknownLanguage"));
                 return true;
             }
             Locale locale = Locale.forLanguageTag(lang);
-            if (language.getLocale(player.getUniqueId()).equals(locale)) {
+            if(language.getLocale(player.getUniqueId()).equals(locale)) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Language.Error.SameLanguage"));
                 return true;
             }

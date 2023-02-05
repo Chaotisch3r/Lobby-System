@@ -34,21 +34,21 @@ public class WorldDataManager {
 
     public WorldDataManager() {
         file = new File(Lobby.getInstance().getDataFolder(), "DeletedWorlds");
-        if (!file.exists()) {
+        if(!file.exists()) {
             file.mkdirs();
         }
     }
 
     public void addWorldToDeletedList(World world) {
         File worldFile = new File(Lobby.getInstance().getDataFolder() + "/DeletedWorlds", world.getName());
-        if (!worldFile.exists()) {
+        if(!worldFile.exists()) {
             worldFile.mkdirs();
             world.getWorldFolder().renameTo(worldFile);
         }
     }
 
     public void registerWorld() {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
             try (PreparedStatement ps = mySQL.getStatement("CREATE TABLE IF NOT EXISTS world_data(`id` int NOT NULL AUTO_INCREMENT, `uid` varchar(64) NOT NULL," +
                     " `worldName` varchar(16) NOT NULL, `environment` VARCHAR(32) NOT NULL, `X` double NOT NULL, `Y` double NOT NULL, `Z` double NOT NULL," +
@@ -77,7 +77,7 @@ public class WorldDataManager {
 
     @SneakyThrows
     public void loadWorld(World world) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         PreparedStatement ps = mySQL.getStatement("SELECT * FROM world_data WHERE uid=?");
         ResultSet rs = null;
         try {
@@ -85,7 +85,7 @@ public class WorldDataManager {
             rs = ps.executeQuery();
 
             WorldData worldData;
-            if (rs.next()) {
+            if(rs.next()) {
                 worldCache.put(world.getUID(), (worldData = new WorldData(world.getUID(), rs.getString("worldName"),
                         World.Environment.valueOf(rs.getString("environment")), rs.getDouble("X"), rs.getDouble("Y"), rs.getDouble("Z"),
                         rs.getFloat("Yaw"), rs.getFloat("Pitch"))));
@@ -95,11 +95,11 @@ public class WorldDataManager {
                         world.getSpawnLocation().getYaw(), world.getSpawnLocation().getPitch())));
                 updateAsync(worldData);
             }
-            if (!worldData.getUid().equals(world.getUID())) updateAsync(worldData);
+            if(!worldData.getUid().equals(world.getUID())) updateAsync(worldData);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            if (rs != null) rs.close();
+            if(rs != null) rs.close();
             ps.close();
         }
     }
@@ -109,7 +109,7 @@ public class WorldDataManager {
     }
 
     public void removeWorld(World world) {
-        if (worldCache.containsKey(world.getUID())) unloadWorld(world);
+        if(worldCache.containsKey(world.getUID())) unloadWorld(world);
         try (PreparedStatement ps = mySQL.getStatement("DELETE FROM world_data WHERE uid=?")) {
             ps.setString(1, world.getUID().toString());
         } catch (SQLException e) {
@@ -126,7 +126,7 @@ public class WorldDataManager {
     }
 
     public void update(WorldData worldData) {
-        if (!mySQL.isConnected()) mySQL.connect();
+        if(!mySQL.isConnected()) mySQL.connect();
         try (PreparedStatement preparedStatement = mySQL.getStatement("INSERT INTO world_data(`uid`, `worldName`, `environment`, `X`, `Y`, `Z`, `Yaw`, `Pitch`) " +
                 "VALUES(?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE `worldName`=?, `environment`=?, `X`=?, `Y`=?, `Z`=?, `Yaw`=?, `Pitch`=?")) {
             preparedStatement.setString(1, worldData.getUid().toString());

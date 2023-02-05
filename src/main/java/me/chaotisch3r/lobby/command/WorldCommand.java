@@ -45,36 +45,36 @@ public class WorldCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if(!(sender instanceof Player player)) {
             sender.sendMessage(prefix + "§7Du kannst diesen Befehl nur als Spieler ausführen.");
             return true;
         }
         UUID uuid = player.getUniqueId();
         PlayerData playerData = playerDataManager.getPlayer(uuid);
-        if (!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.world"))) {
+        if(!(player.isOp() || playerData.getRank().hasPermission("lobby.*") || playerData.getRank().hasPermission("lobby.world"))) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.NoPermission"));
             return true;
         }
-        if (args.length == 0) {
+        if(args.length == 0) {
             sendWorldInformation(player);
-        } else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("list")) {
+        } else if(args.length == 1) {
+            if(args[0].equalsIgnoreCase("list")) {
                 itemManager.openWorldListInventory(player);
             }
-            if (args[0].equalsIgnoreCase("information") || args[0].equalsIgnoreCase("info")) {
+            if(args[0].equalsIgnoreCase("information") || args[0].equalsIgnoreCase("info")) {
                 sendWorldInformation(player);
                 return true;
             }
             sendHelp(player);
-        } else if (args.length == 2) {
+        } else if(args.length == 2) {
             String worldName = args[1];
-            if (args[0].equalsIgnoreCase("join")) {
+            if(args[0].equalsIgnoreCase("join")) {
                 World world;
-                if ((world = Bukkit.getWorld(worldName)) == null) {
+                if((world = Bukkit.getWorld(worldName)) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldNotExisting"));
                     return true;
                 }
-                if (player.getWorld() == world) {
+                if(player.getWorld() == world) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldAlreadyJoined"));
                     return true;
                 }
@@ -83,8 +83,8 @@ public class WorldCommand implements CommandExecutor {
                         .replace("%WORLD%", world.getName()));
                 return true;
             }
-            if (args[0].equalsIgnoreCase("create")) {
-                if (Bukkit.getWorld(worldName) != null) {
+            if(args[0].equalsIgnoreCase("create")) {
+                if(Bukkit.getWorld(worldName) != null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldAlreadyExisting"));
                     return true;
                 }
@@ -98,9 +98,9 @@ public class WorldCommand implements CommandExecutor {
                 player.spigot().sendMessage(component);
                 return true;
             }
-            if (args[0].equalsIgnoreCase("delete")) {
+            if(args[0].equalsIgnoreCase("delete")) {
                 World world;
-                if ((world = Bukkit.getWorld(worldName)) == null) {
+                if((world = Bukkit.getWorld(worldName)) == null) {
                     player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.WorldNotExisting"));
                     return true;
                 }
@@ -114,15 +114,15 @@ public class WorldCommand implements CommandExecutor {
             }
             sendHelp(player);
         }
-        else if (args.length == 3) {
-            if (!(args[0].equalsIgnoreCase("create"))) {
+        else if(args.length == 3) {
+            if(!(args[0].equalsIgnoreCase("create"))) {
                 sendHelp(player);
                 return true;
             }
             String worldName = args[1];
             String destination = args[2];
             World.Environment environment = World.Environment.valueOf(destination);
-            if (!(Arrays.stream(World.Environment.values()).toList().contains(environment))) {
+            if(!(Arrays.stream(World.Environment.values()).toList().contains(environment))) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.World.Error.EnvironmentNotExisting"));
                 return true;
             }

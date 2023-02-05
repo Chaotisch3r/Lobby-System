@@ -26,7 +26,7 @@ public class EntityListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntityEvent(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player player) {
+        if(e.getDamager() instanceof Player player) {
             e.setCancelled(player.getGameMode() != GameMode.CREATIVE);
         } else {
             e.setCancelled(true);

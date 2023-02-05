@@ -30,7 +30,7 @@ public class ActionBar {
 
     public void sendActionBarTime(final Player player, final String message, final Integer time) {
         final String newMessage = message.replace("_", " ");
-        if (!Count.containsKey(player.getName())) {
+        if(!Count.containsKey(player.getName())) {
             String s = ChatColor.translateAlternateColorCodes('&', newMessage);
             TextComponent component = new TextComponent(s);
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
@@ -40,14 +40,14 @@ public class ActionBar {
             TextComponent component = new TextComponent(s);
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
 
-            if (!Count.containsKey(player.getName())) {
+            if(!Count.containsKey(player.getName())) {
                 Count.put(player.getName(), 0);
             }
             int count = Count.get(player.getName());
             int newCount = count + 20;
             Count.put(player.getName(), newCount);
 
-            if (newCount < time - 20) {
+            if(newCount < time - 20) {
                 wait(player, message, time);
             } else {
                 Count.remove(player.getName());
