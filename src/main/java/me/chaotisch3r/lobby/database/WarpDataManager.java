@@ -26,8 +26,13 @@ import java.util.UUID;
 
 public class WarpDataManager {
 
-    private final MySQL mySQL = Lobby.getInstance().getMySQL();
-    private final Map<String, WarpData> warpCache = new HashMap<>();
+    private final MySQL mySQL;
+    private final Map<String, WarpData> warpCache;
+
+    public WarpDataManager(MySQL mySQL) {
+        this.mySQL = mySQL;
+        this.warpCache = new HashMap<>();
+    }
 
     public void registerWarp() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {

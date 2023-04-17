@@ -28,15 +28,17 @@ import java.util.UUID;
 @Getter
 public class WorldDataManager {
 
-    private final MySQL mySQL = new MySQL();
+    private final MySQL mySQL;
     private final File file;
-    private final Map<UUID, WorldData> worldCache = new HashMap<>();
+    private final Map<UUID, WorldData> worldCache;
 
-    public WorldDataManager() {
+    public WorldDataManager(MySQL mySQL) {
+        this.mySQL = mySQL;
         file = new File(Lobby.getInstance().getDataFolder(), "DeletedWorlds");
         if(!file.exists()) {
             file.mkdirs();
         }
+        this.worldCache = new HashMap<>();
     }
 
     public void addWorldToDeletedList(World world) {

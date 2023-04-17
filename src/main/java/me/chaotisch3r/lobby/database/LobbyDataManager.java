@@ -24,8 +24,13 @@ import java.util.UUID;
 
 public class LobbyDataManager {
 
-    private final MySQL mySQL = Lobby.getInstance().getMySQL();
-    private final Map<UUID, LobbyData> lobbyCache = new HashMap<>();
+    private final MySQL mySQL;
+    private final Map<UUID, LobbyData> lobbyCache;
+
+    public LobbyDataManager(MySQL mySQL) {
+        this.mySQL = mySQL;
+        lobbyCache = new HashMap<>();
+    }
 
     public void registerLobby() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {

@@ -23,8 +23,13 @@ import java.util.UUID;
 
 public class SettingsDataManager {
     
-    private final Map<UUID, SettingsData> settingsCache = new HashMap<>();
-    private final MySQL mySQL = Lobby.getInstance().getMySQL();
+    private final Map<UUID, SettingsData> settingsCache;
+    private final MySQL mySQL;
+
+    public SettingsDataManager(MySQL mySQL) {
+        this.mySQL = mySQL;
+        this.settingsCache = new HashMap<>();
+    }
     
     public void registerSettings() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {

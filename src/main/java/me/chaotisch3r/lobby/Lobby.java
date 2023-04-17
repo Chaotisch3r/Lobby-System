@@ -1,6 +1,7 @@
 package me.chaotisch3r.lobby;
 
 import lombok.Getter;
+import lombok.NonNull;
 import me.chaotisch3r.lobby.command.*;
 import me.chaotisch3r.lobby.command.util.TabComplete;
 import me.chaotisch3r.lobby.database.*;
@@ -130,12 +131,12 @@ public class Lobby extends JavaPlugin {
 
     private void registerDatabase() {
         this.mySQL = new MySQL();
-        this.rankDataManager = new RankDataManager();
-        this.playerDataManager = new PlayerDataManager(rankDataManager);
-        this.lobbyDataManager = new LobbyDataManager();
-        this.worldDataManager = new WorldDataManager();
-        this.warpDataManager = new WarpDataManager();
-        this.settingsDataManager = new SettingsDataManager();
+        this.rankDataManager = new RankDataManager(mySQL);
+        this.playerDataManager = new PlayerDataManager(mySQL, rankDataManager);
+        this.lobbyDataManager = new LobbyDataManager(mySQL);
+        this.worldDataManager = new WorldDataManager(mySQL);
+        this.warpDataManager = new WarpDataManager(mySQL);
+        this.settingsDataManager = new SettingsDataManager(mySQL);
         this.mySQL.connect();
         this.playerDataManager.registerPlayer();
         this.lobbyDataManager.registerLobby();

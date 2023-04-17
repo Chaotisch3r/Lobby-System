@@ -26,10 +26,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PlayerDataManager {
 
-    private final MySQL mySQL = Lobby.getInstance().getMySQL();
-    private final Map<UUID, PlayerData> playerCache = new HashMap<>();
+    private final MySQL mySQL;
+    private final Map<UUID, PlayerData> playerCache;
 
     private final RankDataManager rankDataManager;
+
+    public PlayerDataManager(MySQL mySQl, RankDataManager rankDataManager) {
+        this.mySQL = mySQl;
+        this.playerCache = new HashMap<>();
+        this.rankDataManager = rankDataManager;
+    }
 
     public void registerPlayer() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {

@@ -21,8 +21,13 @@ import java.util.*;
 
 public class RankDataManager {
 
-    private final MySQL mySQL = Lobby.getInstance().getMySQL();
-    private final Map<String, RankData> rankCache = new HashMap<>();
+    private final MySQL mySQL;
+    private final Map<String, RankData> rankCache;
+
+    public RankDataManager(MySQL mySQL) {
+        this.mySQL = mySQL;
+        rankCache = new HashMap<>();
+    }
 
     public void registerRank() {
         Bukkit.getScheduler().runTaskAsynchronously(Lobby.getInstance(), () -> {
