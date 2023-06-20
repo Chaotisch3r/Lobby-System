@@ -23,7 +23,7 @@ de:
   Command:
     Overall:
       NoPermission: "&7Du hast keine Rechte für diesen Befehl."
-      UknownPlayer: "&b%TARGET%&7 ist unserem System nicht bekannt."
+      UnknownPlayer: "&b%TARGET%&7 ist unserem System nicht bekannt."
       HelpInformation: "&7Durch das Klick auf einen Befehl, wird dir dieser Befehl vorgeschalgen."
     Ping:
       Use: "&b%PLAYER%&7's Ping lautet&6 %PING%ms&7."
@@ -65,7 +65,7 @@ de:
         List: "Lists every language"
         Change: "Changes to a language"
       Error:
-        UknownLanguage: "&7Diese Sprache ist unserem System nicht bekannt."
+        UnknownLanguage: "&7Diese Sprache ist unserem System nicht bekannt."
         SameLanguage: "&7Dies ist deine aktuelle Sprache"
     World:
       Join: "&7Du hast die Welt&6 %WORLD%&7 betreten."
@@ -95,7 +95,7 @@ de:
       Error:
         WorldNotExisting: "&7Diese Welt ist unserem System nicht bekannt."
         WorldAlreadyExisting: "&7Diese Welt ist unserem System bereits bekannt."
-        WorldAlreadJoined: "&7Du bist bereits in dieser Welt."
+        WorldAlreadyJoined: "&7Du bist bereits in dieser Welt."
         EnvironmentNotExisting: "&7Diese Dimension ist unserem System nicht bekannt."
     Warp:
       Use: "&7Du hast dich zu&6 %WARP%&7 gewarp."
@@ -163,9 +163,9 @@ de:
           RenameDisplay: "7Setzt einen neuen Anzeigenamen."
       Error:
         RankNotExisting: "&7Dieser Rang ist unserem System nicht bekannt."
-        ConnotDeleteDefaultRank: "&7Du bist nicht erlaubt, den Standart Rang zu entfernen."
+        CannotDeleteDefaultRank: "&7Du bist nicht erlaubt, den Standart Rang zu entfernen."
         CannotReadjustSameID: "&7Diese RangID ist unserem System schon bekannt."
-        ConnotRenameDefaultRank: "&7Du bist nicht erlaubt, den Standart Rang um zu benennen."
+        CannotRenameDefaultRank: "&7Du bist nicht erlaubt, den Standart Rang um zu benennen."
         CannotRenameSameName: "&7Dies ist der aktuelle Namen des Ranges."
         CannotRenameExistingName: "&7Dieser Rangname ist unserem System bereits bekannt."
         CannotRenameSameListName: "&7Dieser Listenname ist der aktuelle Listenname des Ranges."
@@ -173,6 +173,7 @@ de:
         RankAlreadyExisting: "&7Dieser Rang ist unserem System bereits bekannt."
         IDAlreadyTaken: "&7Diese RangID ist unserem System bereits bekannt."
     Coins:
+      Toggle: "&7Die Coinabfrage wurde auf&b %TOGGLE%&7 geändert."
       GetCoins: "&b%PLAYER%&7's besitzt&6 %COINS% Coins&7."
       SetCoins: "&7Du hast&6 %TARGET%&7's Coins auf&6 %COINS% Coins&7 gesetzt."
       AddCoins: "&7Du hast&b %TARGET%&6 %COINS% Coins%&7 hinzugefügt."
@@ -219,7 +220,7 @@ en:
   Command:
     Overall:
       NoPermission: "&7You do not have permissions to use this command."
-      UknownPlayer: "&b%TARGET%&7 is not known to our system."
+      UnknownPlayer: "&b%TARGET%&7 is not known to our system."
       HelpInformation: "&7By clicking on this comman, this command will be suggested."
     Ping:
       Use: "&b%PLAYER%&7's ping is&6 %PING%ms&7."
@@ -261,7 +262,7 @@ en:
         List: "Lists every language"
         Change: "Changes to a language"
       Error:
-        UknownLanguage: "&7This language is not know to our system"
+        UnknownLanguage: "&7This language is not know to our system"
         SameLanguage: "&7This is your current language"
     World:
       Join: "&7You have join the world&6 %WORLD%&7."
@@ -291,7 +292,7 @@ en:
       Error:
         WorldNotExisting: "&7This world is not known to our system."
         WorldAlreadyExisting: "&7This world is already know to our system."
-        WorldAlreadJoined: "&7You are on this world."
+        WorldAlreadyJoined: "&7You are on this world."
         EnvironmentNotExisting: "&7This dimension is not known to our system."
     Warp:
       Use: "&7You have been warped to&6 %WARP%&7."
@@ -359,9 +360,9 @@ en:
           RenameDisplay: "7Sets a new displayname."
       Error:
         RankNotExisting: "&7This rank is not know to our system."
-        ConnotDeleteDefaultRank: "&7You are not allowed to delete the default rank."
+        CannotDeleteDefaultRank: "&7You are not allowed to delete the default rank."
         CannotReadjustSameID: "&7This ID is already known to our system"
-        ConnotRenameDefaultRank: "&7You are not allowed to rename the default rank."
+        CannotRenameDefaultRank: "&7You are not allowed to rename the default rank."
         CannotRenameSameName: "&7This is already the name of the rank."
         CannotRenameExistingName: "&7This name is already known to our system."
         CannotRenameSameListName: "&7This is already the list name of the rank."
@@ -369,6 +370,7 @@ en:
         RankAlreadyExisting: "&7This rank is already known to our system."
         IDAlreadyTaken: "&7THis ID is already known to our system."
     Coins:
+      Toggle: "&7The Coin-Statement has been changed to%b %TOGGLE%&7."
       GetCoins: "&b%PLAYER%&7's amount of coins is&6 %COINS%&7."
       SetCoins: "&7You have set&6 %TARGET%&7's coins to&6 %COINS%&7."
       AddCoins: "&7You have added&6 %COINS% coins&7 to&b %TARGET%&7."

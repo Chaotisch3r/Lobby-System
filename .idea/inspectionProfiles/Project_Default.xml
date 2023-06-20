@@ -3,6 +3,11 @@
     <option name="myName" value="Project Default" />
     <inspection_tool class="Anonymous2MethodRef" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="ClassCanBeRecord" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <Languages>
+        <language minSize="86" name="Java" />
+      </Languages>
+    </inspection_tool>
     <inspection_tool class="NotNullFieldNotInitialized" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="NullableProblems" enabled="true" level="INFORMATION" enabled_by_default="true">
       <option name="REPORT_NULLABLE_METHOD_OVERRIDES_NOTNULL" value="true" />

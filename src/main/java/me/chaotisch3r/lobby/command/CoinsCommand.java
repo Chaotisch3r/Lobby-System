@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.chaotisch3r.lobby.Lobby;
 import me.chaotisch3r.lobby.data.PlayerData;
 import me.chaotisch3r.lobby.data.RankData;
+import me.chaotisch3r.lobby.data.SettingsData;
 import me.chaotisch3r.lobby.database.Language;
 import me.chaotisch3r.lobby.database.PlayerDataManager;
 import me.chaotisch3r.lobby.database.SettingsDataManager;
@@ -47,6 +48,7 @@ public class CoinsCommand implements CommandExecutor {
         UUID uuid = player.getUniqueId();
         RankData playerRankData = playerDataManager.getPlayer(uuid).getRank();
         PlayerData playerData = playerDataManager.getPlayer(uuid);
+        SettingsData playerSettingsData = settingsDataManager.getSettings(uuid);
         if(args.length == 0) {
             player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.GetCoins")
                     .replace("%PLAYER%", player.getName())
@@ -58,6 +60,12 @@ public class CoinsCommand implements CommandExecutor {
                 sendHelp(player, "");
                 return true;
             }
+            if(args[0].equalsIgnoreCase("toggle")) {
+                playerSettingsData.setGetCoins(!playerSettingsData.isGetCoins());
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.Toggle")
+                        .replace("%TOGGLE%", String.valueOf(playerSettingsData.isGetCoins()).toUpperCase()));
+                return true;
+            }
             String targetName = args[0];
             OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
             PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
@@ -66,7 +74,8 @@ public class CoinsCommand implements CommandExecutor {
                         .replace("%TARGET%", targetName));
                 return true;
             }
-            if(!settingsDataManager.getSettings(target.getUniqueId()).isGetCoins()) {
+            if(!settingsDataManager.getSettings(target.getUniqueId()).isGetCoins()
+                    && !(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.coins"))) {
                 player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.Error.GetCoinsNotVisible"));
                 return true;
             }
@@ -75,7 +84,26 @@ public class CoinsCommand implements CommandExecutor {
                     .replace("%COINS%", NumberFormat.getInstance(playerData.getLocale()).format(targetData.getCoins())));
         }
         else if(args.length == 2) {
-            sendHelp(player, "");
+            if(!args[0].equalsIgnoreCase("get") && !args[0].equalsIgnoreCase("getcoins")) {
+                sendHelp(player, "");
+                return true;
+            }
+            String targetName = args[1];
+            OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+            PlayerData targetData = playerDataManager.getOfflinePlayer(target.getUniqueId());
+            if(targetData == null) {
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer")
+                        .replace("%TARGET%", targetName));
+                return true;
+            }
+            if(!settingsDataManager.getSettings(target.getUniqueId()).isGetCoins()
+                    && !(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.coins"))) {
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.Error.GetCoinsNotVisible"));
+                return true;
+            }
+            player.sendMessage(prefix + language.getColoredString(uuid, "Command.Coins.GetCoins")
+                    .replace("%PLAYER%", targetData.getName())
+                    .replace("%COINS%", NumberFormat.getInstance(playerData.getLocale()).format(targetData.getCoins())));
         }
         else if(args.length == 3) {
             if(!(player.isOp() || playerRankData.hasPermission("lobby.*") || playerRankData.hasPermission("lobby.coins"))) {

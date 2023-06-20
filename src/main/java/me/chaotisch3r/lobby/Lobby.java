@@ -32,7 +32,6 @@ import java.util.List;
 /*
     TODO:
      - Settings Databse:
-       - /coin <Dein Name> ein/auschaltbar machen (perms ignore this)
        - Glass farbe in Inv
        - ...
  */

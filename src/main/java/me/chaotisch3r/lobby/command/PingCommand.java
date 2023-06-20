@@ -53,7 +53,7 @@ public class PingCommand implements CommandExecutor {
            String targetName = args[0];
             Player target;
             if((target = Bukkit.getPlayer(targetName)) == null) {
-                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UknownPlayer")
+                player.sendMessage(prefix + language.getColoredString(uuid, "Command.Overall.UnknownPlayer")
                         .replace("%TARGET%", targetName));
                 return true;
             }
